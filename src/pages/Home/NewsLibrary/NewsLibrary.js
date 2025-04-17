@@ -11,7 +11,7 @@ import { vi } from 'date-fns/locale';
 
 const cx = classNames.bind(styles);
 // Base URL cho hình ảnh
-const IMAGE_BASE_URL = process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com";
+const API_URL = process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com";
 
 function NewsLibrary() {
     const [news, setNews] = useState([]);
@@ -22,7 +22,7 @@ function NewsLibrary() {
         const fetchNews = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com"}/api/news`);
+                const response = await axios.get(`${API_URL}/api/news`);
                 console.log('News response:', response.data);
                 setNews(response.data);
                 setLoading(false);
@@ -48,12 +48,18 @@ function NewsLibrary() {
 
     // Hàm xử lý URL hình ảnh
     const getImageUrl = (imagePath) => {
-        // Nếu URL đã là URL đầy đủ hoặc base64, trả về nguyên bản
-        if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
+        if (!imagePath) return ''; // Trả về chuỗi rỗng nếu không có đường dẫn
+
+        // Nếu đã là URL đầy đủ hoặc base64, trả về nguyên bản
+        if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
             return imagePath;
         }
-        // Ngược lại, thêm BASE_URL
-        return `${IMAGE_BASE_URL}${imagePath}`;
+
+        // Loại bỏ dấu / đầu tiên nếu có
+        const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+        
+        // Thêm URL API
+        return `${API_URL}/${cleanPath}`;
     };
 
     // Xử lý click vào tin tức
