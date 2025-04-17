@@ -11,7 +11,7 @@ import { vi } from 'date-fns/locale';
 
 const cx = classNames.bind(styles);
 // Base URL cho hình ảnh
-const IMAGE_BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:8080";
+const IMAGE_BASE_URL = process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com";
 
 function NewsLibrary() {
     const [news, setNews] = useState([]);
@@ -22,7 +22,7 @@ function NewsLibrary() {
         const fetchNews = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/news`);
+                const response = await axios.get(`${process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com"}/api/news`);
                 console.log('News response:', response.data);
                 setNews(response.data);
                 setLoading(false);
@@ -52,8 +52,14 @@ function NewsLibrary() {
         if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
             return imagePath;
         }
-        // Ngược lại, thêm BASE_URL
-        return `${IMAGE_BASE_URL}${imagePath}`;
+        
+        // Nếu đường dẫn bắt đầu bằng /images, sử dụng API endpoint
+        if (imagePath.startsWith('/images')) {
+            return `${IMAGE_BASE_URL}${imagePath}`;
+        }
+        
+        // Sử dụng đường dẫn tương đối tới API
+        return `${IMAGE_BASE_URL}/images/news/${imagePath.split('/').pop()}`;
     };
 
     // Xử lý click vào tin tức
