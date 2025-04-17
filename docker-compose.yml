@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Frontend React
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: thontrangliennhat-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - thontrangliennhat-network
+
+  # Backend API Node.js
+  api:
+    build:
+      context: ../phunongbuondon-api
+      dockerfile: Dockerfile
+    container_name: thontrangliennhat-api
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - JWT_SECRET=your_jwt_secret_key_here
+      - CORS_ORIGIN=http://localhost
+    ports:
+      - "8080:8080"
+    volumes:
+      - api-uploads:/app/public/uploads
+      - api-images:/app/public/images
+    networks:
+      - thontrangliennhat-network
+
+networks:
+  thontrangliennhat-network:
+    driver: bridge
+
+volumes:
+  api-uploads:
+  api-images: 
