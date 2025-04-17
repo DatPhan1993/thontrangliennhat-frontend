@@ -1,0 +1,23 @@
+{
+  "name": "thontrangliennhat-api",
+  "version": "1.0.0",
+  "description": "API for Thon Trang Lien Nhat website",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "pm2": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+} 
