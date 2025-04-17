@@ -52,14 +52,8 @@ function NewsLibrary() {
         if (imagePath.startsWith('http') || imagePath.startsWith('data:')) {
             return imagePath;
         }
-        
-        // Nếu đường dẫn bắt đầu bằng /images, sử dụng API endpoint
-        if (imagePath.startsWith('/images')) {
-            return `${IMAGE_BASE_URL}${imagePath}`;
-        }
-        
-        // Sử dụng đường dẫn tương đối tới API
-        return `${IMAGE_BASE_URL}/images/news/${imagePath.split('/').pop()}`;
+        // Ngược lại, thêm BASE_URL
+        return `${IMAGE_BASE_URL}${imagePath}`;
     };
 
     // Xử lý click vào tin tức
