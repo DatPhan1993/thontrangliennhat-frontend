@@ -55,14 +55,15 @@ function NewsLibrary() {
             return imagePath;
         }
 
-        // Xử lý trường hợp đặc biệt cho ảnh tin tức
+        // Xử lý ảnh tin tức - dùng ảnh đã copy vào thư mục local của frontend
         if (imagePath.includes('images/news/')) {
-            // Loại bỏ dấu / đầu tiên nếu có
-            const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-            return `${API_URL}/${cleanPath}`;
+            // Lấy tên file từ đường dẫn
+            const fileName = imagePath.split('/').pop();
+            // Sử dụng ảnh từ thư mục local
+            return `${window.location.origin}/images/news/${fileName}`;
         }
         
-        // Xử lý đường dẫn tương đối
+        // Xử lý đường dẫn tương đối - sử dụng API
         return `${API_URL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
     };
 
