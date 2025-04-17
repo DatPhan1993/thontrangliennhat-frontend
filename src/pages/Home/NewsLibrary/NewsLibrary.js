@@ -11,7 +11,7 @@ import { vi } from 'date-fns/locale';
 
 const cx = classNames.bind(styles);
 // Base URL cho hình ảnh
-const IMAGE_BASE_URL = "http://localhost:3001";
+const IMAGE_BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:8080";
 
 function NewsLibrary() {
     const [news, setNews] = useState([]);
