@@ -217,25 +217,32 @@ app.get('/api/parent-navs/all-with-child', (req, res) => {
 
 // Route cho experiences
 app.get('/api/experiences', (req, res) => {
-  res.json({
-    status: 'success',
-    data: [
-      {
-        id: 1,
-        title: 'Khu du lịch sinh thái',
-        description: 'Trải nghiệm thiên nhiên trong lành',
-        image: 'https://via.placeholder.com/800x600',
-        content: 'Nội dung chi tiết về khu du lịch sinh thái'
-      },
-      {
-        id: 2,
-        title: 'Ẩm thực đặc sản',
-        description: 'Khám phá hương vị địa phương',
-        image: 'https://via.placeholder.com/800x600',
-        content: 'Nội dung chi tiết về ẩm thực đặc sản'
-      }
-    ]
-  });
+  res.json([
+    {
+      id: 1,
+      title: 'Câu cá - Bắt cá ao đầm',
+      description: 'Trải nghiệm thú vị về câu cá và bắt cá dành cho trẻ em và người lớn',
+      image: '/images/experiences/cau-ca.jpg',
+      content: 'Nội dung chi tiết về trải nghiệm câu cá và bắt cá tại khu du lịch sinh thái',
+      slug: 'cau-ca-bat-ca'
+    },
+    {
+      id: 2,
+      title: 'Chợ quê 3 trong 1',
+      description: 'Trải nghiệm mua sắm tại chợ quê với đa dạng sản phẩm nông nghiệp sạch',
+      image: '/images/experiences/cho-que.jpg',
+      content: 'Nội dung chi tiết về trải nghiệm tại chợ quê 3 trong 1',
+      slug: 'cho-que-3-trong-1'
+    },
+    {
+      id: 3,
+      title: 'Mô hình sinh kế',
+      description: 'Tìm hiểu mô hình sinh kế theo quy trình khép kín cho phát triển kinh tế bền vững',
+      image: '/images/experiences/mo-hinh-sinh-ke.jpg',
+      content: 'Nội dung chi tiết về mô hình sinh kế tại HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật',
+      slug: 'mo-hinh-sinh-ke'
+    }
+  ]);
 });
 
 // Ví dụ về API bảo vệ bằng JWT
