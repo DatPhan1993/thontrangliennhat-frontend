@@ -10,10 +10,11 @@ const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors({
-  origin: ['https://www.thontrangliennhat.com', 'https://thontrangliennhat.com', process.env.CORS_ORIGIN || '*'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: ['https://www.thontrangliennhat.com', 'https://thontrangliennhat.com', 'http://localhost:3000', process.env.CORS_ORIGIN || '*'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
+  credentials: true,
+  exposedHeaders: ['Content-Length', 'Content-Type']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
