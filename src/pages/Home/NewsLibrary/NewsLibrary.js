@@ -14,7 +14,7 @@ import thonTrangLienNhatImg from '~/assets/images/news/thon-trang-lien-nhat.jpg'
 import moHinhSinhKeImg from '~/assets/images/news/mo-hinh-sinh-ke.jpg';
 
 const cx = classNames.bind(styles);
-// Base URL cho hình ảnh
+// Base URL cho hình ảnh - Luôn sử dụng HTTPS
 const API_URL = process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com";
 
 // Map ảnh của tin tức
@@ -62,6 +62,10 @@ function NewsLibrary() {
 
         // Nếu đã là URL đầy đủ hoặc base64, trả về nguyên bản
         if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
+            // Đổi http:// thành https:// để tránh mixed content
+            if (imagePath.startsWith('http://')) {
+                return imagePath.replace('http://', 'https://');
+            }
             return imagePath;
         }
 
