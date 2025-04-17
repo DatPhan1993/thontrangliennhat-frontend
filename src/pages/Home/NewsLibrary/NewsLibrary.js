@@ -9,9 +9,19 @@ import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
 import { parseISO, format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
+// Import ảnh từ assets
+import thonTrangLienNhatImg from '~/assets/images/news/thon-trang-lien-nhat.jpg';
+import moHinhSinhKeImg from '~/assets/images/news/mo-hinh-sinh-ke.jpg';
+
 const cx = classNames.bind(styles);
 // Base URL cho hình ảnh
 const API_URL = process.env.REACT_APP_BASE_URL || "https://api.thontrangliennhat.com";
+
+// Map ảnh của tin tức
+const newsImages = {
+  'thon-trang-lien-nhat.jpg': thonTrangLienNhatImg,
+  'mo-hinh-sinh-ke.jpg': moHinhSinhKeImg
+};
 
 function NewsLibrary() {
     const [news, setNews] = useState([]);
@@ -55,12 +65,12 @@ function NewsLibrary() {
             return imagePath;
         }
 
-        // Xử lý ảnh tin tức - dùng ảnh đã copy vào thư mục local của frontend
+        // Xử lý ảnh tin tức từ assets 
         if (imagePath.includes('images/news/')) {
             // Lấy tên file từ đường dẫn
             const fileName = imagePath.split('/').pop();
-            // Sử dụng ảnh từ thư mục local
-            return `${window.location.origin}/images/news/${fileName}`;
+            // Sử dụng ảnh đã import
+            return newsImages[fileName] || '';
         }
         
         // Xử lý đường dẫn tương đối - sử dụng API
