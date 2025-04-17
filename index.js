@@ -10,11 +10,10 @@ const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors({
-  origin: ['https://www.thontrangliennhat.com', 'https://thontrangliennhat.com', 'http://localhost:3000', process.env.CORS_ORIGIN || '*'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
-  credentials: true,
-  exposedHeaders: ['Content-Length', 'Content-Type']
+  origin: ['https://www.thontrangliennhat.com', 'https://thontrangliennhat.com', process.env.CORS_ORIGIN || '*'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -101,6 +100,64 @@ app.get('/api/news', (req, res) => {
 });
 
 // Route cho menu navigation
+app.get('/parent-navs/all-with-child', (req, res) => {
+  res.json([
+    {
+      id: 1,
+      title: 'TRANG CHỦ',
+      slug: '/',
+      position: 1,
+      children: []
+    },
+    {
+      id: 2,
+      title: 'GIỚI THIỆU',
+      slug: '/gioi-thieu',
+      position: 2,
+      children: [
+        { id: 21, title: 'Về Chúng Tôi', slug: '/gioi-thieu/ve-chung-toi', position: 1 },
+        { id: 22, title: 'Lịch Sử', slug: '/gioi-thieu/lich-su', position: 2 }
+      ]
+    },
+    {
+      id: 3,
+      title: 'SẢN PHẨM',
+      slug: '/san-pham',
+      position: 3,
+      children: []
+    },
+    {
+      id: 4,
+      title: 'DỊCH VỤ',
+      slug: '/dich-vu',
+      position: 4,
+      children: []
+    },
+    {
+      id: 5,
+      title: 'TRẢI NGHIỆM',
+      slug: '/trai-nghiem',
+      position: 5,
+      children: []
+    },
+    {
+      id: 6,
+      title: 'TIN TỨC',
+      slug: '/tin-tuc',
+      position: 6,
+      children: []
+    },
+    {
+      id: 7,
+      title: 'LIÊN HỆ',
+      slug: '/lien-he',
+      position: 7,
+      children: []
+    }
+  ]);
+});
+
+// Thêm route /api/ để tương thích
 app.get('/api/parent-navs/all-with-child', (req, res) => {
   res.json([
     {
