@@ -71,6 +71,97 @@ app.get('/api', (req, res) => {
   });
 });
 
+// Thêm các routes mà frontend đang gọi đến
+// Route cho tin tức
+app.get('/api/news', (req, res) => {
+  res.json({
+    status: 'success',
+    data: [
+      {
+        id: 1,
+        title: 'Tin tức demo 1',
+        description: 'Mô tả ngắn về tin tức 1',
+        content: 'Nội dung đầy đủ của tin tức 1',
+        image: 'https://via.placeholder.com/800x600',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 2,
+        title: 'Tin tức demo 2',
+        description: 'Mô tả ngắn về tin tức 2',
+        content: 'Nội dung đầy đủ của tin tức 2',
+        image: 'https://via.placeholder.com/800x600',
+        createdAt: new Date().toISOString()
+      }
+    ]
+  });
+});
+
+// Route cho menu navigation
+app.get('/api/parent-navs/all-with-child', (req, res) => {
+  res.json({
+    status: 'success',
+    data: [
+      {
+        id: 1,
+        name: 'Trang Chủ',
+        slug: '/',
+        children: []
+      },
+      {
+        id: 2,
+        name: 'Giới Thiệu',
+        slug: '/gioi-thieu',
+        children: [
+          { id: 21, name: 'Về Chúng Tôi', slug: '/gioi-thieu/ve-chung-toi' },
+          { id: 22, name: 'Lịch Sử', slug: '/gioi-thieu/lich-su' }
+        ]
+      },
+      {
+        id: 3,
+        name: 'Dịch Vụ',
+        slug: '/dich-vu',
+        children: []
+      },
+      {
+        id: 4,
+        name: 'Tin Tức',
+        slug: '/tin-tuc',
+        children: []
+      },
+      {
+        id: 5,
+        name: 'Liên Hệ',
+        slug: '/lien-he',
+        children: []
+      }
+    ]
+  });
+});
+
+// Route cho experiences
+app.get('/api/experiences', (req, res) => {
+  res.json({
+    status: 'success',
+    data: [
+      {
+        id: 1,
+        title: 'Khu du lịch sinh thái',
+        description: 'Trải nghiệm thiên nhiên trong lành',
+        image: 'https://via.placeholder.com/800x600',
+        content: 'Nội dung chi tiết về khu du lịch sinh thái'
+      },
+      {
+        id: 2,
+        title: 'Ẩm thực đặc sản',
+        description: 'Khám phá hương vị địa phương',
+        image: 'https://via.placeholder.com/800x600',
+        content: 'Nội dung chi tiết về ẩm thực đặc sản'
+      }
+    ]
+  });
+});
+
 // Ví dụ về API bảo vệ bằng JWT
 app.get('/api/secure', verifyToken, (req, res) => {
   res.json({
@@ -118,9 +209,17 @@ function verifyToken(req, res, next) {
   }
 }
 
+// Xử lý favicon.ico
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+
 // Xử lý 404
 app.use((req, res) => {
-  res.status(404).json({ message: 'Không tìm thấy route này' });
+  res.status(404).json({ 
+    message: 'Không tìm thấy route này',
+    path: req.path
+  });
 });
 
 // Khởi động server
