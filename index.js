@@ -18,15 +18,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Thêm headers bảo mật
-app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  res.setHeader('Cache-Control', 'public, max-age=86400');
-  next();
-});
-
 // Định nghĩa đường dẫn thư mục
 const uploadsDir = path.join(__dirname, process.env.UPLOAD_DIR || 'public/uploads');
 const imagesDir = path.join(__dirname, process.env.IMAGE_DIR || 'public/images');
@@ -113,47 +104,54 @@ app.get('/api/parent-navs/all-with-child', (req, res) => {
   res.json([
     {
       id: 1,
-      name: 'TRANG CHỦ',
+      title: 'TRANG CHỦ',
       slug: '/',
+      position: 1,
       children: []
     },
     {
       id: 2,
-      name: 'GIỚI THIỆU',
+      title: 'GIỚI THIỆU',
       slug: '/gioi-thieu',
+      position: 2,
       children: [
-        { id: 21, name: 'Về Chúng Tôi', slug: '/gioi-thieu/ve-chung-toi' },
-        { id: 22, name: 'Lịch Sử', slug: '/gioi-thieu/lich-su' }
+        { id: 21, title: 'Về Chúng Tôi', slug: '/gioi-thieu/ve-chung-toi', position: 1 },
+        { id: 22, title: 'Lịch Sử', slug: '/gioi-thieu/lich-su', position: 2 }
       ]
     },
     {
       id: 3,
-      name: 'SẢN PHẨM',
+      title: 'SẢN PHẨM',
       slug: '/san-pham',
+      position: 3,
       children: []
     },
     {
       id: 4,
-      name: 'DỊCH VỤ',
+      title: 'DỊCH VỤ',
       slug: '/dich-vu',
+      position: 4,
       children: []
     },
     {
       id: 5,
-      name: 'TRẢI NGHIỆM',
+      title: 'TRẢI NGHIỆM',
       slug: '/trai-nghiem',
+      position: 5,
       children: []
     },
     {
       id: 6,
-      name: 'TIN TỨC',
+      title: 'TIN TỨC',
       slug: '/tin-tuc',
+      position: 6,
       children: []
     },
     {
       id: 7,
-      name: 'LIÊN HỆ',
+      title: 'LIÊN HỆ',
       slug: '/lien-he',
+      position: 7,
       children: []
     }
   ]);
