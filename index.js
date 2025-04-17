@@ -99,44 +99,53 @@ app.get('/api/news', (req, res) => {
 
 // Route cho menu navigation
 app.get('/api/parent-navs/all-with-child', (req, res) => {
-  res.json({
-    status: 'success',
-    data: [
-      {
-        id: 1,
-        name: 'Trang Chủ',
-        slug: '/',
-        children: []
-      },
-      {
-        id: 2,
-        name: 'Giới Thiệu',
-        slug: '/gioi-thieu',
-        children: [
-          { id: 21, name: 'Về Chúng Tôi', slug: '/gioi-thieu/ve-chung-toi' },
-          { id: 22, name: 'Lịch Sử', slug: '/gioi-thieu/lich-su' }
-        ]
-      },
-      {
-        id: 3,
-        name: 'Dịch Vụ',
-        slug: '/dich-vu',
-        children: []
-      },
-      {
-        id: 4,
-        name: 'Tin Tức',
-        slug: '/tin-tuc',
-        children: []
-      },
-      {
-        id: 5,
-        name: 'Liên Hệ',
-        slug: '/lien-he',
-        children: []
-      }
-    ]
-  });
+  res.json([
+    {
+      id: 1,
+      name: 'TRANG CHỦ',
+      slug: '/',
+      children: []
+    },
+    {
+      id: 2,
+      name: 'GIỚI THIỆU',
+      slug: '/gioi-thieu',
+      children: [
+        { id: 21, name: 'Về Chúng Tôi', slug: '/gioi-thieu/ve-chung-toi' },
+        { id: 22, name: 'Lịch Sử', slug: '/gioi-thieu/lich-su' }
+      ]
+    },
+    {
+      id: 3,
+      name: 'SẢN PHẨM',
+      slug: '/san-pham',
+      children: []
+    },
+    {
+      id: 4,
+      name: 'DỊCH VỤ',
+      slug: '/dich-vu',
+      children: []
+    },
+    {
+      id: 5,
+      name: 'TRẢI NGHIỆM',
+      slug: '/trai-nghiem',
+      children: []
+    },
+    {
+      id: 6,
+      name: 'TIN TỨC',
+      slug: '/tin-tuc',
+      children: []
+    },
+    {
+      id: 7,
+      name: 'LIÊN HỆ',
+      slug: '/lien-he',
+      children: []
+    }
+  ]);
 });
 
 // Route cho experiences
