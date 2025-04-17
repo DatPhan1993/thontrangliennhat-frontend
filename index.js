@@ -74,27 +74,28 @@ app.get('/api', (req, res) => {
 // Thêm các routes mà frontend đang gọi đến
 // Route cho tin tức
 app.get('/api/news', (req, res) => {
-  res.json({
-    status: 'success',
-    data: [
-      {
-        id: 1,
-        title: 'Tin tức demo 1',
-        description: 'Mô tả ngắn về tin tức 1',
-        content: 'Nội dung đầy đủ của tin tức 1',
-        image: 'https://via.placeholder.com/800x600',
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: 2,
-        title: 'Tin tức demo 2',
-        description: 'Mô tả ngắn về tin tức 2',
-        content: 'Nội dung đầy đủ của tin tức 2',
-        image: 'https://via.placeholder.com/800x600',
-        createdAt: new Date().toISOString()
-      }
-    ]
-  });
+  res.json([
+    {
+      id: 1,
+      title: 'Thôn Trang Liên Nhật chuẩn bị lễ 30-4',
+      summary: 'Mùa hè đã về, Thôn Trang Liên Nhật lại rộn ràng chuẩn bị đón bước chân của những người yêu thiên nhiên, thích khám phá và muốn tìm về chốn bình yên',
+      content: 'Mùa hè đã về, Thôn Trang Liên Nhật lại rộn ràng chuẩn bị đón bước chân của những người yêu thiên nhiên, thích khám phá và muốn tìm về chốn bình yên. Hẹn gặp bạn giữa mênh mông đồng nội, hoa cỏ và nắng vàng!',
+      images: '/images/news/thon-trang-lien-nhat.jpg',
+      slug: 'lien-nhat',
+      views: 120,
+      createdAt: new Date().toISOString()
+    },
+    {
+      id: 2,
+      title: 'Mô hình sinh kế 3 trong 1',
+      summary: 'HTX sản xuất Nông Nghiệp và Dịch vụ tổng hợp Liên Nhật luôn đi theo hướng nông nghiệp sạch, sản xuất nông sản theo hướng hữu cơ',
+      content: 'HTX sản xuất Nông Nghiệp và Dịch vụ tổng hợp Liên Nhật luôn đi theo hướng nông nghiệp sạch, sản xuất nông sản theo hướng hữu cơ, kết hợp nuôi trồng thuỷ sản và các loại hình dịch vụ để thay đổi hướng phát triển nông nghiệp hiện nay.',
+      images: '/images/news/mo-hinh-sinh-ke.jpg',
+      slug: 'mo-hinh-sinh-ke',
+      views: 85,
+      createdAt: new Date().toISOString()
+    }
+  ]);
 });
 
 // Route cho menu navigation
@@ -220,6 +221,24 @@ function verifyToken(req, res, next) {
 
 // Xử lý favicon.ico
 app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+
+// Xử lý favicon.png
+app.get('/favicon.png', (req, res) => {
+  res.status(204).end();
+});
+
+// Xử lý các static assets khác
+app.get('*.png', (req, res) => {
+  res.status(204).end();
+});
+
+app.get('*.jpg', (req, res) => {
+  res.status(204).end();
+});
+
+app.get('*.svg', (req, res) => {
   res.status(204).end();
 });
 
