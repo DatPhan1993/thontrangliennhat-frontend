@@ -50,9 +50,22 @@ function NewsLibrary() {
     const getImageUrl = (imagePath) => {
         if (!imagePath) return ''; // Trả về chuỗi rỗng nếu không có đường dẫn
 
-        // Nếu đã là URL đầy đủ hoặc base64, trả về nguyên bản
-        if (imagePath.startsWith('http://') || imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
+        // Nếu đã là URL đầy đủ nhưng là localhost, thay bằng API URL
+        if (imagePath.includes('localhost')) {
+            // Trích xuất phần đường dẫn sau localhost:port
+            const pathParts = imagePath.split('/');
+            const extractedPath = pathParts.slice(3).join('/');
+            return `${API_URL}/${extractedPath}`;
+        }
+
+        // Nếu đã là URL đầy đủ (https) hoặc base64, trả về nguyên bản
+        if (imagePath.startsWith('https://') || imagePath.startsWith('data:')) {
             return imagePath;
+        }
+
+        // Nếu bắt đầu bằng http://, chuyển thành https://
+        if (imagePath.startsWith('http://')) {
+            return imagePath.replace('http://', 'https://');
         }
 
         // Loại bỏ dấu / đầu tiên nếu có
