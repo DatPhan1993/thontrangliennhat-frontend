@@ -17,27 +17,47 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Đảm bảo thư mục uploads và images tồn tại
+// Định nghĩa đường dẫn thư mục
 const uploadsDir = path.join(__dirname, process.env.UPLOAD_DIR || 'public/uploads');
 const imagesDir = path.join(__dirname, process.env.IMAGE_DIR || 'public/images');
 
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+// Chỉ tạo thư mục khi không chạy trên Vercel
+const isVercel = process.env.VERCEL === '1';
+if (!isVercel) {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
 
-if (!fs.existsSync(imagesDir)) {
-  fs.mkdirSync(imagesDir, { recursive: true });
+  if (!fs.existsSync(imagesDir)) {
+    fs.mkdirSync(imagesDir, { recursive: true });
+  }
+  
+  // Phục vụ nội dung tĩnh khi không chạy trên Vercel
+  app.use('/uploads', express.static(uploadsDir));
+  app.use('/images', express.static(imagesDir));
+} else {
+  // Trên Vercel, không hỗ trợ lưu trữ file
+  app.use('/uploads', (req, res) => {
+    res.status(200).json({ 
+      message: 'Uploads không khả dụng trên môi trường Vercel. Bạn cần sử dụng dịch vụ lưu trữ bên ngoài.',
+      docs: 'https://vercel.com/docs/concepts/functions/serverless-functions#file-system'
+    });
+  });
+  
+  app.use('/images', (req, res) => {
+    res.status(200).json({ 
+      message: 'Images không khả dụng trên môi trường Vercel. Bạn cần sử dụng dịch vụ lưu trữ bên ngoài.',
+      docs: 'https://vercel.com/docs/concepts/functions/serverless-functions#file-system'
+    });
+  });
 }
-
-// Phục vụ nội dung tĩnh
-app.use('/uploads', express.static(uploadsDir));
-app.use('/images', express.static(imagesDir));
 
 // Route mặc định
 app.get('/', (req, res) => {
   res.json({
     message: 'Chào mừng đến với API Thôn Trang Liên Nhất',
     status: 'active',
+    environment: isVercel ? 'vercel' : 'development',
     time: new Date().toISOString()
   });
 });
@@ -46,7 +66,8 @@ app.get('/', (req, res) => {
 app.get('/api', (req, res) => {
   res.json({
     message: 'API đang hoạt động bình thường',
-    version: '1.0.0'
+    version: '1.0.0',
+    environment: isVercel ? 'vercel' : 'development'
   });
 });
 
@@ -105,4 +126,5 @@ app.use((req, res) => {
 // Khởi động server
 app.listen(PORT, () => {
   console.log(`Server đang chạy trên port ${PORT}`);
+  console.log(`Môi trường: ${isVercel ? 'Vercel' : 'Development'}`);
 }); 
