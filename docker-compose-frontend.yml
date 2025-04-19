@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: .
+    container_name: thontrangliennhat-frontend
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+      
+  api:
+    image: datcmc1993/thontrangliennhat-api:latest
+    container_name: thontrangliennhat-api
+    restart: always
+    volumes:
+      - api_images:/app/public/images
+      - api_uploads:/app/public/uploads
+
+volumes:
+  api_images:
+  api_uploads: 
