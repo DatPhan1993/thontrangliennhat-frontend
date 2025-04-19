@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: thontrangliennhat-api
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public/images:/app/public/images
+      - ./public/uploads:/app/public/uploads
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
