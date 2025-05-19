@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://thontrangliennhat.com",
   "engines": {
-    "node": "22.x"
+    "node": "18.x"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^44.3.0",
@@ -47,8 +47,8 @@
   },
   "scripts": {
     "start": "npx craco start",
-    "build": "CI=false npx craco build && node copy-database.js",
-    "vercel-build": "CI=false npx craco build && node copy-database.js",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider CI=false npx craco build && node copy-database.js",
+    "vercel-build": "NODE_OPTIONS=--openssl-legacy-provider CI=false npx craco build && node copy-database.js",
     "test": "npx craco test",
     "eject": "react-scripts eject"
   },
