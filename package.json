@@ -9,6 +9,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^44.3.0",
     "@ckeditor/ckeditor5-react": "^9.5.0",
+    "@craco/craco": "^7.1.0",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -41,13 +42,14 @@
     "slick-carousel": "^1.8.1",
     "swiper": "^11.2.6",
     "web-vitals": "^2.1.4",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "craco-alias": "^3.0.1"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build && node copy-database.js",
-    "vercel-build": "craco build && node copy-database.js",
-    "test": "craco test",
+    "start": "npx craco start",
+    "build": "npx craco build && node copy-database.js",
+    "vercel-build": "npx craco build && node copy-database.js",
+    "test": "npx craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -69,12 +71,10 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.2",
-    "craco-alias": "^3.0.1",
     "css-loader": "^7.1.2",
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0"
