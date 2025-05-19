@@ -63,26 +63,11 @@
     },
     {
       "source": "/images/(.*)",
-      "destination": "https://api.thontrangliennhat.com/images/$1"
+      "destination": "/images/default-news.jpg"
     },
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    }
-  ],
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/images/default-news.jpg",
-      "status": 200,
-      "dest": "/images/default-news.jpg"
-    },
-    {
-      "src": "/images/(.*)",
-      "status": 404,
-      "dest": "/images/default-news.jpg"
     }
   ],
   "env": {

@@ -80,15 +80,6 @@ cat > .vercel/output/config.json << EOL
       "handle": "filesystem"
     },
     {
-      "src": "/images/default-news.jpg",
-      "dest": "/images/default-news.jpg"
-    },
-    {
-      "src": "/images/(.*)",
-      "status": 404,
-      "dest": "/images/default-news.jpg"
-    },
-    {
       "src": "/api/(.*)",
       "dest": "https://api.thontrangliennhat.com/api/$1"
     },
@@ -99,6 +90,14 @@ cat > .vercel/output/config.json << EOL
     {
       "src": "/uploads/(.*)",
       "dest": "https://api.thontrangliennhat.com/uploads/$1"
+    },
+    {
+      "src": "/images/default-news.jpg",
+      "dest": "/images/default-news.jpg"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/default-news.jpg"
     },
     {
       "src": "/(.*)",
