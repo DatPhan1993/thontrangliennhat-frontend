@@ -1,21 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Menu } from 'antd';
+import { Menu, Spin } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleDot } from '@fortawesome/free-solid-svg-icons';
 import { useBaseRoute } from '~/context/BaseRouteContext';
 import { Link, useLocation } from 'react-router-dom';
-import { categoriesData } from '~/data/categories';
-import routes from '~/config/routes';
+import { getCategoriesBySlug } from '~/services/categoryService';
 
 function SideBar({ categoryType }) {
-    const [categoriesFiltered, setCategoriesFiltered] = useState([]);
+    const [categoriesData, setCategoriesData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const baseRoute = useBaseRoute();
     const location = useLocation();
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
-        // Filter categories based on categoryType if needed
-        setCategoriesFiltered(categoriesData);
+        async function fetchCategoryData() {
+            try {
+                const data = await getCategoriesBySlug(categoryType);
+                setCategoriesData(data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching category data:', error);
+                setError(error);
+                setLoading(false);
+            }
+        }
+
+        fetchCategoryData();
     }, [categoryType]);
 
     useEffect(() => {
@@ -40,71 +52,91 @@ function SideBar({ categoryType }) {
         color: active ? '#0866ff' : 'inherit',
     });
 
-    const renderMenuItems = () => {
-        if (!categoriesFiltered || categoriesFiltered.length === 0) {
-            return null;
+    const getMenuItems = () => {
+        if (loading) {
+            return [];
         }
 
-        return categoriesFiltered.map((category) => {
+        if (error || !categoriesData) {
+            return [
+                {
+                    key: 'error',
+                    label: 'Error loading data'
+                }
+            ];
+        }
+
+        return categoriesData.map((category) => {
             const isActive = location.pathname.includes(category.slug);
-            
-            // Determine the correct link prefix based on category type
-            let linkPrefix;
-            if (categoryType === 'dich-vu') {
-                linkPrefix = routes.services;
-            } else if (categoryType === 'trai-nghiem') {
-                linkPrefix = routes.experiences;
-            } else {
-                linkPrefix = baseRoute;
-            }
+            const titleContent = (
+                <span style={getTextStyle(isActive)}>
+                    <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
+                    {category.title}
+                </span>
+            );
 
             if (category.children && category.children.length > 0) {
-                return (
-                    <Menu.SubMenu
-                        key={category.id}
-                        title={
-                            <span style={getTextStyle(isActive)}>
-                                <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
-                                {category.title}
-                            </span>
-                        }
-                    >
-                        {category.children.map((subcategory) => {
-                            const subcategoryActive = location.pathname.includes(subcategory.slug);
-
-                            return (
-                                <Menu.Item key={subcategory.id}>
-                                    <Link
-                                        to={`${linkPrefix}/${subcategory.slug}`}
-                                        style={getTextStyle(subcategoryActive)}
-                                    >
-                                        <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(subcategoryActive)} />
-                                        {subcategory.title}
-                                    </Link>
-                                </Menu.Item>
-                            );
-                        })}
-                    </Menu.SubMenu>
-                );
+                return {
+                    key: category.id,
+                    label: titleContent,
+                    children: category.children.map((subcategory) => {
+                        const subcategoryActive = location.pathname.includes(subcategory.slug);
+                        return {
+                            key: subcategory.id,
+                            label: (
+                                <Link
+                                    to={`${baseRoute}/${subcategory.slug}`}
+                                    style={getTextStyle(subcategoryActive)}
+                                >
+                                    <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(subcategoryActive)} />
+                                    {subcategory.title}
+                                </Link>
+                            )
+                        };
+                    })
+                };
             }
 
-            return (
-                <Menu.Item key={category.id}>
-                    <Link to={`${linkPrefix}/${category.slug}`} style={getTextStyle(isActive)}>
+            return {
+                key: category.id,
+                label: (
+                    <Link to={`${baseRoute}/${category.slug}`} style={getTextStyle(isActive)}>
                         <FontAwesomeIcon icon={faCircleDot} style={getIconStyle(isActive)} />
                         {category.title}
                     </Link>
-                </Menu.Item>
-            );
+                )
+            };
         });
     };
+
+    // Render loading spinner if needed
+    if (loading && windowWidth >= 1280) {
+            return (
+            <aside style={{ width: windowWidth < 1280 ? 0 : '100%', height: '100%', transition: 'width 0.3s ease' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100%',
+                        minHeight: '100px',
+                    }}
+                >
+                    <Spin size="small" />
+                </div>
+            </aside>
+        );
+    }
 
     return (
         <aside style={{ width: windowWidth < 1280 ? 0 : '100%', height: '100%', transition: 'width 0.3s ease' }}>
             {windowWidth >= 1280 && (
-                <Menu mode="inline" theme="light" style={{ border: 0 }}>
-                    {renderMenuItems()}
-                </Menu>
+                <Menu 
+                    mode="inline" 
+                    theme="light" 
+                    style={{ border: 0 }}
+                    items={getMenuItems()}
+                />
             )}
         </aside>
     );

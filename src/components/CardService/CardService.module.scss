@@ -2,50 +2,69 @@
 @import '../../styles/variables';
 
 .card {
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.0784313725);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    
+    .card_image {
+      transform: scale(1.05);
+    }
+  }
 }
 
 .card_image-wrapper {
   overflow: hidden;
+  height: 220px;
+  
+  @include respond-to(lg) {
+    height: 200px;
+  }
+  
+  @include respond-to(md) {
+    height: 180px;
+  }
+  
+  @include respond-to(sm) {
+    height: 160px;
+  }
 }
 
 .card_image {
   width: 100%;
-  height: 280px;
+  height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  @include respond-to(lg) {
-    height: 280px;
-  }
-
-  @include respond-to(md) {
-    height: 220px;
-  }
+  transition: transform 0.5s ease;
 }
 
 .card_content {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 1.6rem;
+  padding: 16px;
   background-color: #fff;
   color: var(--text-color);
-  font-size: 1.6rem;
   text-align: left;
+  flex: 1;
 }
 
 .card_title {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  min-height: 50px;
+  color: var(--primary, #1A6535);
+  margin-bottom: 8px;
+  min-height: 54px;
+  height: 54px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -55,13 +74,14 @@
 
 .card_description {
   font-size: 1.4rem;
-  font-weight: 300;
-  min-height: 40px;
-  color: var(--text-color);
+  font-weight: 400;
+  color: var(--text-color, #333);
+  margin-bottom: 8px;
+  min-height: 63px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -69,4 +89,17 @@
 .card_title-link {
   text-decoration: none;
   color: inherit;
+}
+
+.new-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--primary);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  z-index: 1;
 }

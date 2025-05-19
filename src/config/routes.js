@@ -50,7 +50,7 @@ const routes = {
     productDetail: '/san-pham/:category/:id',
     menu: '/thuc-don',
     news: '/tin-tuc',
-    newsDetail: `/tin-tuc/:category/:id`,
+    newsDetail: `/tin-tuc/tin-tuc-id/:id`,
     newsCategory: `/tin-tuc/:slug`,
     search: '/search',
     projects: '/du-an',

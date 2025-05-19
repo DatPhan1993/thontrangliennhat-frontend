@@ -2,35 +2,87 @@
 @import '../../styles/variables';
 
 .wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 60px;
+    padding: 20px;
+}
+
+.services-section {
+    max-width: var(--default-layout-width);
+    margin: 0 auto;
+    position: relative;
+}
+
+.services-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.services-title {
+    color: var(--primary);
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+
+    @include respond-to(sm) {
+        font-size: 2rem;
+    }
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
 
     @include respond-to(lg) {
-        margin-top: 20px;
-        padding: 20px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 
     @include respond-to(sm) {
-        margin-top: 20px;
-        padding: 10px;
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 }
 
-.service-section {
-    width: var(--default-layout-width);
-    display: grid;
-    grid-template-columns: 100%;
-    gap: 20px;
-
-    @include respond-to(lg) {
-        width: 100%;
-        grid-template-columns: 100%;
+.service-item {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 }
 
-.slide {
-    margin: 20px 0 10px 0;
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 40px 0 20px;
+
+    .pagination-button {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.3s ease;
+
+        &.active {
+            background-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        &:hover:not(.active) {
+            background-color: #e0e0e0;
+        }
+    }
 }
 
 .service-column {

@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "env": {
-    "JWT_SECRET": "jHdBu8Tgq3pL5vR7xZ2AsSw9Kf1YmN4EcX6QoWzDnV0OpI8Mt"
-  }
-}

@@ -9,12 +9,11 @@ import {
     createMainNavigationLink,
     createSubNavigationLink,
     createChildNavigationLink,
-} from '~/services/navigationApiService';
+} from '~/services/navigationService';
 import routes from '~/config/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import PushNotification from '~/components/PushNotification/PushNotification';
 import { Spin } from 'antd';
-import { getNavigationLinks, createNavigationLink } from '~/services/navigationService';
 
 const AddNavigation = () => {
     const [isError, setIsError] = useState(false);

@@ -75,11 +75,28 @@
     }
 }
 
+.imageCell {
+    width: 200px;
+}
+
 .productImage {
     width: 200px;
     height: 200px;
     border-radius: 8px;
     object-fit: cover;
+}
+
+.imagePlaceholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    color: #999;
+    font-size: 50px;
+    border: 1px dashed #ddd;
 }
 
 .childRow {

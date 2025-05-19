@@ -1,43 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import { getMembers, deleteMember } from '~/services/teamService';
+import { getImageUrl } from '~/utils/imageUtils';
 import styles from './MemberList.module.scss';
 import Title from '~/components/Title/Title';
 import routes from '~/config/routes';
 import PushNotification from '~/components/PushNotification/PushNotification';
 
 const MemberList = () => {
+    const location = useLocation();
     const [members, setMembers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [notification, setNotification] = useState({ message: '', type: '' });
+    const [loading, setLoading] = useState(false);
+
+    const fetchMembers = async (showNotification = false) => {
+        setLoading(true);
+        try {
+            // Always force refresh to get the latest data
+            console.log('Fetching fresh member data...');
+            const allMembers = await getMembers(true);
+            
+            if (allMembers && allMembers.length > 0) {
+                setMembers(allMembers);
+                if (showNotification) {
+                    setNotification({ message: 'Dữ liệu đội ngũ đã được cập nhật.', type: 'success' });
+                }
+            } else {
+                setMembers([]);
+                setNotification({ message: 'Không có dữ liệu đội ngũ.', type: 'info' });
+            }
+        } catch (error) {
+            console.error('Error fetching members:', error);
+            setNotification({ message: 'Lỗi khi tải dữ liệu đội ngũ.', type: 'error' });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchMembers = async () => {
-            try {
-                const allMembers = await getMembers();
-                if (allMembers.length > 0) {
-                    setMembers(allMembers);
-                } else {
-                    setNotification({ message: 'Không có dữ liệu đội ngũ.', type: 'success' });
-                }
-            } catch (error) {
-                console.error('Error fetching members:', error);
-                setNotification({ message: 'Lỗi khi tải dữ liệu đội ngũ.', type: 'error' });
-            }
-        };
+        // Check for refresh parameter in URL
+        const urlParams = new URLSearchParams(location.search);
+        const shouldRefresh = urlParams.get('refresh') === 'true';
+        
+        if (shouldRefresh) {
+            // Show a notification when refreshing from navigation
+            fetchMembers(true);
+        } else {
+            fetchMembers(false);
+        }
+    }, [location.search]);
 
-        fetchMembers();
-    }, []);
+    const handleRefresh = () => {
+        fetchMembers(true);
+    };
 
     const handleDelete = async (id) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa thành viên này không?')) {
             try {
                 await deleteMember(id);
-                setMembers(members.filter((member) => member.id !== id));
+                
+                // Refresh the data after deletion
+                await fetchMembers();
+                
                 setNotification({ message: 'Xóa thành viên thành công!', type: 'success' });
             } catch (error) {
                 console.error('Error deleting member:', error);
@@ -58,13 +87,22 @@ const MemberList = () => {
             <Title className={styles.pageTitle} text="Danh sách Đội ngũ" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <div className={styles.actionsContainer}>
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm Đội ngũ..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className={styles.searchInput}
-                />
+                <div className={styles.leftActions}>
+                    <input
+                        type="text"
+                        placeholder="Tìm kiếm Đội ngũ..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className={styles.searchInput}
+                    />
+                    <button 
+                        className={styles.refreshButton} 
+                        onClick={handleRefresh}
+                        disabled={loading}
+                    >
+                        <FontAwesomeIcon icon={faSyncAlt} spin={loading} /> Làm mới
+                    </button>
+                </div>
                 <Link to={routes.addMember} className={styles.addButton}>
                     <FontAwesomeIcon icon={faPlus} /> Thêm mới Đội ngũ
                 </Link>
@@ -85,7 +123,15 @@ const MemberList = () => {
                             currentMembers.map((member) => (
                                 <tr key={member.id}>
                                     <td>
-                                        <img src={member.image} alt={member.name} className={styles.memberImage} />
+                                        <img 
+                                            src={getImageUrl(member.image)} 
+                                            alt={member.name} 
+                                            className={styles.memberImage} 
+                                            onError={(e) => {
+                                                console.error('Image loading error:', member.image);
+                                                e.target.src = '/placeholder-image.svg';
+                                            }}
+                                        />
                                     </td>
                                     <td>{member.name}</td>
                                     <td>{member.position}</td>

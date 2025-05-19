@@ -36,9 +36,22 @@ const AddVideo = () => {
             await createVideo(videoData);
             setNotification({ message: 'Thêm video thành công!', type: 'success' });
             resetForm();
+            
+            // Xóa cache sessionStorage để khi quay về trang chủ sẽ load lại video
+            sessionStorage.removeItem('allVideos');
+            
+            // Xóa tất cả cache pagination
+            const keys = Object.keys(sessionStorage);
+            keys.forEach(key => {
+                if (key.startsWith('videosPagination_')) {
+                    sessionStorage.removeItem(key);
+                }
+            });
+            
+            // Delay chuyển hướng
             setTimeout(() => {
                 navigate(routes.videosList);
-            }, 1000);
+            }, 1500);
         } catch (error) {
             setNotification({ message: 'Lỗi khi thêm video.', type: 'error' });
             console.error('Lỗi khi tạo video:', error);

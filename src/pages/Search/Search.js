@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import CardSearch from '~/components/CardSearch/CardContent';
+import Card from '~/components/CardSearch/CardContent';
 import { searchItems } from '~/services/searchService';
 import styles from './Search.module.scss';
 import PushNotification from '~/components/PushNotification/PushNotification';
@@ -106,7 +106,7 @@ const Search = () => {
                 <div className={cx('search-items')}>
                     {items.map((item, index) => (
                         <Link key={index} to={getLinkByType(item, type)}>
-                            <CardSearch
+                            <Card
                                 title={item.name}
                                 summary={item.summary}
                                 image={item.images[0]}

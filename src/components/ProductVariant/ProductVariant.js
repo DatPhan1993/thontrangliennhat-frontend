@@ -5,13 +5,14 @@ import styles from './ProductVariant.module.scss';
 import Button from '~/components/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { getImageUrl } from '~/utils/imageUtils';
 
 const cx = classNames.bind(styles);
 
 function ProductVariant({ image, name, price, description }) {
     return (
         <div className={cx('variant-item')}>
-            <img className={cx('variant-item-image')} src={image} alt={name} />
+            <img className={cx('variant-item-image')} src={getImageUrl(image)} alt={name} />
             <div className={cx('variant-item-details')}>
                 <h3 className={cx('variant-item-name')}>{name}</h3>
                 <p className={cx('variant-item-description')}>{description}</p>

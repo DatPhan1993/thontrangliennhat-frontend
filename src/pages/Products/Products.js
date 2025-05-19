@@ -9,9 +9,10 @@ import styles from './Products.module.scss';
 import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
 import { getCategoriesBySlug } from '~/services/categoryService';
 import routes from '~/config/routes';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Empty } from 'antd';
 import Product from '~/components/Product/Product';
+import { normalizeImageUrl } from '~/utils/imageUtils';
 
 const cx = classNames.bind(styles);
 
@@ -133,16 +134,27 @@ function ProductCategory() {
             );
         }
 
-        return currentProductCategory.map((productItem) => (
+        return currentProductCategory.map((productItem) => {
+            // Handle different image formats
+            const productImage = normalizeImageUrl(
+                Array.isArray(productItem.images) && productItem.images.length > 0 
+                    ? productItem.images[0] 
+                    : (typeof productItem.images === 'string' ? productItem.images : null)
+            );
+            
+            console.log(`Processing product ${productItem.id} image: ${productImage}`);
+
+            return (
             <Product
                 key={productItem.id}
-                image={productItem.images ? productItem.images[0] : ''}
+                    image={productImage}
                 name={productItem.name}
                 productId={productItem.id}
                 category={slug}
                 link={`${routes.products}/${slug}/${productItem.id}`}
             />
-        ));
+            );
+        });
     };
 
     const renderPagination = () => {
@@ -169,8 +181,8 @@ function ProductCategory() {
 
     return (
         <div className={cx('container')}>
-            <Helmet>
-                <title>{categoryName} | HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật</title>
+            <HelmetProvider>
+                <title>{categoryName} | HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta
                     name="description"
                     content={`Xem các dịch vụ du lịch liên quan đến ${categoryName} trên HTX Nông Nghiệp - Du Lịch Phú Nông Buôn.`}
@@ -180,7 +192,7 @@ function ProductCategory() {
                     content="dịch vụ nông nghiệp du lịch, hợp tác xã, sản phẩm nông nghiệp, phunongbuondon"
                 />
                 <meta name="author" content="HTX Nông Nghiệp - Du Lịch Phú Nông Buôn" />
-            </Helmet>
+            </HelmetProvider>
             <Title text={categoryName} />
             <div className={cx('productGrid')}>{renderProductCategory()}</div>
             {renderPagination()}

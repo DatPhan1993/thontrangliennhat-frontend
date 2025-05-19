@@ -4,7 +4,8 @@ import { faEnvelope, faChevronDown, faUser, faSignOutAlt } from '@fortawesome/fr
 import Dropdown from './Dropdown';
 import styles from './Header.module.scss';
 import { useAuth } from '~/hooks/useAuth';
-import { getNavigationLinks } from '~/services/navigationService';
+import { getMessages } from '~/services/contactService';
+import { getUserByEmail } from '~/services/userService';
 import { useNavigate } from 'react-router-dom';
 import routes from '~/config/routes';
 import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
@@ -32,8 +33,8 @@ const Header = () => {
 
         const fetchNotifications = async () => {
             try {
-                const navigationLinks = await getNavigationLinks();
-                setNotifications(navigationLinks);
+                const messages = await getMessages(10);
+                setNotifications(messages);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
             }
@@ -89,7 +90,7 @@ const Header = () => {
 
     return (
         <div className={styles.header}>
-            <div className={styles.companyName}>HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật</div>
+            <div className={styles.companyName}>HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</div>
             <div
                 className={styles.iconWrapper}
                 ref={emailDropdownRef}

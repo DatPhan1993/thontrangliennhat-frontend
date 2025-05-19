@@ -53,7 +53,7 @@ function Search() {
             <FontAwesomeIcon className={cx('icon')} icon={faSearch} onClick={showModal} />
 
             <Modal
-                visible={isModalVisible}
+                open={isModalVisible}
                 onCancel={handleCancel}
                 footer={null}
                 centered

@@ -96,26 +96,58 @@ export const getCategoriesByType = async (value) => {
 };
 
 export const getCategoriesBySlug = async (slug) => {
-    const sessionKey = `categoriesBySlug_${slug}`;
-
-    const cachedData = getFromSessionStorage(sessionKey);
-    if (cachedData) {
-        return cachedData;
-    }
-
     try {
-        const response = await httpRequest.get(`/parent-navs/slug/${slug}`);
-        const categories = response.data.data;
-
-        // Save to sessionStorage
-        saveToSessionStorage(sessionKey, categories);
-
-        return categories;
+        console.log(`Fetching categories for slug: ${slug}`);
+        // First try API
+        try {
+            const response = await httpRequest.get(`/parent-navs/slug/${slug}`);
+            
+            if (response.data && response.data.data && response.data.data.length > 0) {
+                console.log(`Found ${response.data.data.length} categories for slug ${slug} from API`);
+                return response.data.data;
+            }
+        } catch (apiError) {
+            console.log(`API error when fetching categories for ${slug}, falling back to database.json`, apiError);
+        }
+        
+        // Fallback to database.json if API fails or returns empty
+        console.log('Fetching categories from database.json');
+        
+        // Try to fetch from database.json
+        try {
+            const response = await fetch('/phunongbuondon-api/database.json');
+            if (!response.ok) {
+                // Try alternate location
+                const altResponse = await fetch('./phunongbuondon-api/database.json');
+                if (!altResponse.ok) {
+                    throw new Error(`Failed to fetch database.json: ${response.status}`);
+                }
+                const database = await altResponse.json();
+                return extractCategoriesByType(database, slug);
+            }
+            
+            const database = await response.json();
+            return extractCategoriesByType(database, slug);
+        } catch (dbError) {
+            console.error('Error fetching from database.json:', dbError);
+            return [];
+        }
     } catch (error) {
-        console.error(`Error fetching categories for slug ${slug}`, error);
-        throw error;
+        console.error(`Error fetching categories for slug ${slug}:`, error);
+        return [];
     }
 };
+
+// Helper function to extract categories by type from database
+function extractCategoriesByType(database, type) {
+    if (!database || !database.categories) {
+        return [];
+    }
+    
+    const categories = database.categories.filter(cat => cat.type === type);
+    console.log(`Found ${categories.length} categories for type ${type} from database.json`);
+    return categories;
+}
 
 export const addCategory = async (categoryData) => {
     try {

@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import Title from '~/components/Title/Title';
 import styles from './Introduction.module.scss';
 import PushNotification from '~/components/PushNotification/PushNotification';
@@ -52,7 +52,7 @@ const Introduction = () => {
 
     return (
         <article className={cx('wrapper')}>
-            <Helmet>
+            <HelmetProvider>
                 <title>{pageContent.name} | HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta
                     name="description"
@@ -63,7 +63,7 @@ const Introduction = () => {
                 />
                 <meta name="keywords" content="giới thiệu, thontrangliennhat, thông tin hợp tác xã" />
                 <meta name="author" content="HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật" />
-            </Helmet>
+            </HelmetProvider>
             <div className={cx('inner')}>
                 <Title text={pageContent.name} />
                 <div className={cx('content')} dangerouslySetInnerHTML={{ __html: pageContent.content }} />

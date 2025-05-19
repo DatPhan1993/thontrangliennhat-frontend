@@ -8,9 +8,9 @@ const cx = classNames.bind(styles);
 
 function Card({
     title = 'Default Title',
-    summary = 'Default Sumary',
+    summary = 'Default Summary',
     image = 'https://res.cloudinary.com/ddmzboxzu/image/upload/v1724202469/cer_3_ldetgd.png',
-    createdAt = Date.now(),
+    createdAt = new Date().toISOString(),
     isNew = false,
 }) {
     return (
@@ -29,11 +29,11 @@ function Card({
 }
 
 Card.propTypes = {
-    title: PropTypes.string.isRequired,
-    summary: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    views: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    summary: PropTypes.string,
+    image: PropTypes.string,
+    createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+    isNew: PropTypes.bool
 };
 
 export default Card;

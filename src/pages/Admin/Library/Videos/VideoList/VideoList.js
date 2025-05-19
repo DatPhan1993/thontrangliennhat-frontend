@@ -21,14 +21,38 @@ const VideoList = () => {
 
     const fetchVideos = async () => {
         try {
-            const data = await getVideos();
-            if (data) {
-                setVideos(data);
-            } else {
-                setNotification({ message: 'Có lỗi khi tải dữ liệu thư viện video.', type: 'error' });
+            // Xóa thông báo hiện tại nếu có
+            setNotification({ message: '', type: '' });
+            
+            // Xóa cache để đảm bảo lấy dữ liệu mới nhất
+            sessionStorage.removeItem('allVideos');
+            sessionStorage.removeItem('videosPagination_page_1_limit_10');
+            
+            let data;
+            try {
+                data = await getVideos();
+            } catch (fetchError) {
+                console.error('Error fetching videos from API:', fetchError);
+                data = [];
+            }
+            
+            // Kiểm tra data hợp lệ
+            if (!data) data = [];
+            if (!Array.isArray(data)) {
+                console.warn('Video data is not an array, using empty array');
+                data = [];
+            }
+            
+            setVideos(data);
+            
+            // Chỉ cập nhật cache nếu có dữ liệu hợp lệ
+            if (data.length > 0) {
+                // Cập nhật lại dữ liệu trong sessionStorage
+                sessionStorage.setItem('allVideos', JSON.stringify(data));
             }
         } catch (error) {
-            console.error('Error fetching videos:', error);
+            console.error('Error in fetchVideos function:', error);
+            setVideos([]);
             setNotification({ message: 'Có lỗi khi tải dữ liệu thư viện video.', type: 'error' });
         }
     };
@@ -37,6 +61,9 @@ const VideoList = () => {
         if (window.confirm('Bạn có chắc chắn muốn xóa video này không?')) {
             try {
                 await deleteVideo(id);
+                // Xóa cache để đảm bảo dữ liệu được cập nhật khi quay lại trang chủ
+                sessionStorage.removeItem('allVideos');
+                
                 setVideos(videos.filter((video) => video.id !== id));
                 setNotification({ message: 'Video đã được xóa thành công!', type: 'success' });
             } catch (error) {
@@ -46,7 +73,19 @@ const VideoList = () => {
         }
     };
 
-    const filteredVideos = videos.filter((video) => video.url.toLowerCase().includes(searchTerm.toLowerCase()));
+    const formatDate = (dateString) => {
+        try {
+            return new Date(dateString).toLocaleDateString();
+        } catch (error) {
+            console.error('Invalid date:', dateString);
+            return 'Không xác định';
+        }
+    };
+
+    const filteredVideos = videos.filter((video) => 
+        video.url?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        video.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const totalPages = Math.ceil(filteredVideos.length / itemsPerPage);
     const indexOfLastVideo = currentPage * itemsPerPage;
@@ -73,7 +112,8 @@ const VideoList = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Video</th>
+                            <th>Tiêu đề</th>
+                            <th>URL</th>
                             <th>Ngày tạo</th>
                             <th>Hành động</th>
                         </tr>
@@ -82,12 +122,13 @@ const VideoList = () => {
                         {currentVideos.length > 0 ? (
                             currentVideos.map((video) => (
                                 <tr key={video.id}>
+                                    <td>{video.name || 'Không có tiêu đề'}</td>
                                     <td>
                                         <a href={video.url} target="_blank" rel="noopener noreferrer">
                                             {video.url}
                                         </a>
                                     </td>
-                                    <td>{new Date(video.created_at).toLocaleDateString()}</td>
+                                    <td>{formatDate(video.createdAt || video.created_at)}</td>
                                     <td>
                                         <button onClick={() => handleDelete(video.id)} className={styles.deleteButton}>
                                             <FontAwesomeIcon icon={faTrash} /> Xóa
@@ -97,7 +138,7 @@ const VideoList = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">Không có dữ liệu</td>
+                                <td colSpan="4">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>

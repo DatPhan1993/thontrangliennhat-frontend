@@ -1,126 +1,128 @@
 import axios from 'axios';
 
-// Xác định BASE_URL để đảm bảo luôn dùng HTTPS
-const BASE_URL = process.env.REACT_APP_BASE_URL || 'https://api.thontrangliennhat.com';
+// Set base URL to thontrangliennhat.com for all environments
+const baseURL = 'https://thontrangliennhat.com/api';
 
-// Đảm bảo URL sử dụng HTTPS
-const getSecureUrl = (url) => {
-    if (url.startsWith('http://')) {
-        return url.replace('http://', 'https://');
-    }
-    return url;
-};
+console.log('Using API baseURL:', baseURL);
 
-// Tạo axios instance
-const httpRequest = axios.create({
-    baseURL: getSecureUrl(BASE_URL),
-    timeout: 30000, // tăng timeout lên 30s
+// Clear any session storage on startup to ensure fresh data
+try {
+    // Clear any stored product data
+    Object.keys(sessionStorage).forEach(key => {
+        if (key.startsWith('product_') || key === 'allProducts' || key.startsWith('products_')) {
+            console.log('Clearing cached data for key:', key);
+            sessionStorage.removeItem(key);
+        }
+    });
+} catch (e) {
+    console.warn('Error clearing sessionStorage:', e);
+}
+
+const instance = axios.create({
+    baseURL,
+    timeout: 15000, // 15 seconds timeout
     headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
     }
 });
 
-// Request interceptor
-httpRequest.interceptors.request.use(
-    (config) => {
-        // Thêm token nếu có
-        const accessToken = localStorage.getItem('accessToken');
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
-        }
-        // Đảm bảo URL sử dụng HTTPS
-        if (config.url && config.url.startsWith('http://')) {
-            config.url = config.url.replace('http://', 'https://');
-        }
-        return config;
-    },
-    (error) => {
-        console.error('Request error:', error);
-        return Promise.reject(error);
+// Add a timestamp to ALL requests to prevent caching
+instance.interceptors.request.use(config => {
+    // Add cache busting parameter to all requests
+    const timestamp = Date.now();
+    
+    // For GET requests, add to query params
+    if (config.method === 'get') {
+        config.params = config.params || {};
+        config.params._ = timestamp;
+        config.params.nocache = timestamp;
     }
-);
-
-// Response interceptor
-httpRequest.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        // Xử lý lỗi phản hồi
-        console.error('Response error:', error?.response?.status, error?.message);
+    
+    // For all requests, add to headers
+    config.headers = {
+        ...config.headers,
+        'Cache-Control': 'no-cache, no-store, must-revalidate, private',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-Timestamp': timestamp.toString()
+    };
+    
+    // Handle FormData correctly
+    if (config.data instanceof FormData) {
+        // Log what we're sending for debugging
+        console.log(`Sending FormData with ${Array.from(config.data.keys()).length} keys`);
         
-        // Xử lý lỗi SSL
-        if (error.code === 'ERR_SSL_PROTOCOL_ERROR' || error.code === 'CERT_HAS_EXPIRED' || 
-            error.message.includes('SSL') || error.message.includes('certificate')) {
-            console.error('SSL Error occurred:', error.message);
-            // Có thể thử lại với một axios instance khác không có SSL
-        }
+        // Very important: Remove Content-Type header completely for FormData
+        // This allows the browser to set the proper boundary
+        delete config.headers['Content-Type'];
         
-        // Kiểm tra nếu là lỗi 401 - Unauthorized
-        if (error?.response?.status === 401) {
-            // Có thể xử lý logout hoặc refresh token tại đây
-            localStorage.removeItem('accessToken');
-        }
-        
-        // Nếu không có phản hồi (mạng bị ngắt) hoặc lỗi mạng khác
-        if (!error.response) {
-            console.error('Network error - no response:', error.message);
-        }
-        
-        return Promise.reject(error);
-    }
-);
-
-// Helper functions
-export const get = async (path, options = {}) => {
-    try {
-        const response = await httpRequest.get(path, options);
-        return response.data;
-    } catch (error) {
-        console.error(`GET error for ${path}:`, error?.message);
-        // Xử lý lỗi cụ thể
-        if (error.code === 'ERR_SSL_PROTOCOL_ERROR' || error.code === 'CERT_HAS_EXPIRED' || 
-            error.message.includes('SSL') || error.message.includes('certificate')) {
-            // Trả về dữ liệu từ cache nếu có
-            const cachedData = sessionStorage.getItem(path);
-            if (cachedData) {
-                console.log('Using cached data for', path);
-                return JSON.parse(cachedData);
+        // Add debug information
+        if (process.env.NODE_ENV === 'development') {
+            console.log('FormData keys:', Array.from(config.data.keys()));
+            for (let [key, value] of config.data.entries()) {
+                if (value instanceof File) {
+                    console.log(`${key}: File - ${value.name} (${value.size} bytes)`);
+                } else if (typeof value === 'string' && value.length < 100) {
+                    console.log(`${key}: ${value}`);
+                } else {
+                    console.log(`${key}: [Data too large to display]`);
+                }
             }
         }
-        throw error;
+    } else {
+        // Set JSON Content-Type for non-FormData requests
+        config.headers['Content-Type'] = config.headers['Content-Type'] || 'application/json';
     }
-};
+    
+    console.log(`${config.method.toUpperCase()} request to ${config.url} with timestamp ${timestamp}`);
+    return config;
+}, error => {
+    console.error('Request intercept error:', error);
+    return Promise.reject(error);
+});
 
-export const post = async (path, data, options = {}) => {
-    try {
-        const response = await httpRequest.post(path, data, options);
-        return response.data;
-    } catch (error) {
-        console.error(`POST error for ${path}:`, error?.message);
-        throw error;
+// Handle response
+instance.interceptors.response.use(
+    response => {
+        // If this is product data, clear any cached data
+        const url = response.config.url || '';
+        if (url.includes('/products')) {
+            console.log('Request to product endpoint successful:', url);
+        }
+        
+        // Return data directly for convenience
+        return response;
+    },
+    error => {
+        // Log detailed error information
+        if (error.response) {
+            console.error('API Error Response:', 
+                error.response.status, 
+                error.response.data
+            );
+            
+            // Log request details for debugging
+            if (error.config) {
+                console.error('Request details:', {
+                    url: error.config.url,
+                    method: error.config.method,
+                    headers: error.config.headers
+                });
+                
+                if (error.config.data instanceof FormData) {
+                    console.error('FormData keys:', Array.from(error.config.data.keys()));
+                }
+            }
+        } else if (error.request) {
+            console.error('No response received from API:', error.request);
+        } else {
+            console.error('Error setting up request:', error.message);
+        }
+        return Promise.reject(error);
     }
-};
+);
 
-export const put = async (path, data, options = {}) => {
-    try {
-        const response = await httpRequest.put(path, data, options);
-        return response.data;
-    } catch (error) {
-        console.error(`PUT error for ${path}:`, error?.message);
-        throw error;
-    }
-};
-
-export const del = async (path, options = {}) => {
-    try {
-        const response = await httpRequest.delete(path, options);
-        return response.data;
-    } catch (error) {
-        console.error(`DELETE error for ${path}:`, error?.message);
-        throw error;
-    }
-};
-
-export default httpRequest;
+export default instance;

@@ -49,7 +49,7 @@ function Overview() {
                 <div
                     className={cx('sticker-container')}
                     initial={{ x: 200, opacity: 0 }}
-                    whileInView={{ x: 0, opacity: 1 }}
+                    whileinview={{ x: 0, opacity: 1 }}
                     transition={{ duration: 0.3 }}
                 >
                     <img className={cx('sticker')} src={overviewGif.image} alt="Animated Sticker" />

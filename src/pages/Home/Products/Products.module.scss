@@ -26,24 +26,29 @@
 .product-slider-container {
     position: relative;
     margin-top: 30px;
-    padding-bottom: 50px;
+    padding: 20px 40px;
 }
 
 .swiper {
     width: 100%;
     height: 100%;
-    padding-bottom: 30px;
+    padding: 10px 0 40px;
+}
+
+.slide {
+    height: auto;
+    padding-bottom: 10px;
 }
 
 .swiper-button-prev,
 .swiper-button-next {
     position: absolute;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgba(8, 116, 54, 0.7);
+    background-color: var(--primary);
     color: #fff;
     display: flex;
     justify-content: center;
@@ -53,7 +58,7 @@
     z-index: 10;
 
     &:hover {
-        background-color: var(--primary);
+        background-color: var(--secondary);
     }
 
     @include respond-to(sm) {
@@ -63,28 +68,16 @@
 }
 
 .swiper-button-prev {
-    left: -8px;
-
-    @include respond-to(sm) {
-        left: 0;
-    }
+    left: 0;
 }
 
 .swiper-button-next {
-    right: -8px;
-
-    @include respond-to(sm) {
-        right: 0;
-    }
+    right: 0;
 }
 
 .swiper-icon {
     font-size: 1.6rem;
-    opacity: 0.8;
-    
-    &:hover {
-        opacity: 1;
-    }
+    color: white;
 }
 
 .product-item {

@@ -10,7 +10,7 @@ import {
     updateSubNavigationLink,
     updateChildNavigationLink,
     getNavigationLinks,
-} from '~/services/navigationApiService';
+} from '~/services/navigationService';
 import styles from './EditNavigation.module.scss';
 import Title from '~/components/Title/Title';
 import routes from '~/config/routes';

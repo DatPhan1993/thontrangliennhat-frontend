@@ -1,37 +1,40 @@
 import classNames from 'classnames/bind';
 import styles from './CardService.module.scss';
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { getImageUrl } from '~/utils/imageUtils';
 
 const cx = classNames.bind(styles);
 
 function Card({
-    title = 'Default Title',
-    summary = 'Default Sumary',
-    image = '/images/products/tomcangxanh.jpg', // Default to a known existing image
-    createdAt = Date.now(),
+    title,
+    summary = 'Default Summary',
+    image = '/images/placeholder-image.jpg',
+    createdAt = new Date().toISOString(),
     isNew = false,
 }) {
-    const [imageError, setImageError] = useState(false);
+    // Use a proper title from database or props
+    const displayTitle = title || 'Trải nghiệm';
     
-    const handleImageError = () => {
-        console.log('Image failed to load:', image);
-        setImageError(true);
-    };
-
+    // Process the image URL properly
+    const processedImage = getImageUrl(image);
+    
     return (
         <div className={cx('card')}>
             {isNew && <span className={cx('new-label')}>NEW</span>}
             <div className={cx('card_image-wrapper')}>
                 <img 
-                    src={imageError ? '/images/products/tomcangxanh.jpg' : image} 
-                    alt={title} 
+                    src={processedImage} 
+                    alt={displayTitle} 
                     className={cx('card_image')} 
-                    onError={handleImageError}
+                    onError={(e) => {
+                        console.log('Image load error, using fallback:', e.target.src);
+                        e.target.src = '/images/placeholder-image.jpg';
+                    }}
                 />
             </div>
             <div className={cx('card_content')}>
-                <h3 className={cx('card_title')}>{title}</h3>
+                <h3 className={cx('card_title')}>{displayTitle}</h3>
                 <p className={cx('card_description')}>{summary}</p>
             </div>
         </div>
@@ -39,10 +42,11 @@ function Card({
 }
 
 Card.propTypes = {
-    title: PropTypes.string.isRequired,
-    summary: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    summary: PropTypes.string,
+    image: PropTypes.string,
+    createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]),
+    isNew: PropTypes.bool
 };
 
 export default Card;

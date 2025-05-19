@@ -23,6 +23,33 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        
+        select.input {
+            height: auto;
+            padding: 10px;
+            background-color: white;
+            
+            optgroup {
+                font-weight: bold;
+                color: #333;
+                padding: 5px 0;
+            }
+            
+            option {
+                padding: 8px;
+            }
+        }
+
+        .textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
         .error {
             color: red;
@@ -34,14 +61,59 @@
         display: flex;
         flex-wrap: wrap;
         margin-top: 10px;
+        min-height: 100px;
+        gap: 15px;
 
-        .productImage {
-            width: 100px;
-            height: 100px;
-            margin-right: 10px;
+        .imageContainer {
+            position: relative;
+            display: inline-block;
             margin-bottom: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            
+            .productImage {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border: 1px solid #eee;
+                display: block;
+                background-color: #f5f5f5;
+            }
+            
+            .removeButton {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.8);
+                color: #f44336;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                border: none;
+                opacity: 0.8;
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    opacity: 1;
+                    background-color: white;
+                    transform: scale(1.1);
+                }
+            }
+        }
+        
+        .noImages {
+            padding: 30px;
+            width: 100%;
+            text-align: center;
+            color: #888;
+            background-color: #f9f9f9;
             border-radius: 4px;
-            object-fit: cover;
+            border: 1px dashed #ccc;
         }
     }
 
@@ -64,6 +136,7 @@
         min-width: 180px;
         border: 1px solid transparent;
         transition: all 0.3s ease-in-out;
+        margin-top: 20px;
 
         &:hover {
             background-color: transparent;
@@ -72,9 +145,37 @@
         }
 
         &:disabled {
-            background-color: transparent;
-            border: 1px solid var(--primary);
-            cursor: default;
+            background-color: #cccccc;
+            border: 1px solid #999999;
+            color: #666666;
+            cursor: not-allowed;
+        }
+    }
+    
+    .progressContainer {
+        width: 100%;
+        height: 20px;
+        background-color: #f0f0f0;
+        border-radius: 10px;
+        margin: 20px 0;
+        position: relative;
+        overflow: hidden;
+        
+        .progressBar {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+            font-size: 12px;
+            font-weight: bold;
         }
     }
 }
@@ -82,41 +183,27 @@
 .dropzone {
     border: 2px dashed #cccccc;
     border-radius: 4px;
-    padding: 20px;
+    padding: 30px;
     text-align: center;
     margin-bottom: 15px;
     transition: border-color 0.3s ease;
+    background-color: #fafafa;
+    cursor: pointer;
 
     &:hover {
         border-color: var(--primary);
+        background-color: #f0f0f0;
     }
-}
-
-.imageContainer {
-    position: relative;
-    display: inline-block;
-    margin-right: 10px;
-    margin-bottom: 10px;
-
-    .removeButton {
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 10px;
-        padding: 8px;
-        margin: 4px;
-        background-color: var(--white);
-        opacity: 0.6;
-        border: none;
-        border-radius: 4px;
-        color: var(--primary);
-        font-size: 16px;
-        cursor: pointer;
+    
+    p {
+        margin: 0;
+        color: #666;
     }
 }
 
 .addButton {
-    margin-top: 8px;
+    margin-left: 10px;
+    padding: 10px 15px;
 }
 
 .removeButtonFeat {
@@ -136,19 +223,71 @@
 
 .featureItem {
     padding: 8px;
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    border: 1px solid #eee;
 }
 
 .featureTitle {
     display: inline-block;
     min-width: 360px;
+    flex: 1;
 }
 
 .featuresInput {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    
+    .input {
+        flex: 1;
+    }
 }
 
 .featuresList {
     margin-top: 10px;
+    
+    .noFeaturesMessage {
+        padding: 15px;
+        background-color: #f9f9f9;
+        border: 1px dashed #ccc;
+        border-radius: 4px;
+        color: #888;
+        text-align: center;
+    }
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    width: 100%;
+    text-align: center;
+    
+    p {
+        margin-top: 20px;
+        color: #666;
+        font-size: 16px;
+    }
+}
+
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    width: 100%;
+    text-align: center;
+    
+    p {
+        color: #f5222d;
+        font-size: 16px;
+        margin-top: 20px;
+    }
 } 

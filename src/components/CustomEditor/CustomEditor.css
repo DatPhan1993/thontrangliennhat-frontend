@@ -1,0 +1,137 @@
+.editor-container {
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.editor-container .ck-editor {
+    width: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.editor-container .ck-editor__editable {
+    min-height: 350px;
+    padding: 15px;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.ck.ck-editor__editable_inline {
+    border: 1px solid #ddd;
+    border-top: none;
+    transition: border 0.2s ease;
+}
+
+.ck.ck-editor__editable_inline:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.2);
+}
+
+.ck.ck-editor__editable_inline > :first-child {
+    margin-top: 10px;
+}
+
+.ck.ck-toolbar {
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: #f8f8f8;
+    padding: 10px;
+}
+
+/* Typography in the editor */
+.ck-content h1 {
+    font-size: 28px; 
+    margin-bottom: 16px;
+    color: #2c3e50;
+}
+
+.ck-content h2 {
+    font-size: 24px;
+    margin-bottom: 14px;
+    color: #2c3e50;
+}
+
+.ck-content h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: #2c3e50;
+}
+
+.ck-content p {
+    margin-bottom: 16px;
+}
+
+.ck-content ul, .ck-content ol {
+    margin: 16px 0;
+    padding-left: 24px;
+}
+
+.ck-content blockquote {
+    border-left: 5px solid #e7e7e7;
+    padding: 10px 20px;
+    margin: 16px 0;
+    background: #f9f9f9;
+    font-style: italic;
+}
+
+.ck-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+}
+
+.ck-content table td, .ck-content table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.editor-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px;
+    background-color: #f9f9f9;
+    color: #666;
+    font-size: 16px;
+}
+
+/* Fix for editor visibility */
+.ck-editor__main {
+    display: block;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* Toolbar styles */
+.ck.ck-toolbar > .ck-toolbar__items {
+    flex-wrap: wrap;
+}
+
+/* Style for the dropdown items */
+.ck.ck-dropdown .ck-dropdown__panel {
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Improve button styling */
+.ck.ck-button {
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    padding: 6px 10px;
+}
+
+.ck.ck-button:hover {
+    background: #e6e6e6;
+}
+
+.ck.ck-button.ck-on {
+    background: #e6e6e6;
+    color: #333;
+} 

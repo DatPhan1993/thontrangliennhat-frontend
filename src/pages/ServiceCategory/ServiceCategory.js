@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { getServiceByCategory } from '~/services/serviceService';
 import Title from '~/components/Title/Title';
 import styles from './ServiceCategory.module.scss';
 import { Link } from 'react-router-dom';
 import CardService from '~/components/CardService/CardService';
+import { getCategoriesBySlug } from '~/services/categoryService';
 import routes from '~/config/routes';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
 import { Empty } from 'antd';
-// Import local data instead of using API
-import { servicesData } from '~/data/services';
-import { categoriesData } from '~/data/categories';
 
 const cx = classNames.bind(styles);
 
 function ServiceCategory() {
     const location = useLocation();
+    const navigate = useNavigate();
     const [service, setService] = useState([]);
     const [categoryId, setCategoryId] = useState(null);
     const [categoryName, setCategoryName] = useState('');
@@ -34,40 +34,40 @@ function ServiceCategory() {
     const slug = extractSlugFromPathname(location.pathname);
 
     useEffect(() => {
-        // Find category by slug from local data
-        const findCategory = () => {
-            const category = categoriesData.find((cat) => cat.slug === slug);
-            if (category) {
-                setCategoryId(category.id);
-                setCategoryName(category.title);
+        async function fetchCategory() {
+            try {
+                const categories = await getCategoriesBySlug('dich-vu');
+                const category = categories.find((cat) => cat.slug === slug);
+                if (category) {
+                    setCategoryId(category.id);
+                    setCategoryName(category.title);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
             }
-        };
+        }
 
         if (slug) {
-            findCategory();
+            fetchCategory();
         }
     }, [slug]);
 
     useEffect(() => {
-        // Filter services by category from local data
-        const fetchServicesByCategory = () => {
+        async function fetchServiceCategory() {
             if (categoryId) {
                 setLoading(true);
                 try {
-                    // Filter services by category ID
-                    const filteredServices = servicesData.filter(
-                        (service) => service.categoryId === categoryId
-                    );
-                    setService(filteredServices);
+                    const data = await getServiceByCategory(categoryId);
+                    setService(data);
                 } catch (error) {
-                    console.error('Error filtering services:', error);
+                    console.error('Error fetching service:', error);
                 } finally {
                     setLoading(false);
                 }
             }
-        };
+        }
 
-        fetchServicesByCategory();
+        fetchServiceCategory();
     }, [categoryId]);
 
     const indexOfLastService = currentPage * servicePerPage;
@@ -82,6 +82,21 @@ function ServiceCategory() {
         }
     };
 
+    const handleServiceClick = (serviceId) => {
+        console.log('Navigating to service with ID:', serviceId);
+        console.log('Category slug:', slug);
+        
+        // Ensure we have a valid ID before navigating
+        if (!serviceId) {
+            console.error('Service ID is missing');
+            return;
+        }
+        
+        const url = `${routes.services}/${slug}/${serviceId}`;
+        console.log('Navigation URL:', url);
+        navigate(url);
+    };
+
     const renderServiceCategory = () => {
         if (currentServiceCategory.length === 0) {
             return (
@@ -93,7 +108,11 @@ function ServiceCategory() {
             );
         }
         return currentServiceCategory.map((serviceItem, index) => (
-            <Link to={`${routes.services}/${slug}/${serviceItem.id}`} key={serviceItem.id}>
+            <div 
+                key={serviceItem.id} 
+                className={cx('service-item')}
+                onClick={() => handleServiceClick(serviceItem.id)}
+            >
                 <CardService
                     key={index}
                     title={serviceItem.name}
@@ -101,7 +120,7 @@ function ServiceCategory() {
                     summary={serviceItem.summary}
                     createdAt={new Date(serviceItem.createdAt).getTime()}
                 />
-            </Link>
+            </div>
         ));
     };
 
@@ -129,15 +148,15 @@ function ServiceCategory() {
 
     return (
         <div className={cx('container')}>
-            <Helmet>
-                <title>{categoryName} | HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật</title>
+            <HelmetProvider>
+                <title>{categoryName} | HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta
                     name="description"
                     content={`Xem các dịch vụ du lịch liên quan đến ${categoryName} trên HTX Nông Nghiệp - Du Lịch Phú Nông Buôn.`}
                 />
                 <meta name="keywords" content={`${categoryName}, dịch vụ, phunongbuondon`} />
                 <meta name="author" content="HTX Nông Nghiệp - Du Lịch Phú Nông Buôn" />
-            </Helmet>
+            </HelmetProvider>
             {loading ? (
                 <LoadingScreen isLoading={loading} />
             ) : (

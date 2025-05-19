@@ -1,12 +1,13 @@
 import config from '~/config';
 
 // Layouts
-import AdminLayout from '~/layouts/AdminLayout/AdminLayout';
 import OnlyHeaderLayout from '~/layouts/OnlyHeaderLayout/OnlyHeaderLayout';
+import NothingLayout from '~/layouts/NothingLayout/NothingLayout';
+import AdminLayout from '~/layouts/AdminLayout/AdminLayout';
 import DefaultLayout from '~/layouts/DefaultLayout/DefaultLayout';
 
 // Pages
-import Home from '~/pages/Home/index';
+import Home from '~/pages/Home';
 import About from '~/pages/About/About';
 import News from '~/pages/News/News';
 import Service from '~/pages/Service/Service';
@@ -68,10 +69,6 @@ import UpdateExperience from '~/pages/Admin/Experiences/UpdateExperience/UpdateE
 import MemberList from '~/pages/Admin/Team/MemberList/MemberList';
 import AddMember from '~/pages/Admin/Team/AddMember/AddMember';
 import UpdateMember from '~/pages/Admin/Team/UpdateMember/UpdateMember';
-import MenuPage from '~/pages/Menu/Menu';
-
-// Create a simple NothingLayout component
-const NothingLayout = ({ children }) => children;
 
 // Public Routes
 const publicRoutes = [
@@ -92,7 +89,6 @@ const publicRoutes = [
     },
     { path: config.routes.products, component: Product, layout: OnlyHeaderLayout },
     { path: config.routes.productDetail, component: ProductDetail, layout: OnlyHeaderLayout },
-    { path: config.routes.menu, component: MenuPage, layout: OnlyHeaderLayout },
     {
         path: config.routes.introduction,
         component: Introduction,
@@ -131,6 +127,14 @@ const publicRoutes = [
     {
         path: config.routes.experiencesCategory,
         component: ExperienceCategory,
+        layout: (props) => (
+            <DefaultLayout {...props} baseRoute={config.routes.experiences} categoryType={'trai-nghiem'} />
+        ),
+    },
+    // Add a direct route for experience details by ID for simplified access
+    {
+        path: '/trai-nghiem/:id',
+        component: ExperienceDetail,
         layout: (props) => (
             <DefaultLayout {...props} baseRoute={config.routes.experiences} categoryType={'trai-nghiem'} />
         ),

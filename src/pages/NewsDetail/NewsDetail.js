@@ -7,11 +7,12 @@ import PushNotification from '~/components/PushNotification/PushNotification';
 import DateTime from '~/components/DateTime/DateTime';
 import Title from '~/components/Title/Title';
 import { getNewsById } from '~/services/newsService';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const cx = classNames.bind(styles);
 
 const NewsDetail = () => {
+    // Updated parameter handling to work with the new URL pattern /tin-tuc/tin-tuc-id/:id
     const { id } = useParams();
     const [newsDetail, setNewsDetail] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -21,7 +22,14 @@ const NewsDetail = () => {
         try {
             setLoading(true);
             const data = await getNewsById(id);
+            // Chuyển đổi images thành mảng nếu nó là một chuỗi
+            if (data && typeof data.images === 'string') {
+                data.images = [data.images]; // Chuyển đổi thành mảng có một phần tử
+            } else if (!data.images) {
+                data.images = []; // Nếu không có images, tạo một mảng rỗng
+            }
             setNewsDetail(data);
+            console.log('News detail with processed images:', data);
             setError(null);
         } catch (error) {
             setError(error);
@@ -50,12 +58,12 @@ const NewsDetail = () => {
 
     return (
         <article className={cx('wrapper')}>
-            <Helmet>
-                <title>{newsDetail.title} | HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
+            <HelmetProvider>
+                <title>{newsDetail.title} | HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta name="description" content={newsDetail.summary} />
-                <meta name="keywords" content="tin tức, thontrangliennhat, chi tiết tin tức" />
-                <meta name="author" content="HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật" />
-            </Helmet>
+                <meta name="keywords" content="tin tức, phunongbuondon, chi tiết tin tức" />
+                <meta name="author" content="HTX Nông Nghiệp - Du Lịch Phú Nông Buôn" />
+            </HelmetProvider>
             <div className={cx('header')}>
                 <Title text={newsDetail.title} className={cx('title')} />
             </div>

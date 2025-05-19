@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faTrash, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { getProducts } from '~/services/productService';
-import { deleteProduct } from '~/services/productApiService';
+import { getProducts, deleteProduct } from '~/services/productService';
 import styles from './ProductList.module.scss';
 import Title from '~/components/Title/Title';
 import routes from '~/config/routes';
 import PushNotification from '~/components/PushNotification/PushNotification';
+import { normalizeImageUrl, DEFAULT_SMALL_IMAGE } from '~/utils/imageUtils';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -84,10 +84,36 @@ const ProductList = () => {
                     </thead>
                     <tbody>
                         {currentProducts.length > 0 ? (
-                            currentProducts.map((prod) => (
+                            currentProducts.map((prod) => {
+                                // Handle different image formats safely
+                                let productImage = normalizeImageUrl(
+                                    Array.isArray(prod.images) && prod.images.length > 0 
+                                        ? prod.images[0] 
+                                        : (typeof prod.images === 'string' ? prod.images : null),
+                                    DEFAULT_SMALL_IMAGE
+                                );
+                                
+                                console.log(`Processing image for product ${prod.id}: ${productImage}`);
+
+                                return (
                                 <tr key={prod.id}>
-                                    <td>
-                                        <img src={prod.images[0]} alt={prod.name} className={styles.productImage} />
+                                    <td className={styles.imageCell}>
+                                        {productImage ? (
+                                            <img 
+                                                src={productImage} 
+                                                alt={prod.name} 
+                                                className={styles.productImage} 
+                                                onError={(e) => {
+                                                    console.error('Failed to load image:', productImage);
+                                                    e.target.onerror = null; // Prevent infinite loop
+                                                    e.target.src = DEFAULT_SMALL_IMAGE;
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className={styles.imagePlaceholder}>
+                                                <span>?</span>
+                                            </div>
+                                        )}
                                     </td>
                                     <td>{prod.name}</td>
                                     <td>{prod.summary}</td>
@@ -101,7 +127,8 @@ const ProductList = () => {
                                         </button>
                                     </td>
                                 </tr>
-                            ))
+                                );
+                            })
                         ) : (
                             <tr>
                                 <td colSpan="5">Không có dữ liệu</td>

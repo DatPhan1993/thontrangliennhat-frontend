@@ -3,19 +3,29 @@ import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { getExperienceByCategory } from '~/services/experienceService';
+import { getCategoriesBySlug } from '~/services/categoryService';
 import Title from '~/components/Title/Title';
 import styles from './ExperienceCategory.module.scss';
 import { Link } from 'react-router-dom';
 import CardExperience from '~/components/CardService/CardService';
 import routes from '~/config/routes';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
 import { Empty } from 'antd';
-// Import local data instead of using API
-import { experiencesData } from '~/data/experiences';
-import { categoriesData } from '~/data/categories';
+import { getImageUrl } from '~/utils/imageUtils';
 
 const cx = classNames.bind(styles);
+
+// Helper function to process image paths
+const processImagePath = (images) => {
+    // Handle array of images
+    if (Array.isArray(images)) {
+        return images.length > 0 ? getImageUrl(images[0]) : '';
+    }
+    // Handle single image string
+    return getImageUrl(images);
+};
 
 function ExperienceCategory() {
     const location = useLocation();
@@ -34,40 +44,45 @@ function ExperienceCategory() {
     const slug = extractSlugFromPathname(location.pathname);
 
     useEffect(() => {
-        // Find category by slug from local data
-        const findCategory = () => {
-            const category = categoriesData.find((cat) => cat.slug === slug);
-            if (category) {
-                setCategoryId(category.id);
-                setCategoryName(category.title);
+        async function fetchCategory() {
+            try {
+                const categories = await getCategoriesBySlug('trai-nghiem');
+                const category = categories.find((cat) => cat.slug === slug);
+                if (category) {
+                    setCategoryId(category.id);
+                    setCategoryName(category.title);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
             }
-        };
+        }
 
         if (slug) {
-            findCategory();
+            fetchCategory();
         }
     }, [slug]);
 
     useEffect(() => {
-        // Filter experiences by category from local data
-        const fetchExperiencesByCategory = () => {
+        async function fetchExperienceCategory() {
             if (categoryId) {
                 setLoading(true);
                 try {
-                    // Filter experiences by category ID
-                    const filteredExperiences = experiencesData.filter(
-                        (experience) => experience.categoryId === categoryId
-                    );
-                    setExperience(filteredExperiences);
+                    const data = await getExperienceByCategory(categoryId);
+                    // Process images in experience data
+                    const processedData = data.map(item => ({
+                        ...item,
+                        processedImage: processImagePath(item.images)
+                    }));
+                    setExperience(processedData);
                 } catch (error) {
-                    console.error('Error filtering experiences:', error);
+                    console.error('Error fetching experience:', error);
                 } finally {
                     setLoading(false);
                 }
             }
-        };
+        }
 
-        fetchExperiencesByCategory();
+        fetchExperienceCategory();
     }, [categoryId]);
 
     const indexOfLastExperience = currentPage * experiencePerPage;
@@ -96,10 +111,10 @@ function ExperienceCategory() {
             <Link to={`${routes.experiences}/${slug}/${experienceItem.id}`} key={experienceItem.id}>
                 <CardExperience
                     key={index}
-                    title={experienceItem.title}
-                    image={experienceItem.images}
+                    title={experienceItem.name}
+                    image={experienceItem.processedImage}
                     summary={experienceItem.summary}
-                    createdAt={new Date(experienceItem.createdAt).getTime()}
+                    createdAt={new Date(experienceItem.created_at).getTime()}
                 />
             </Link>
         ));
@@ -129,15 +144,16 @@ function ExperienceCategory() {
 
     return (
         <div className={cx('container')}>
-            <Helmet>
-                <title>{categoryName} | HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật</title>
+            <HelmetProvider>
+                <title>{categoryName} | HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta
                     name="description"
-                    content={`Xem các trải nghiệm liên quan đến ${categoryName} tại HTX Nông Nghiệp - Du Lịch Phú Nông Buôn.`}
+                    content={`Xem các dịch vụ du lịch liên quan đến ${categoryName} trên HTX Nông Nghiệp - Du Lịch Phú Nông Buôn.`}
                 />
-                <meta name="keywords" content={`${categoryName}, trải nghiệm du lịch, phunongbuondon`} />
+                <meta name="keywords" content={`${categoryName}, dịch vụ du lịch, phunongbuondon`} />
+
                 <meta name="author" content="HTX Nông Nghiệp - Du Lịch Phú Nông Buôn" />
-            </Helmet>
+            </HelmetProvider>
             {loading ? (
                 <LoadingScreen isLoading={loading} />
             ) : (

@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/phunongbuondon-api/node_modules
 /.pnp
 .pnp.js
 
@@ -23,6 +24,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+server.log
+*.zip
+temp*
 
 # IDE
 .idea

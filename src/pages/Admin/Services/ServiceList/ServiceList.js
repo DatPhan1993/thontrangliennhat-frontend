@@ -7,6 +7,7 @@ import styles from './ServiceList.module.scss';
 import Title from '~/components/Title/Title';
 import routes from '~/config/routes';
 import PushNotification from '~/components/PushNotification/PushNotification';
+import { normalizeImageUrl, DEFAULT_SMALL_IMAGE } from '~/utils/imageUtils';
 
 const ServiceList = () => {
     const [services, setServices] = useState([]);
@@ -17,11 +18,16 @@ const ServiceList = () => {
 
     useEffect(() => {
         const fetchServices = async () => {
-            const data = await getServices();
-            if (data) {
-                setServices(data);
-            } else {
-                alert('Failed to fetch services.');
+            try {
+                const data = await getServices();
+                if (data) {
+                    setServices(data);
+                } else {
+                    setNotification({ message: 'Lỗi khi tải dữ liệu dịch vụ!', type: 'error' });
+                }
+            } catch (error) {
+                setNotification({ message: 'Lỗi khi tải dữ liệu dịch vụ!', type: 'error' });
+                console.error('Error fetching services:', error);
             }
         };
 
@@ -78,30 +84,59 @@ const ServiceList = () => {
                     </thead>
                     <tbody>
                         {currentServices.length > 0 ? (
-                            currentServices.map((service) => (
-                                <tr key={service.id}>
-                                    <td>
-                                        <img
-                                            src={service.images[0]}
-                                            alt={service.name}
-                                            className={styles.serviceImage}
-                                        />
-                                    </td>
-                                    <td>{service.name}</td>
-                                    <td>{service.summary}</td>
-                                    <td>
-                                        <Link to={`/admin/update-service/${service.id}`} className={styles.editButton}>
-                                            <FontAwesomeIcon icon={faEdit} /> Sửa
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(service.id)}
-                                            className={styles.deleteButton}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} /> Xóa
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
+                            currentServices.map((service) => {
+                                // Handle different image formats safely
+                                let serviceImage = normalizeImageUrl(
+                                    Array.isArray(service.images) && service.images.length > 0 
+                                        ? service.images[0] 
+                                        : (typeof service.images === 'string' ? service.images : 
+                                           (service.image || null)),
+                                    DEFAULT_SMALL_IMAGE
+                                );
+                                
+                                console.log(`Processing image for service ${service.id}: ${serviceImage}`);
+
+                                return (
+                                    <tr key={service.id}>
+                                        <td>
+                                            {serviceImage ? (
+                                                <img 
+                                                    src={serviceImage} 
+                                                    alt={service.name} 
+                                                    className={styles.serviceImage} 
+                                                    onError={(e) => {
+                                                        console.error('Failed to load image:', serviceImage);
+                                                        e.target.onerror = null; // Prevent infinite loop
+                                                        e.target.src = DEFAULT_SMALL_IMAGE;
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div className={styles.imagePlaceholder}>
+                                                    <span>?</span>
+                                                </div>
+                                            )}
+                                        </td>
+                                        <td>{service.name}</td>
+                                        <td>{service.summary}</td>
+                                        <td>
+                                            <Link 
+                                                to={`/admin/update-service/${service.id}`} 
+                                                className={styles.editButton}
+                                                title={`Sửa dịch vụ ID: ${service.id}`}
+                                            >
+                                                <FontAwesomeIcon icon={faEdit} /> Sửa
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(service.id)}
+                                                className={styles.deleteButton}
+                                                title={`Xóa dịch vụ ID: ${service.id}`}
+                                            >
+                                                <FontAwesomeIcon icon={faTrash} /> Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })
                         ) : (
                             <tr>
                                 <td colSpan="5">Không có dữ liệu</td>

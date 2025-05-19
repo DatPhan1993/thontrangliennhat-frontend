@@ -17,7 +17,7 @@ import {
 import Button from '~/components/Button/Button';
 import { createMessage } from '~/services/contactService';
 import PushNotification from '~/components/PushNotification/PushNotification';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import styles from './Contact.module.scss';
 import {
     faFacebook,
@@ -64,12 +64,12 @@ const ContactPage = () => {
 
     return (
         <div className={cx('contactPage')}>
-            <Helmet>
+            <HelmetProvider>
                 <title>Liên Hệ | HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta name="description" content="Hãy gửi tin nhắn cho chúng tôi nếu bạn có bất kỳ câu hỏi nào." />
                 <meta name="keywords" content="liên hệ, phunongbuondon, gửi tin nhắn" />
                 <meta name="author" content="HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật" />
-            </Helmet>
+            </HelmetProvider>
             <div className={cx('mapContainer')}>
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3835.6384664993598!2d105.897143!3d18.3774982!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31384f2435e39f2b%3A0x900bdf89bb6fe1d6!2zVEjDlE4gVFJBTkcgTEnDik4gTkjhuqxU!5e1!3m2!1svi!2s!4v1744729590476!5m2!1svi!2s"

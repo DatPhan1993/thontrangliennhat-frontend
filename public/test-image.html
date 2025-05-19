@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .image-container {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        h3 {
+            margin-top: 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div class="image-container">
+        <h3>Placeholder Image</h3>
+        <img src="/placeholder-image.svg" alt="Placeholder" 
+             onerror="this.onerror=null; this.src='/placeholder-image.svg'; console.log('Error loading placeholder');">
+    </div>
+    
+    <div class="image-container">
+        <h3>Test with Valid Image Path</h3>
+        <img src="/images/logo.png" alt="Logo" 
+             onerror="this.onerror=null; this.src='/placeholder-image.svg'; console.log('Error loading valid image');">
+    </div>
+    
+    <div class="image-container">
+        <h3>Test with Invalid Image Path</h3>
+        <img src="/images/does-not-exist.jpg" alt="Invalid Image" 
+             onerror="this.onerror=null; this.src='/placeholder-image.svg'; console.log('Error loading invalid image');">
+    </div>
+    
+    <script>
+        // Log when images are loaded successfully
+        document.querySelectorAll('img').forEach(img => {
+            img.onload = function() {
+                console.log('Successfully loaded:', this.src);
+            };
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,613 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@phunongbuondon.com",
+      "password": "$2a$10$H9dE2xjvii6EYzaJTxYyb.9z7Jv4vgaF4XUj7SVvVo.ADSs4.tI6.",
+      "role": "admin",
+      "name": "Administrator",
+      "avatar": "https://i.pravatar.cc/150?img=1",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "email": "user@phunongbuondon.com",
+      "password": "$2a$10$H9dE2xjvii6EYzaJTxYyb.9z7Jv4vgaF4XUj7SVvVo.ADSs4.tI6.",
+      "role": "user",
+      "name": "Normal User",
+      "avatar": "https://i.pravatar.cc/150?img=2",
+      "createdAt": "2024-01-02T00:00:00.000Z",
+      "updatedAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "email": "admin@thontrangliennhat.com",
+      "password": "dat12345",
+      "role": "admin",
+      "name": "Administrator",
+      "avatar": "https://i.pravatar.cc/150?img=1",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "navigation": [
+    {
+      "id": 1,
+      "title": "TRANG CHỦ",
+      "slug": "",
+      "position": 1,
+      "children": []
+    },
+    {
+      "id": 2,
+      "title": "GIỚI THIỆU",
+      "slug": "gioi-thieu",
+      "position": 2,
+      "children": []
+    },
+    {
+      "id": 3,
+      "title": "SẢN PHẨM",
+      "slug": "san-pham",
+      "position": 3,
+      "children": []
+    },
+    {
+      "id": 4,
+      "title": "DỊCH VỤ",
+      "slug": "dich-vu",
+      "position": 4,
+      "children": []
+    },
+    {
+      "id": 5,
+      "title": "TRẢI NGHIỆM",
+      "slug": "trai-nghiem",
+      "position": 5,
+      "children": []
+    },
+    {
+      "id": 6,
+      "title": "TIN TỨC",
+      "slug": "tin-tuc",
+      "position": 6,
+      "children": []
+    },
+    {
+      "id": 7,
+      "title": "LIÊN HỆ",
+      "slug": "lien-he",
+      "position": 7,
+      "children": []
+    }
+  ],
+  "categories": [],
+  "products": [
+    {
+      "id": 1,
+      "name": "Súp hải sản",
+      "images": [
+        "images/uploads/1747304857516-52837735.jpg"
+      ],
+      "content": "Súp hải sản là một món ăn ngon, bổ dưỡng, thường được dùng làm món khai vị trong các bữa tiệc hoặc bữa ăn gia đình. Món này kết hợp các loại hải sản như tôm, mực, cua, nghêu… cùng với nước dùng đậm đà, rau củ và trứng, tạo nên hương vị thanh ngọt tự nhiên.",
+      "slug": "sup-hai-san",
+      "summary": "Súp hải sản là món khai vị được nhiều quý khách tin dùng",
+      "child_nav_id": "khai-vi",
+      "features": "[]",
+      "created_at": "2025-05-15T10:27:37.520Z",
+      "updated_at": "2025-05-15T10:27:37.520Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 2,
+      "name": "Súp hàu",
+      "images": [
+        "/images/uploads/1747307205185-546664124.jpg"
+      ],
+      "content": "Súp hàu là một món ăn bổ dưỡng, thanh mát được chế biến từ hàu tươi cùng các nguyên liệu như nấm, đậu hũ và gừng. Món súp có vị ngọt tự nhiên, béo nhẹ và thơm dịu, rất thích hợp để bồi bổ sức khỏe, đặc biệt tốt cho người suy nhược cơ thể, cần tăng cường sinh lực hoặc hồi phục sau ốm.",
+      "slug": "sup-hau",
+      "summary": "Súp hàu là một món ăn bổ dưỡng, thơm ngon, thường được chế biến từ hàu tươi kết hợp với các nguyên liệu như nấm, đậu hũ, hành lá, gừng, và nước dùng",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T11:06:45.190Z",
+      "updated_at": "2025-05-15T11:06:45.190Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 3,
+      "name": "Súp thập cẩm",
+      "images": [
+        "/images/uploads/1747307338648-246991835.jpg"
+      ],
+      "content": "Súp thập cẩm là món ăn giàu dinh dưỡng, được kết hợp từ nhiều nguyên liệu như thịt gà, tôm, cua, nấm, rau củ và trứng. Với hương vị đậm đà, màu sắc bắt mắt và độ sánh nhẹ, súp thập cẩm thường được dùng làm món khai vị trong các bữa tiệc, lễ tết hay những bữa ăn gia đình ấm cúng. Món ăn không chỉ ngon miệng mà còn cung cấp đầy đủ dưỡng chất cho cơ thể.",
+      "slug": "sup-thap-cam",
+      "summary": "Súp thập cẩm là món ăn giàu dinh dưỡng, được kết hợp từ nhiều nguyên liệu như thịt gà, tôm, cua, nấm, rau củ và trứng",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T11:08:58.651Z",
+      "updated_at": "2025-05-15T11:08:58.651Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 4,
+      "name": "Nộm hoa chuối",
+      "images": [
+        "/images/uploads/1747307757557-427334220.jpg"
+      ],
+      "content": "Nộm hoa chuối là một món ăn dân dã, thanh mát của ẩm thực Việt Nam, được chế biến từ hoa chuối bào mỏng trộn cùng rau thơm, lạc rang, thịt (hoặc tai heo, tôm...), và nước mắm chua ngọt. Món ăn có vị giòn sật của hoa chuối, vị béo của lạc, hòa quyện với vị chua cay mặn ngọt rất đặc trưng. Đây là món nhẹ hấp dẫn, giúp chống ngán và kích thích tiêu hóa.",
+      "slug": "nom-hoa-chuoi",
+      "summary": "Nộm hoa chuối là một món ăn dân dã, thanh mát của ẩm thực Việt Nam",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T11:15:57.562Z",
+      "updated_at": "2025-05-15T11:15:57.562Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 5,
+      "name": "Nộm đọt bầu",
+      "images": [
+        "/images/uploads/1747307840829-516832872.jpg"
+      ],
+      "content": "Nộm đọt bầu là một món ăn dân dã, thanh mát được làm từ phần non của dây bầu – giòn, mềm và có vị ngọt tự nhiên. Đọt bầu được chần sơ qua nước sôi, sau đó trộn cùng tỏi phi, lạc rang giã dập, rau thơm và nước mắm chua ngọt. Món ăn có hương vị nhẹ nhàng, dễ ăn, rất thích hợp trong những ngày hè nóng bức hoặc để làm món khai vị giúp chống ngán và kích thích vị giác.",
+      "slug": "nom-dot-bau",
+      "summary": "Nộm đọt bầu là một món ăn dân dã, thanh mát được làm từ phần non của dây bầu – giòn, mềm và có vị ngọt tự nhiên.",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T11:17:20.846Z",
+      "updated_at": "2025-05-15T11:17:20.846Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 6,
+      "name": "Nộm dưa chuột",
+      "images": [
+        "/images/uploads/1747307927434-258960032.jpg"
+      ],
+      "content": "Nộm dưa chuột là món ăn thanh mát, dễ làm và rất được ưa chuộng trong các bữa cơm gia đình, đặc biệt vào mùa hè. Dưa chuột được thái mỏng, trộn cùng cà rốt, rau thơm, lạc rang và nước mắm chua ngọt, tạo nên hương vị giòn ngon, chua nhẹ, ngọt dịu và thơm bùi. Món nộm này giúp giải nhiệt, chống ngán hiệu quả và kích thích tiêu hóa.",
+      "slug": "nom-dua-chuot",
+      "summary": "Nộm dưa chuột là món ăn thanh mát, dễ làm và rất được ưa chuộng trong các bữa cơm gia đình, đặc biệt vào mùa hè. ",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T11:18:47.438Z",
+      "updated_at": "2025-05-15T11:18:47.438Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 7,
+      "name": "Nộm sứa",
+      "images": [
+        "/images/uploads/1747307978311-16132658.jpg"
+      ],
+      "content": "Nộm sứa là món ăn ngon, giòn sần sật và thanh mát, thường được dùng làm món khai vị trong các bữa tiệc hoặc ngày hè oi nóng. Sứa được sơ chế sạch, trộn cùng các nguyên liệu như dưa chuột, xoài xanh, cà rốt, rau thơm, lạc rang và nước mắm chua ngọt. Món nộm có vị chua cay mặn ngọt hài hòa, kết hợp với độ giòn đặc trưng của sứa, tạo nên hương vị hấp dẫn và lạ miệng.",
+      "slug": "nom-sua",
+      "summary": "Nộm sứa là món ăn ngon, giòn sần sật và thanh mát, thường được dùng làm món khai vị trong các bữa tiệc hoặc ngày hè oi nóng",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T11:19:38.315Z",
+      "updated_at": "2025-05-15T11:19:38.315Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 8,
+      "name": "Đậu phụ chiên giòn",
+      "images": [
+        "/images/uploads/1747314606978-587224042.jpg"
+      ],
+      "content": "Đậu phụ chiên giòn là một món ăn chay quen thuộc, dễ làm nhưng vẫn rất được yêu thích nhờ hương vị thơm ngon và kết cấu hấp dẫn. Đậu phụ (thường là đậu mềm hoặc đậu miếng) được cắt khối vừa ăn, thấm ráo nước rồi chiên ngập dầu cho đến khi lớp vỏ bên ngoài vàng giòn, trong khi bên trong vẫn giữ được độ mềm mịn, béo ngậy.\r\n\r\nCó thể tăng hương vị bằng cách tẩm đậu với bột chiên giòn, hoặc ướp nhẹ gia vị trước khi chiên. Món ăn thường được dùng kèm nước mắm chua ngọt, tương ớt, hoặc nước tương gừng tùy khẩu vị. Đây là món ăn thích hợp cho cả người ăn chay lẫn ăn mặn, vừa có thể dùng trong bữa cơm hằng ngày, vừa làm món ăn chơi nhẹ nhàng.\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+      "slug": "dau-phu-chien-gion",
+      "summary": "Đậu phụ chiên giòn là món ăn đơn giản mà hấp dẫn, với lớp vỏ ngoài vàng ruộm, giòn rụm và bên trong mềm mịn, béo ngậy.",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:10:06.982Z",
+      "updated_at": "2025-05-15T13:10:06.982Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 9,
+      "name": "Đậu phụ xốt mỡ hành",
+      "images": [
+        "/images/uploads/1747314723008-385293000.jpg"
+      ],
+      "content": "Đậu phụ xốt mỡ hành là món ăn dân dã nhưng đầy hấp dẫn trong bữa cơm gia đình. Đậu phụ được cắt miếng vuông vừa ăn, chiên vàng giòn các mặt, sau đó rưới lên lớp mỡ hành nóng hổi được phi thơm từ mỡ (hoặc dầu ăn) và hành lá cắt nhỏ.\r\n\r\nMón ăn nổi bật với vị béo thơm của mỡ hành quyện cùng lớp vỏ giòn nhẹ của đậu và phần ruột mềm mịn bên trong. Có thể nêm thêm một ít nước mắm hoặc muối tiêu chanh để tăng hương vị. ",
+      "slug": "dau-phu-xot-mo-hanh",
+      "summary": "Đậu phụ xốt mỡ hành là món ăn đơn giản mà đậm đà, với đậu phụ chiên vàng kết hợp cùng lớp mỡ hành thơm béo rưới lên trên. ",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:12:03.013Z",
+      "updated_at": "2025-05-15T13:12:03.013Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 10,
+      "name": "Nhút nhít xào tóp mỡ",
+      "images": [
+        "/images/uploads/1747314804008-227411337.jpg"
+      ],
+      "content": "Nhút nhít xào tóp mỡ là món ăn đặc trưng của vùng quê Bắc Trung Bộ, mang hương vị dân dã nhưng vô cùng đưa cơm. Nhút nhít là măng non được muối chua, khi xào có độ giòn sần sật và vị chua nhẹ đặc trưng. Kết hợp với tóp mỡ – phần mỡ heo chiên giòn – món ăn có sự cân bằng giữa vị béo ngậy và vị chua thanh.\r\n\r\nKhi chế biến, tóp mỡ được phi thơm cùng hành tỏi, sau đó cho nhút nhít vào xào nhanh tay trên lửa lớn, nêm nếm thêm nước mắm, mì chính hoặc ớt để tăng vị đậm đà. Món này ăn kèm cơm trắng, rau sống hoặc dưa leo đều rất hợp, thích hợp trong những ngày tiết trời se lạnh hoặc khi cần món ăn mặn, giòn, dễ bắt cơm.",
+      "slug": "nhut-nhit-xao-top-mo",
+      "summary": "Nhút nhít xào tóp mỡ là món ăn dân dã, đậm vị, với sự kết hợp giữa nhút nhít (măng muối chua) giòn chua và tóp mỡ béo giòn.",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:13:24.018Z",
+      "updated_at": "2025-05-15T13:13:24.018Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 11,
+      "name": "Cá mờm xào xoài",
+      "images": [
+        "/images/uploads/1747314919407-293765935.jpg"
+      ],
+      "content": "Cá mờm xào xoài là món ăn dân dã, đặc trưng của các vùng ven biển, sử dụng cá mờm khô – loại cá nhỏ được phơi khô – kết hợp với xoài xanh bào sợi. Cá mờm được rang hoặc chiên sơ cho giòn, sau đó xào cùng xoài xanh, tỏi, ớt và nước mắm đường theo khẩu vị chua cay mặn ngọt.\r\n\r\nMón ăn nổi bật bởi sự hòa quyện giữa vị chua thanh của xoài, vị mặn và thơm đặc trưng của cá khô, cùng độ giòn hấp dẫn. Thêm chút lạc rang hoặc rau thơm sẽ làm món ăn càng dậy mùi và ngon miệng hơn. Đây là món ăn chơi khoái khẩu, cũng có thể dùng như món mặn trong bữa cơm gia đình, rất bắt cơm và dễ gây ",
+      "slug": "ca-mom-xao-xoai",
+      "summary": "Cá mờm xào xoài là món ăn lạ miệng, kết hợp giữa cá mờm khô giòn thơm và xoài xanh chua nhẹ. Món ăn có vị mặn ngọt hài hòa, cay cay hấp dẫn.",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:15:19.413Z",
+      "updated_at": "2025-05-15T13:15:19.413Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 12,
+      "name": "Lạc rang húng lìu",
+      "images": [
+        "/images/uploads/1747315169856-378410623.jpg"
+      ],
+      "content": "Lạc rang húng lìu là món ăn dân dã, quen thuộc với người Việt, đặc biệt ở miền Bắc. Lạc (đậu phộng) sau khi phơi hoặc sấy khô được rang đều tay với muối và bột húng lìu – một hỗn hợp gia vị có mùi thơm đặc trưng từ quế, hồi, thảo quả và đinh hương .",
+      "slug": "lac-rang-hung-liu",
+      "summary": "Lạc rang húng lìu là món ăn vặt truyền thống, có hương thơm đặc trưng từ bột húng lìu và vị bùi béo của lạc rang.",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:19:29.860Z",
+      "updated_at": "2025-05-15T13:19:29.860Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 13,
+      "name": "Măng trúc bản thái xào chép giòn",
+      "images": [
+        "/images/uploads/1747315394397-474538866.jpg"
+      ],
+      "content": "Măng trúc bản Thái xào chép giòn là món đặc sản độc đáo của vùng cao Tây Bắc, kết hợp giữa măng trúc non – loại măng nhỏ, giòn, vị ngọt thanh – và cá chép giòn, loại cá được nuôi theo cách đặc biệt để cho thịt chắc, dai và béo.\r\n\r\nCá chép giòn được lọc thịt, thái lát vừa ăn rồi chiên hoặc xào sơ để giữ độ săn chắc. Măng trúc sau khi sơ chế (luộc qua hoặc ngâm nước muối để khử nhựa) sẽ được xào cùng tỏi, hành, ớt và các loại gia vị truyền thống như mắc khén, hạt dổi, tạo nên hương vị đặc trưng đậm đà, thơm nồng. Sau đó, thịt cá được cho vào đảo đều, thấm đều gia vị.\r\n\r\nMón ăn vừa giữ được độ giòn của măng, vừa có vị béo bùi của cá chép, lại thơm lừng mùi gia vị núi rừng. Đây là món ngon đặc trưng trong các dịp lễ tết của người Thái.",
+      "slug": "mang-truc-ban-thai-xao-chep-gion",
+      "summary": "Măng trúc bản Thái xào chép giòn là món ăn mang đậm hương vị núi rừng, kết hợp giữa măng trúc non giòn ngọt và cá chép giòn béo, dai. ",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:23:14.426Z",
+      "updated_at": "2025-05-15T13:23:14.426Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 14,
+      "name": "Măng trúc bản thái xào lòng me",
+      "images": [
+        "/images/uploads/1747315481080-265531054.jpg"
+      ],
+      "content": "Măng trúc bản Thái xào lòng me là món đặc sản độc đáo, thường thấy trong ẩm thực của người Thái vùng Tây Bắc. Măng trúc là loại măng rừng nhỏ, thân giòn, có vị ngọt thanh tự nhiên, được thu hái theo mùa và chế biến ngay để giữ được độ tươi ngon. Lòng me là phần ruột non và dạ dày của cá – thường là cá chép, cá trắm – được sơ chế kỹ để khử tanh và giữ lại độ dai béo đặc trưng.\r\n\r\nKhi chế biến, lòng me được làm sạch, luộc sơ và ướp gia vị. Măng trúc cũng được luộc hoặc ngâm nước muối để loại bỏ nhựa đắng. Cả hai nguyên liệu được xào trên lửa lớn với tỏi, hành, ớt và các loại gia vị đặc trưng của núi rừng như mắc khén, hạt dổi. Món ăn khi hoàn thành có mùi thơm nồng nàn, vị bùi béo từ lòng me hòa quyện với độ giòn sần sật của măng, tạo nên một món ăn hài hòa, đậm đà, rất đưa cơm.",
+      "slug": "mang-truc-ban-thai-xao-long-me",
+      "summary": "Măng trúc bản Thái xào lòng me là món ăn dân dã, mang đậm hương vị núi rừng, kết hợp giữa măng trúc non giòn và lòng me (ruột cá) béo bùi. Món ăn có vị đậm đà, thơm nồng, rất bắt cơm và phù hợp trong các bữa ăn truyền thống của đồng bào Tây Bắc.",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:24:41.085Z",
+      "updated_at": "2025-05-15T13:24:41.085Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    },
+    {
+      "id": 15,
+      "name": "Măng trúc bản thái xào thịt bò",
+      "images": [
+        "/images/uploads/1747315565975-79222111.jpg"
+      ],
+      "content": "Măng trúc bản Thái xào thịt bò là món ăn mang hương vị núi rừng đặc trưng, hòa quyện giữa măng trúc non – loại măng rừng nhỏ, giòn và ngọt thanh – với thịt bò mềm, giàu dinh dưỡng. Măng trúc được người Thái thu hái tự nhiên theo mùa, sơ chế sạch, luộc sơ để giảm vị chát, sau đó để ráo nước.\r\n\r\nThịt bò được thái mỏng, ướp với tỏi, gừng, hạt nêm, nước mắm và một chút dầu ăn để làm mềm và tăng hương vị. Khi xào, măng được đảo nhanh với hành tỏi cho thơm, sau đó cho thịt bò vào xào chung trên lửa lớn để giữ được độ mềm và không bị dai. Gia vị như tiêu, mắc khén (nếu có), hoặc vài lát gừng giúp món ăn thêm phần dậy mùi và đậm đà.\r\n\r\nMón ăn khi hoàn thiện có màu sắc bắt mắt, hương thơm quyến rũ, vị giòn ngọt của măng quyện với thịt bò mềm thơm, rất đưa cơm.",
+      "slug": "mang-truc-ban-thai-xao-thit-bo",
+      "summary": "Măng trúc bản Thái xào thịt bò là món ăn thơm ngon, đậm đà, kết hợp giữa măng trúc non giòn ngọt và thịt bò mềm, thấm vị. ",
+      "child_nav_id": null,
+      "features": "[]",
+      "created_at": "2025-05-15T13:26:05.978Z",
+      "updated_at": "2025-05-15T13:26:05.978Z",
+      "phone_number": "0943768858",
+      "type": "san-pham",
+      "isFeatured": true
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Du lịch trải nghiệm nông nghiệp – Gắn kết với đời sống làng quê",
+      "title": "Du lịch trải nghiệm nông nghiệp – Gắn kết với đời sống làng quê",
+      "slug": "fghjfgj",
+      "summary": "Du lịch trải nghiệm nông nghiệp – Gắn kết với đời sống làng quê Đến với Trang Liên Nhật, du khách sẽ được hòa mình vào không gian làng quê trong lành, bình dị với những cánh đồng xanh mướt, ao cá yên ả và những con đường rợp bóng tre. Tại đây, hình thức du lịch trải nghiệm nông nghiệp được tổ chức một cách bài bản, mang lại cơ hội để du khách – đặc biệt là học sinh, sinh viên và du khách đô thị – hiểu hơn về cuộc sống lao động của người nông dân.",
+      "content": "Du lịch trải nghiệm nông nghiệp – Gắn kết với đời sống làng quê\r\nĐến với Trang Liên Nhật, du khách sẽ được hòa mình vào không gian làng quê trong lành, bình dị với những cánh đồng xanh mướt, ao cá yên ả và những con đường rợp bóng tre. Tại đây, hình thức du lịch trải nghiệm nông nghiệp được tổ chức một cách bài bản, mang lại cơ hội để du khách – đặc biệt là học sinh, sinh viên và du khách đô thị – hiểu hơn về cuộc sống lao động của người nông dân.\r\n\r\nCác hoạt động tiêu biểu bao gồm:\r\n\r\nTrải nghiệm trồng rau, trồng lúa, thu hoạch mùa vụ.\r\n\r\nChăm sóc đàn gia súc, gia cầm như: cho lợn ăn, lùa vịt ra đồng, nhặt trứng gà.\r\n\r\nHọc cách làm vườn, tưới cây, sử dụng nông cụ truyền thống như cày, bừa, gánh nước bằng đòn gánh.\r\n\r\nCâu cá, tát ao bắt cá – một hoạt động vui nhộn và được yêu thích bởi cả người lớn lẫn trẻ em.\r\n\r\nDu khách không chỉ quan sát mà còn trực tiếp tham gia vào công việc, qua đó cảm nhận được giá trị của lao động chân tay, sự gắn bó giữa con người và thiên nhiên, cũng như tình cảm nồng hậu của người dân quê.\r\n\r\n",
+      "description": "Du lịch trải nghiệm nông nghiệp – Gắn kết với đời sống làng quê\r\nĐến với Trang Liên Nhật, du khách sẽ được hòa mình vào không gian làng quê trong lành, bình dị với những cánh đồng xanh mướt, ao cá yên ả và những con đường rợp bóng tre. Tại đây, hình thức du lịch trải nghiệm nông nghiệp được tổ chức một cách bài bản, mang lại cơ hội để du khách – đặc biệt là học sinh, sinh viên và du khách đô thị – hiểu hơn về cuộc sống lao động của người nông dân.\r\n\r\nCác hoạt động tiêu biểu bao gồm:\r\n\r\nTrải nghiệm trồng rau, trồng lúa, thu hoạch mùa vụ.\r\n\r\nChăm sóc đàn gia súc, gia cầm như: cho lợn ăn, lùa vịt ra đồng, nhặt trứng gà.\r\n\r\nHọc cách làm vườn, tưới cây, sử dụng nông cụ truyền thống như cày, bừa, gánh nước bằng đòn gánh.\r\n\r\nCâu cá, tát ao bắt cá – một hoạt động vui nhộn và được yêu thích bởi cả người lớn lẫn trẻ em.\r\n\r\nDu khách không chỉ quan sát mà còn trực tiếp tham gia vào công việc, qua đó cảm nhận được giá trị của lao động chân tay, sự gắn bó giữa con người và thiên nhiên, cũng như tình cảm nồng hậu của người dân quê.\r\n\r\n",
+      "child_nav_id": "1",
+      "categoryId": 1,
+      "isFeatured": "1",
+      "views": 0,
+      "type": "dich-vu",
+      "price": 0,
+      "discountPrice": 0,
+      "images": [
+        "/images/uploads/1747470218997-502556754.jpg"
+      ],
+      "image": "/images/uploads/1747381664973-82971372.jpg",
+      "createdAt": "2025-05-16T07:47:44.993Z",
+      "updatedAt": "2025-05-17T08:23:39.003Z",
+      "updated_at": "2025-05-17T08:23:39.003Z"
+    },
+    {
+      "id": 2,
+      "name": "Phiên chợ quê – Nét văn hóa truyền thống được tái hiện sống động",
+      "title": "Phiên chợ quê – Nét văn hóa truyền thống được tái hiện sống động",
+      "slug": "ok",
+      "summary": "Phiên chợ quê – Nét văn hóa truyền thống được tái hiện sống động Một trong những điểm nhấn độc đáo tại thôn Trang Liên Nhật là phiên chợ quê được tổ chức định kỳ vào cuối tuần hoặc theo các dịp lễ hội. Chợ được bố trí theo đúng phong cách chợ quê truyền thống, với các gian hàng tre nứa, mái lá đơn sơ, sản phẩm được bày bán trên mẹt, nia, chiếu rải đất.",
+      "content": "Phiên chợ quê – Nét văn hóa truyền thống được tái hiện sống động\r\nMột trong những điểm nhấn độc đáo tại thôn Trang Liên Nhật là phiên chợ quê được tổ chức định kỳ vào cuối tuần hoặc theo các dịp lễ hội. Chợ được bố trí theo đúng phong cách chợ quê truyền thống, với các gian hàng tre nứa, mái lá đơn sơ, sản phẩm được bày bán trên mẹt, nia, chiếu rải đất.\r\n\r\nTại đây, du khách có thể tìm thấy:\r\n\r\nCác món ăn dân dã đậm chất quê như: bánh ít, bánh nậm, bánh đúc, kẹo lạc, mật mía, chè xanh, nước vối...\r\n\r\nNông sản sạch do chính người dân địa phương làm ra: rau củ, trứng gà ta, cá đồng, gạo sạch, các loại gia vị truyền thống như tương bần, mắm tôm, muối mè…\r\n\r\nGian hàng thủ công mỹ nghệ: quạt nan, mẹt, rổ tre, đồ mây tre đan…\r\n\r\nKhông chỉ là nơi buôn bán, phiên chợ còn là dịp để mọi người gặp gỡ, giao lưu, thưởng thức âm nhạc dân gian, múa hát và nghe kể chuyện làng quê xưa. Với du khách, đây là cơ hội quý giá để hiểu và yêu hơn nền văn hóa nông thôn truyền thống.",
+      "description": "Phiên chợ quê – Nét văn hóa truyền thống được tái hiện sống động\r\nMột trong những điểm nhấn độc đáo tại thôn Trang Liên Nhật là phiên chợ quê được tổ chức định kỳ vào cuối tuần hoặc theo các dịp lễ hội. Chợ được bố trí theo đúng phong cách chợ quê truyền thống, với các gian hàng tre nứa, mái lá đơn sơ, sản phẩm được bày bán trên mẹt, nia, chiếu rải đất.\r\n\r\nTại đây, du khách có thể tìm thấy:\r\n\r\nCác món ăn dân dã đậm chất quê như: bánh ít, bánh nậm, bánh đúc, kẹo lạc, mật mía, chè xanh, nước vối...\r\n\r\nNông sản sạch do chính người dân địa phương làm ra: rau củ, trứng gà ta, cá đồng, gạo sạch, các loại gia vị truyền thống như tương bần, mắm tôm, muối mè…\r\n\r\nGian hàng thủ công mỹ nghệ: quạt nan, mẹt, rổ tre, đồ mây tre đan…\r\n\r\nKhông chỉ là nơi buôn bán, phiên chợ còn là dịp để mọi người gặp gỡ, giao lưu, thưởng thức âm nhạc dân gian, múa hát và nghe kể chuyện làng quê xưa. Với du khách, đây là cơ hội quý giá để hiểu và yêu hơn nền văn hóa nông thôn truyền thống.",
+      "child_nav_id": "2",
+      "categoryId": 2,
+      "isFeatured": "1",
+      "views": 0,
+      "type": "dich-vu",
+      "price": 0,
+      "discountPrice": 0,
+      "images": [
+        "/images/uploads/1747470282842-919000433.jpg"
+      ],
+      "image": "/images/uploads/1747390747291-767412681.jpg",
+      "createdAt": "2025-05-16T10:19:07.298Z",
+      "updatedAt": "2025-05-17T08:24:42.851Z",
+      "updated_at": "2025-05-17T08:24:42.851Z"
+    },
+    {
+      "id": 3,
+      "name": "Trò chơi dân gian – Gợi nhớ ký ức tuổi thơ, kết nối cộng đồng",
+      "title": "Trò chơi dân gian – Gợi nhớ ký ức tuổi thơ, kết nối cộng đồng",
+      "slug": "ok23",
+      "summary": "Trò chơi dân gian – Gợi nhớ ký ức tuổi thơ, kết nối cộng đồng Không thể thiếu trong hành trình trải nghiệm tại Trang Liên Nhật là các trò chơi dân gian – một phần tinh thần không thể tách rời của văn hóa làng quê Việt Nam. Những trò chơi này được tổ chức tại sân đình, bãi cỏ, hay trong khuôn viên chợ quê, thu hút đông đảo người tham gia ở mọi lứa tuổi.",
+      "content": "Trò chơi dân gian – Gợi nhớ ký ức tuổi thơ, kết nối cộng đồng\r\nKhông thể thiếu trong hành trình trải nghiệm tại Trang Liên Nhật là các trò chơi dân gian – một phần tinh thần không thể tách rời của văn hóa làng quê Việt Nam. Những trò chơi này được tổ chức tại sân đình, bãi cỏ, hay trong khuôn viên chợ quê, thu hút đông đảo người tham gia ở mọi lứa tuổi.\r\n\r\nCác trò chơi thường được tổ chức bao gồm:\r\n\r\nKéo co: thể hiện tinh thần đoàn kết và sức mạnh tập thể.\r\n\r\nÔ ăn quan: trò chơi trí tuệ gắn liền với tuổi thơ của nhiều thế hệ.\r\n\r\nBịt mắt bắt vịt: vui nhộn và hào hứng, luôn làm \"náo động\" cả khu vực.\r\n\r\nNhảy bao bố, đi cà kheo, ném còn, đập niêu đất…\r\n\r\nNhững trò chơi dân gian không chỉ mang lại tiếng cười mà còn là cầu nối giúp gắn kết cộng đồng, tạo nên một không khí rộn ràng, vui tươi – gợi nhắc những giá trị truyền thống đang dần bị lãng quên trong cuộc sống hiện đại.",
+      "description": "Trò chơi dân gian – Gợi nhớ ký ức tuổi thơ, kết nối cộng đồng\r\nKhông thể thiếu trong hành trình trải nghiệm tại Trang Liên Nhật là các trò chơi dân gian – một phần tinh thần không thể tách rời của văn hóa làng quê Việt Nam. Những trò chơi này được tổ chức tại sân đình, bãi cỏ, hay trong khuôn viên chợ quê, thu hút đông đảo người tham gia ở mọi lứa tuổi.\r\n\r\nCác trò chơi thường được tổ chức bao gồm:\r\n\r\nKéo co: thể hiện tinh thần đoàn kết và sức mạnh tập thể.\r\n\r\nÔ ăn quan: trò chơi trí tuệ gắn liền với tuổi thơ của nhiều thế hệ.\r\n\r\nBịt mắt bắt vịt: vui nhộn và hào hứng, luôn làm \"náo động\" cả khu vực.\r\n\r\nNhảy bao bố, đi cà kheo, ném còn, đập niêu đất…\r\n\r\nNhững trò chơi dân gian không chỉ mang lại tiếng cười mà còn là cầu nối giúp gắn kết cộng đồng, tạo nên một không khí rộn ràng, vui tươi – gợi nhắc những giá trị truyền thống đang dần bị lãng quên trong cuộc sống hiện đại.",
+      "child_nav_id": "3",
+      "categoryId": 3,
+      "isFeatured": "1",
+      "views": 0,
+      "type": "dich-vu",
+      "price": 0,
+      "discountPrice": 0,
+      "images": [
+        "/images/uploads/1747470335053-379185764.jpg"
+      ],
+      "image": "/images/uploads/1747391149028-553486010.jpg",
+      "createdAt": "2025-05-16T10:25:49.033Z",
+      "updatedAt": "2025-05-17T08:25:35.065Z",
+      "updated_at": "2025-05-17T08:25:35.065Z"
+    }
+  ],
+  "experiences": [
+    {
+      "id": 3,
+      "title": "Không gian làng quê yên bình",
+      "name": "Không gian làng quê yên bình",
+      "slug": "hfasd",
+      "summary": "Thôn Trang Liên Nhật mang trong mình nét đẹp nguyên sơ của một làng quê Bắc Trung Bộ. Nơi đây nổi bật với hình ảnh những con đường nhỏ uốn quanh bờ ruộng, hai bên rợp bóng tre, cau và hàng rào cây xanh. Cánh đồng lúa trải dài bát ngát, ao cá trong xanh phản chiếu bầu trời, cùng những mái nhà ngói đỏ thấp thoáng sau rặng chuối – tất cả tạo nên một bức tranh quê thanh bình, giản dị.",
+      "description": "Không gian làng quê yên bình – Trở về với thiên nhiên và ký ức tuổi thơ\r\nThôn Trang Liên Nhật mang trong mình nét đẹp nguyên sơ của một làng quê Bắc Trung Bộ. Nơi đây nổi bật với hình ảnh những con đường nhỏ uốn quanh bờ ruộng, hai bên rợp bóng tre, cau và hàng rào cây xanh. Cánh đồng lúa trải dài bát ngát, ao cá trong xanh phản chiếu bầu trời, cùng những mái nhà ngói đỏ thấp thoáng sau rặng chuối – tất cả tạo nên một bức tranh quê thanh bình, giản dị.\r\n\r\nKhông gian ở đây mang lại cảm giác thư giãn và gần gũi, đặc biệt phù hợp cho những du khách đang tìm kiếm một nơi để “trốn khỏi” sự ồn ào của thành phố. Mỗi bước chân qua làng là một bước chạm vào quá khứ – nơi tuổi thơ của bao thế hệ từng gắn liền với tiếng gà gáy sáng, tiếng mõ trâu về chiều và mùi rơm mới sau mùa gặt.",
+      "content": "Không gian làng quê yên bình – Trở về với thiên nhiên và ký ức tuổi thơ\r\nThôn Trang Liên Nhật mang trong mình nét đẹp nguyên sơ của một làng quê Bắc Trung Bộ. Nơi đây nổi bật với hình ảnh những con đường nhỏ uốn quanh bờ ruộng, hai bên rợp bóng tre, cau và hàng rào cây xanh. Cánh đồng lúa trải dài bát ngát, ao cá trong xanh phản chiếu bầu trời, cùng những mái nhà ngói đỏ thấp thoáng sau rặng chuối – tất cả tạo nên một bức tranh quê thanh bình, giản dị.\r\n\r\nKhông gian ở đây mang lại cảm giác thư giãn và gần gũi, đặc biệt phù hợp cho những du khách đang tìm kiếm một nơi để “trốn khỏi” sự ồn ào của thành phố. Mỗi bước chân qua làng là một bước chạm vào quá khứ – nơi tuổi thơ của bao thế hệ từng gắn liền với tiếng gà gáy sáng, tiếng mõ trâu về chiều và mùi rơm mới sau mùa gặt.",
+      "images": [
+        "/images/uploads/1747063886430-769371210.jpg"
+      ],
+      "categoryId": 51,
+      "child_nav_id": "4",
+      "isFeatured": true,
+      "views": 0,
+      "createdAt": "2025-05-12T15:31:26.434Z",
+      "updatedAt": "2025-05-17T08:28:57.253Z",
+      "updated_at": "2025-05-17T08:28:57.253Z"
+    },
+    {
+      "id": 4,
+      "title": "Ẩm thực đồng quê tươi ngon",
+      "name": "Ẩm thực đồng quê tươi ngon",
+      "slug": "ok-nhé",
+      "summary": "Ẩm thực đồng quê tươi ngon – Hương vị dân dã đậm đà bản sắc Ẩm thực tại Trang Liên Nhật là một phần không thể thiếu trong hành trình khám phá văn hóa làng quê. Các món ăn được chế biến từ nguyên liệu sẵn có tại địa phương – sạch, tươi và mang đậm hương vị quê hương.",
+      "description": "Ẩm thực đồng quê tươi ngon – Hương vị dân dã đậm đà bản sắc\r\nẨm thực tại Trang Liên Nhật là một phần không thể thiếu trong hành trình khám phá văn hóa làng quê. Các món ăn được chế biến từ nguyên liệu sẵn có tại địa phương – sạch, tươi và mang đậm hương vị quê hương.\r\n\r\nMột số món ăn tiêu biểu:\r\n\r\nCanh cua đồng rau đay, cá rô kho tộ, rau lang luộc chấm mắm nêm, thịt rang cháy cạnh – những món ăn mộc mạc nhưng đậm đà khó quên.\r\n\r\nCác loại bánh truyền thống như: bánh ít lá gai, bánh nậm, bánh khoái, bánh bèo nhân tôm cháy.\r\n\r\nNước uống dân dã như chè xanh, nước vối, nước lá ổi, lá sả…\r\n\r\nDu khách có thể thưởng thức các món ăn này tại khu vực chợ quê, các nhà chòi lợp lá ven đồng hoặc trong các gia đình nông dân tham gia mô hình du lịch cộng đồng. Mỗi bữa ăn không chỉ là trải nghiệm ẩm thực, mà còn là dịp để hiểu thêm về văn hóa ứng xử và lối sống dung dị của người dân nơi đây.",
+      "content": "Ẩm thực đồng quê tươi ngon – Hương vị dân dã đậm đà bản sắc\r\nẨm thực tại Trang Liên Nhật là một phần không thể thiếu trong hành trình khám phá văn hóa làng quê. Các món ăn được chế biến từ nguyên liệu sẵn có tại địa phương – sạch, tươi và mang đậm hương vị quê hương.\r\n\r\nMột số món ăn tiêu biểu:\r\n\r\nCanh cua đồng rau đay, cá rô kho tộ, rau lang luộc chấm mắm nêm, thịt rang cháy cạnh – những món ăn mộc mạc nhưng đậm đà khó quên.\r\n\r\nCác loại bánh truyền thống như: bánh ít lá gai, bánh nậm, bánh khoái, bánh bèo nhân tôm cháy.\r\n\r\nNước uống dân dã như chè xanh, nước vối, nước lá ổi, lá sả…\r\n\r\nDu khách có thể thưởng thức các món ăn này tại khu vực chợ quê, các nhà chòi lợp lá ven đồng hoặc trong các gia đình nông dân tham gia mô hình du lịch cộng đồng. Mỗi bữa ăn không chỉ là trải nghiệm ẩm thực, mà còn là dịp để hiểu thêm về văn hóa ứng xử và lối sống dung dị của người dân nơi đây.",
+      "images": [
+        "/images/uploads/1747397134095-18692764.jpg"
+      ],
+      "categoryId": 52,
+      "child_nav_id": "5",
+      "isFeatured": true,
+      "views": 0,
+      "createdAt": "2025-05-12T15:32:07.045Z",
+      "updatedAt": "2025-05-17T08:30:15.653Z",
+      "updated_at": "2025-05-17T08:30:15.653Z"
+    },
+    {
+      "id": 5,
+      "title": "Hoạt động trải nghiệm nông thôn – Học làm nông dân trong một ngày",
+      "name": "Hoạt động trải nghiệm nông thôn – Học làm nông dân trong một ngày",
+      "slug": "du-lịch-trải-nghiệm-thôn-quê",
+      "summary": "Hoạt động trải nghiệm nông thôn – Học làm nông dân trong một ngày Du khách đến với Trang Liên Nhật sẽ có cơ hội trực tiếp tham gia vào các hoạt động trải nghiệm nông nghiệp – một hình thức du lịch giáo dục và gắn kết rất được ưa chuộng hiện nay.",
+      "description": "Hoạt động trải nghiệm nông thôn – Học làm nông dân trong một ngày\r\nDu khách đến với Trang Liên Nhật sẽ có cơ hội trực tiếp tham gia vào các hoạt động trải nghiệm nông nghiệp – một hình thức du lịch giáo dục và gắn kết rất được ưa chuộng hiện nay.\r\n\r\nCác hoạt động trải nghiệm nổi bật:\r\n\r\nTự tay gieo hạt, nhổ cỏ, tưới rau, bón phân hữu cơ, thu hoạch nông sản theo mùa.\r\n\r\nTham gia tát ao bắt cá, chèo thuyền nan trên ao sen, cho gà, vịt ăn, vắt sữa dê (nếu có).\r\n\r\nHọc cách sử dụng nông cụ truyền thống như cày, cuốc, đòn gánh, guồng nước…\r\n\r\nLàm quen với quy trình ủ phân hữu cơ, làm giá đỗ, phơi lúa, giã gạo bằng chày tay.\r\n\r\nĐây là cơ hội quý giá để trẻ em thành thị hiểu hơn về giá trị lao động, còn người lớn thì tìm lại những ký ức tuổi thơ thân thuộc. Mô hình cũng phù hợp với các chương trình ngoại khóa của trường học và nhóm gia đình vào dịp cuối tuần.",
+      "content": "Hoạt động trải nghiệm nông thôn – Học làm nông dân trong một ngày\r\nDu khách đến với Trang Liên Nhật sẽ có cơ hội trực tiếp tham gia vào các hoạt động trải nghiệm nông nghiệp – một hình thức du lịch giáo dục và gắn kết rất được ưa chuộng hiện nay.\r\n\r\nCác hoạt động trải nghiệm nổi bật:\r\n\r\nTự tay gieo hạt, nhổ cỏ, tưới rau, bón phân hữu cơ, thu hoạch nông sản theo mùa.\r\n\r\nTham gia tát ao bắt cá, chèo thuyền nan trên ao sen, cho gà, vịt ăn, vắt sữa dê (nếu có).\r\n\r\nHọc cách sử dụng nông cụ truyền thống như cày, cuốc, đòn gánh, guồng nước…\r\n\r\nLàm quen với quy trình ủ phân hữu cơ, làm giá đỗ, phơi lúa, giã gạo bằng chày tay.\r\n\r\nĐây là cơ hội quý giá để trẻ em thành thị hiểu hơn về giá trị lao động, còn người lớn thì tìm lại những ký ức tuổi thơ thân thuộc. Mô hình cũng phù hợp với các chương trình ngoại khóa của trường học và nhóm gia đình vào dịp cuối tuần.",
+      "images": [
+        "/images/uploads/1747470702252-568725634.jpg"
+      ],
+      "categoryId": 4,
+      "child_nav_id": "4",
+      "isFeatured": true,
+      "views": 0,
+      "createdAt": "2025-05-16T12:00:12.438Z",
+      "updatedAt": "2025-05-17T08:31:42.263Z",
+      "updated_at": "2025-05-17T08:31:42.263Z"
+    }
+  ],
+  "news": [
+    {
+      "id": 6,
+      "title": "dat",
+      "slug": "tin-tuc-6",
+      "summary": "dat",
+      "content": "<p>dat</p>",
+      "images": [
+        "/images/uploads/1747452375917-560180120.jpg"
+      ],
+      "categoryId": "tin-kinh-te-xa-hoi",
+      "authorId": 1,
+      "status": "published",
+      "createdAt": "2025-05-16T14:40:58.172Z",
+      "updatedAt": "2025-05-17T03:26:15.923Z",
+      "child_nav_id": "tin-kinh-te-xa-hoi",
+      "isFeatured": true
+    },
+    {
+      "id": 7,
+      "title": "sang",
+      "slug": "tin-tuc-7",
+      "summary": "sang",
+      "content": "<p>sang</p>",
+      "images": [
+        "/images/uploads/1747453244507-969438162.jpg"
+      ],
+      "categoryId": "tin-nong-nghiep-du-lich",
+      "authorId": 1,
+      "status": "published",
+      "createdAt": "2025-05-16T14:55:06.323Z",
+      "updatedAt": "2025-05-17T03:40:44.512Z",
+      "child_nav_id": "tin-hop-tac-xa",
+      "isFeatured": true
+    },
+    {
+      "id": 8,
+      "title": "dat beo",
+      "slug": "tin-tuc-8",
+      "summary": "Tôm sú nuôi tự nhiên từ Liên Nhật",
+      "content": "<p>Tôm sú nuôi tự nhiên từ Liên Nhật</p>",
+      "images": "/images/uploads/1747452264180-116125124.jpg",
+      "categoryId": "tin-kinh-te-xa-hoi",
+      "authorId": 1,
+      "status": "published",
+      "createdAt": "2025-05-17T03:24:24.217Z",
+      "updatedAt": "2025-05-17T03:24:24.217Z"
+    }
+  ],
+  "team": [
+    {
+      "id": 1,
+      "name": "Nguyễn Hữu Quyền",
+      "position": "Giám đốc HTX",
+      "avatar": "/images/teams/gd.jpg",
+      "image": "/images/teams/gd.jpg",
+      "description": "Ông Nguyễn Hữu Quyền có hơn 15 năm kinh nghiệm trong lĩnh vực nông nghiệp và du lịch sinh thái.",
+      "createdAt": "2022-01-01T00:00:00.000Z",
+      "updatedAt": "2022-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Võ Tá Quỳnh",
+      "position": "Quản Lý Thôn Trang Liên Nhật",
+      "avatar": "/images/teams/quynh.jpg",
+      "image": "/images/teams/quynh.jpg",
+      "description": "Ông Võ Tá Quỳnh chuyên về phát triển sản phẩm và marketing cho các sản phẩm nông nghiệp và du lịch.",
+      "createdAt": "2022-01-01T00:00:00.000Z",
+      "updatedAt": "2022-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Đạt Phan",
+      "position": "IT",
+      "avatar": "/images/uploads/1747468911037-338195705.jpg",
+      "image": "/images/uploads/1747468911037-338195705.jpg",
+      "description": "",
+      "createdAt": "2025-05-17T08:01:51.043Z",
+      "updatedAt": "2025-05-17T08:01:51.043Z"
+    }
+  ],
+  "videos": [
+    {
+      "id": 1,
+      "url": "https://www.youtube.com/watch?v=ZB1TiDSNf10",
+      "name": "Giới Thiệu Cảnh Đẹp Trong Thôn Trang Liên Nhật",
+      "description": "Thôn Trang Liên Nhật là một khu du lịch sinh thái ấm thực động quê, được xây dựng từ ngày 22-12-2022 và hoàn thành đi vào hoạt động ngày 29-4-2023.",
+      "createdAt": "2024-04-15T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "url": "https://www.youtube.com/watch?v=QrRr_P6xav4",
+      "name": "Thôn Trang Liên Nhật tổ chức phiên chợ quê theo mô hình sinh thái tổng hợp (lần thứ 3)",
+      "description": "Thôn Trang Liên Nhật tổ chức phiên chợ quê theo mô hình sinh thái tổng hợp (lần thứ 3) với nhiều hoạt động vui chơi, giải trí và ẩm thực đặc sản địa phương.",
+      "createdAt": "2024-04-20T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "url": "https://www.youtube.com/shorts/KiJRPnynuVQ",
+      "name": "Trải Nghiệm Ẩm Thực Thôn Trang Liên Nhật",
+      "description": "Thưởng thức các món ăn đặc sản tại nhà hàng trên đầm sen của Thôn Trang Liên Nhật.",
+      "createdAt": "2024-04-25T00:00:00.000Z"
+    }
+  ],
+  "images": [
+    {
+      "id": 4,
+      "url": "http://localhost:3001/images/uploads/1746436287434-688626741.jpg",
+      "name": "manager.jpg",
+      "description": "Hình ảnh tải lên: manager.jpg",
+      "createdAt": "2025-05-05T09:11:27.448Z"
+    },
+    {
+      "id": 5,
+      "url": "http://localhost:3001/images/uploads/1746436606366-355570822.jpg",
+      "name": "director.jpg",
+      "description": "Hình ảnh tải lên: director.jpg",
+      "createdAt": "2025-05-05T09:16:46.385Z"
+    },
+    {
+      "id": 6,
+      "url": "http://localhost:3001/images/uploads/1746455297009-500393000.jpg",
+      "name": "z6475056101463_ed4e975fcaaf1cf2234cf67cd2dbf641.jpg",
+      "description": "Hình ảnh tải lên: z6475056101463_ed4e975fcaaf1cf2234cf67cd2dbf641.jpg",
+      "createdAt": "2025-05-05T14:28:17.024Z"
+    },
+    {
+      "id": 7,
+      "url": "http://localhost:3001/images/uploads/1746455326018-497167650.jpg",
+      "name": "experience2.jpg",
+      "description": "Hình ảnh tải lên: experience2.jpg",
+      "createdAt": "2025-05-05T14:28:46.036Z"
+    }
+  ],
+  "contacts": [],
+  "syncInfo": {
+    "lastSync": "2025-05-15T06:41:03.381Z"
+  },
+  "_comment": "This is a comment field that can be safely ignored",
+  "_lastSync": "2025-05-17T08:31:42.306Z"
+}

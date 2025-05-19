@@ -29,6 +29,9 @@ const Banner = () => {
         { image: sliderImages.image8 },
     ];
 
+    // Ensure we have enough slides for loop mode
+    const useLoopMode = slides.length >= 2;
+
     return (
         <div className={cx('banner')}>
             <div className={cx('container')}>
@@ -36,7 +39,7 @@ const Banner = () => {
                     <Swiper
                         spaceBetween={0}
                         slidesPerView={1}
-                        loop={true}
+                        loop={useLoopMode}
                         modules={[Autoplay, Navigation, EffectFade]}
                         effect="fade"
                         fadeEffect={{ crossFade: true }}
@@ -70,12 +73,16 @@ const Banner = () => {
                                 </div>
                             </SwiperSlide>
                         ))}
-                        <div className={cx('swiper-button-prev')}>
-                            <FontAwesomeIcon icon={faChevronLeft} className={cx('swiper-icon')} />
-                        </div>
-                        <div className={cx('swiper-button-next')}>
-                            <FontAwesomeIcon icon={faChevronRight} className={cx('swiper-icon')} />
-                        </div>
+                        {useLoopMode && (
+                            <>
+                                <div className={cx('swiper-button-prev')}>
+                                    <FontAwesomeIcon icon={faChevronLeft} className={cx('swiper-icon')} />
+                                </div>
+                                <div className={cx('swiper-button-next')}>
+                                    <FontAwesomeIcon icon={faChevronRight} className={cx('swiper-icon')} />
+                                </div>
+                            </>
+                        )}
                     </Swiper>
                 </div>
             </div>

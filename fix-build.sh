@@ -1,26 +1,33 @@
 #!/bin/bash
 
-# Sửa lỗi ký tự % ở cuối file
-sed -i '' 's/%$//g' build/index.html
-sed -i '' 's/%$//g' build/manifest.json
+echo "Running post-build fixes..."
 
-# Tạo bản sao của file
-cp build/index.html build/index.html.bak
+# Ensure we're in the correct directory
+cd "$(dirname "$0")"
 
-# Xử lý file index.html để xóa các script và stylesheet trùng lặp
-# Chỉ giữ lại một script và một stylesheet duy nhất
-cat build/index.html.bak | 
-  perl -pe 's/<script defer="defer" src="static\/js\/[^"]+"><\/script>//g' | 
-  perl -pe 's/<link href="static\/css\/[^"]+" rel="stylesheet">//g' > build/index.html
+# Create public directories if they don't exist
+mkdir -p public/phunongbuondon-api
+mkdir -p build/phunongbuondon-api
 
-echo "Fixed files in build folder"
+# Copy database.json to public and build
+cp -f database.json public/phunongbuondon-api/database.json
+cp -f database.json build/phunongbuondon-api/database.json
 
-# Kiểm tra nội dung file index.html có các script và stylesheet
-echo "Checking for duplicate scripts and stylesheets:"
-grep -c "<script" build/index.html
-grep -c "<link.*stylesheet" build/index.html
+# Create a public images folder structure (if not exists)
+mkdir -p public/images/experiences
+mkdir -p build/images/experiences
 
-# Kiểm tra xem còn ký tự % ở cuối các file không
-echo "Checking for trailing % character:"
-tail -c 10 build/index.html 
-tail -c 10 build/manifest.json 
+# Copy all node_modules CSS that might be missing
+echo "Ensuring all CSS dependencies are properly included..."
+
+# Fix for Swiper CSS
+if [ -d "node_modules/swiper/swiper.min.css" ]; then
+  cp -r node_modules/swiper/swiper.min.css build/static/css/
+fi
+
+if [ -d "node_modules/swiper/modules" ]; then
+  mkdir -p build/static/css/swiper
+  cp -r node_modules/swiper/modules/*.css build/static/css/swiper/
+fi
+
+echo "Post-build fixes completed successfully!" 

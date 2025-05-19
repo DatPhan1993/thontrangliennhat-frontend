@@ -7,7 +7,7 @@ import {
     deleteMainNavigationLink,
     deleteSubNavigationLink,
     deleteChildNavigationLink,
-} from '~/services/navigationApiService';
+} from '~/services/navigationService';
 import styles from './NavigationList.module.scss';
 import Title from '~/components/Title/Title';
 import routes from '~/config/routes';

@@ -11,16 +11,24 @@ const getFromSessionStorage = (key) => {
 };
 
 // Members
-export const getMembers = async () => {
+export const getMembers = async (forceRefresh = false) => {
     const sessionKey = 'allMembers';
 
-    const cachedData = getFromSessionStorage(sessionKey);
-    if (cachedData) {
-        return cachedData;
+    // Only use cached data if not forcing refresh
+    if (!forceRefresh) {
+        const cachedData = getFromSessionStorage(sessionKey);
+        if (cachedData) {
+            return cachedData;
+        }
+    } else {
+        // Clear the cache when forcing refresh
+        sessionStorage.removeItem(sessionKey);
     }
 
     try {
-        const response = await httpRequest.get('/teams');
+        // Add a timestamp to force browser to make a fresh request
+        const timestamp = new Date().getTime();
+        const response = await httpRequest.get(`/teams?_=${timestamp}`);
         const membersData = response.data.data;
 
         // Save to sessionStorage
@@ -35,14 +43,19 @@ export const getMembers = async () => {
 
 export const addMember = async (memberData) => {
     try {
-        const response = await httpRequest.post(`/teams`, memberData);
+        // Cấu hình đặc biệt cho form data với file upload
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        
+        const response = await httpRequest.post(`/teams`, memberData, config);
 
+        // Clear all member-related cache
         sessionStorage.removeItem(`allMembers`);
-
-        // Refresh sessionStorage for all services list
-        const updateMember = await getMembers();
-        saveToSessionStorage('allMembers', updateMember);
-
+        
+        // Don't need to refresh here as we'll force refresh when needed
         return response.data.data;
     } catch (error) {
         console.error('Error adding member', error);
@@ -54,12 +67,9 @@ export const updateMember = async (memberId, memberData) => {
     try {
         const response = await httpRequest.post(`/teams/${memberId}`, memberData);
 
+        // Clear all member-related cache
         sessionStorage.removeItem(`member_${memberId}`);
         sessionStorage.removeItem(`allMembers`);
-
-        // Refresh sessionStorage for all services list
-        const updateMember = await getMembers();
-        saveToSessionStorage('allMembers', updateMember);
 
         return response.data;
     } catch (error) {
@@ -68,16 +78,24 @@ export const updateMember = async (memberId, memberData) => {
     }
 };
 
-export const getMemberById = async (memberId) => {
+export const getMemberById = async (memberId, forceRefresh = false) => {
     const sessionKey = `member_${memberId}`;
 
-    const cachedData = getFromSessionStorage(sessionKey);
-    if (cachedData) {
-        return cachedData;
+    // Only use cached data if not forcing refresh
+    if (!forceRefresh) {
+        const cachedData = getFromSessionStorage(sessionKey);
+        if (cachedData) {
+            return cachedData;
+        }
+    } else {
+        // Clear the cache when forcing refresh
+        sessionStorage.removeItem(sessionKey);
     }
 
     try {
-        const response = await httpRequest.get(`/teams/${memberId}`);
+        // Add a timestamp to force browser to make a fresh request
+        const timestamp = new Date().getTime();
+        const response = await httpRequest.get(`/teams/${memberId}?_=${timestamp}`);
         const memberData = response.data.data;
 
         // Save to sessionStorage
@@ -94,12 +112,9 @@ export const deleteMember = async (memberId) => {
     try {
         await httpRequest.delete(`/teams/${memberId}`);
 
+        // Clear all member-related cache
         sessionStorage.removeItem(`allMembers`);
         sessionStorage.removeItem(`member_${memberId}`);
-
-        // Refresh sessionStorage for all services list
-        const updateMember = await getMembers();
-        saveToSessionStorage('allMembers', updateMember);
     } catch (error) {
         console.error('Error deleting member', error);
         throw error;

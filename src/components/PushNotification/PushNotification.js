@@ -13,12 +13,17 @@ const PushNotification = ({ message, type }) => {
         if (message) {
             setIsVisible(true);
             const startTime = performance.now();
+            
+            // Set longer display time for warnings (5s) vs regular notifications (3s)
+            const displayTime = type === 'warning' ? 5000 : 3000;
 
             const animate = (currentTime) => {
                 const elapsedTime = currentTime - startTime;
-                const progress = 1 - elapsedTime / 3000;
+                const progress = 1 - elapsedTime / displayTime;
 
-                progressRef.current.style.width = `${progress * 100}%`;
+                if (progressRef.current) {
+                    progressRef.current.style.width = `${progress * 100}%`;
+                }
 
                 if (progress > 0) {
                     animationRef.current = requestAnimationFrame(animate);
@@ -32,14 +37,14 @@ const PushNotification = ({ message, type }) => {
             const timer = setTimeout(() => {
                 setIsVisible(false);
                 cancelAnimationFrame(animationRef.current);
-            }, 3000);
+            }, displayTime);
 
             return () => {
                 clearTimeout(timer);
                 cancelAnimationFrame(animationRef.current);
             };
         }
-    }, [message]);
+    }, [message, type]);
 
     const handleClose = () => {
         setIsVisible(false);
@@ -51,7 +56,11 @@ const PushNotification = ({ message, type }) => {
             className={cx(
                 'pushNotification',
                 { visible: isVisible },
-                { success: type === 'success', error: type === 'error' },
+                { 
+                    success: type === 'success', 
+                    error: type === 'error',
+                    warning: type === 'warning'
+                },
             )}
         >
             <span className={styles.message}>{message}</span>

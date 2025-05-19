@@ -2,13 +2,13 @@ import classNames from 'classnames/bind';
 import React from 'react';
 import Title from '~/components/Title/Title';
 import styles from './About.module.scss';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 const cx = classNames.bind(styles);
 
 const About = () => (
     <article className={cx('wrapper')}>
-        <Helmet>
+        <HelmetProvider>
             <title>Giới thiệu | HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
             <meta
                 name="description"
@@ -19,7 +19,7 @@ const About = () => (
                 content="dịch vụ nông nghiệp du lịch, hợp tác xã, sản phẩm nông nghiệp, thontrangliennhat"
             />
             <meta name="author" content="HTX Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật" />
-        </Helmet>
+        </HelmetProvider>
         <div className={cx('inner')}>
             <Title text="Về Chúng Tôi" />
             <div className={cx('content')}>

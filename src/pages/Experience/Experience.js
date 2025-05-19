@@ -1,72 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import classNames from 'classnames/bind';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import routes from '~/config/routes';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/autoplay';
-
-import Title from '~/components/Title/Title';
-import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
+import classNames from 'classnames/bind';
+import CardExperience from '~/components/CardService/CardService';
+import { getExperiences } from '~/services/experienceService';
 import styles from './Experience.module.scss';
-import { Helmet } from 'react-helmet';
-import { experiencesData } from '~/data/experiences';
-import { categoriesData } from '~/data/categories';
+import Title from '~/components/Title/Title';
+import PushNotification from '~/components/PushNotification/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
+import routes from '~/config/routes';
+import { getCategoriesBySlug } from '~/services/categoryService';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { Helmet, HelmetProvider } from "react-helmet-async";
+import { getImageUrl } from '~/utils/imageUtils';
+import { Button } from 'antd';
 
 const cx = classNames.bind(styles);
 
-const Experience = () => {
-    const [experiences, setExperiences] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [groupedExperiences, setGroupedExperiences] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [activeCategory, setActiveCategory] = useState(null);
+// Helper function to process image paths
+const processImagePath = (images) => {
+    // Handle array of images
+    if (Array.isArray(images)) {
+        return images.length > 0 ? getImageUrl(images[0]) : '';
+    }
+    // Handle single image string
+    return getImageUrl(images);
+};
 
-    useEffect(() => {
+const Experience = () => {
+    const [allExperiences, setAllExperiences] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const experiencesPerPage = 9;
+    
+    const fetchExperiences = async () => {
+        setLoading(true);
+        setError(null);
+        
         try {
-            // Use local data instead of API
-            setCategories(categoriesData);
+            // Fetch categories and experiences
+            const [categoriesData, experiencesData] = await Promise.all([
+                getCategoriesBySlug('trai-nghiem'),
+                getExperiences()
+            ]);
             
-            // Group experiences by category
-            const groupedExperiencesMap = {};
-            
-            categoriesData.forEach(category => {
-                const experiencesByCategory = experiencesData.filter(experience => 
-                    experience.categoryId === category.id
-                );
-                
-                if (experiencesByCategory.length > 0) {
-                    groupedExperiencesMap[category.id] = experiencesByCategory;
-                }
-            });
-            
-            setGroupedExperiences(groupedExperiencesMap);
-            setExperiences(experiencesData);
-            
-            // Set the default active category to the first one with experiences
-            const firstCategoryWithExperiences = categoriesData.find(
-                cat => groupedExperiencesMap[cat.id] && groupedExperiencesMap[cat.id].length > 0
-            );
-            
-            if (firstCategoryWithExperiences) {
-                setActiveCategory(firstCategoryWithExperiences.id);
+            if (categoriesData && Array.isArray(categoriesData)) {
+                setCategories(categoriesData);
             }
             
-            setLoading(false);
-        } catch (error) {
-            console.error('Error processing experience data:', error);
+            if (experiencesData && Array.isArray(experiencesData)) {
+                console.log(`Found ${experiencesData.length} total experiences`);
+                
+                // Process experiences for display
+                const processedExperiences = experiencesData.map(exp => ({
+                    ...exp,
+                    id: exp.id,
+                    name: exp.name || exp.title,
+                    title: exp.title || exp.name,
+                    summary: exp.summary,
+                    createdAt: exp.createdAt || exp.created_at || new Date().toISOString(),
+                    views: exp.views || 0,
+                    image: processImagePath(exp.images),
+                }));
+                
+                setAllExperiences(processedExperiences);
+                setError(null);
+            } else {
+                setError("Không tìm thấy trải nghiệm nào. Vui lòng thử lại sau.");
+            }
+        } catch (err) {
+            console.error("Error fetching experiences:", err);
+            setError("Lỗi khi tải dữ liệu trải nghiệm. Vui lòng thử lại sau.");
+        } finally {
             setLoading(false);
         }
-    }, []);
-
-    const handleCategoryClick = (categoryId) => {
-        setActiveCategory(categoryId);
     };
 
-    const handleImageError = (e) => {
-        console.log('Image error:', e.target.src);
-        e.target.src = 'https://via.placeholder.com/600x400?text=Image+not+found';
+    useEffect(() => {
+        fetchExperiences();
+    }, []);
+
+    // Pagination
+    const indexOfLastExperience = currentPage * experiencesPerPage;
+    const indexOfFirstExperience = indexOfLastExperience - experiencesPerPage;
+    const currentExperiences = allExperiences.slice(indexOfFirstExperience, indexOfLastExperience);
+    const totalPages = Math.ceil(allExperiences.length / experiencesPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     };
 
     if (loading) {
@@ -75,80 +101,81 @@ const Experience = () => {
 
     return (
         <article className={cx('wrapper')}>
-            <Helmet>
-                <title>Trải Nghiệm | HTX NÔNG NGHIỆP - DU LỊCH PHÚ NÔNG Liên Nhật </title>
+            <HelmetProvider>
+                <title>Trải Nghiệm - Thôn Trang Liên Nhật</title>
                 <meta
                     name="description"
-                    content="HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật hoạt động đa ngành nghề, trong đó tiêu biểu có thể kể đến là nuôi cá lồng, cải tạo nâng cấp vườn cây quanh các hồ thủy điện, phát triển về du lịch sinh thái, du lịch nông nghiệp."
+                    content="Khám phá các trải nghiệm đặc sắc tại Thôn Trang Liên Nhật - từ mô hình sinh kế đến các hoạt động vui chơi, tham quan"
                 />
-                <meta
-                    name="keywords"
-                    content="trải nghiệm, du lịch nông nghiệp, hợp tác xã, phunongbuondon"
-                />
-                <meta name="author" content="HTX Nông Nghiệp - Du Lịch Phú Nông Buôn" />
-            </Helmet>
+            </HelmetProvider>
             
-            <div className={cx('experience-section')}>
-                {/* Category Navigation */}
-                <div className={cx('category-navigation')}>
-                    <ul className={cx('category-list')}>
-                        {categories.map((category) => {
-                            // Only show categories that have experiences
-                            if (!groupedExperiences[category.id] || groupedExperiences[category.id].length === 0) {
-                                return null;
-                            }
-                            
-                            return (
-                                <li 
-                                    key={category.id} 
-                                    className={cx('category-item', { active: activeCategory === category.id })}
-                                    onClick={() => handleCategoryClick(category.id)}
-                                >
-                                    <span className={cx('category-icon')}></span>
-                                    {category.title}
-                                </li>
-                            );
-                        })}
-                    </ul>
+            {error ? (
+                <div className={cx('error-container')}>
+                    <div className={cx('error-message')}>
+                        <h3>Thông báo</h3>
+                        <p>{error}</p>
+                        <Button 
+                            className={cx('retry-button')}
+                            onClick={fetchExperiences}
+                            icon={<FontAwesomeIcon icon={faSyncAlt} />}
+                        >
+                            Thử lại
+                        </Button>
+                    </div>
                 </div>
-                
-                <div className={cx('experience-column')}>
-                    {/* Display the active category title */}
-                    {activeCategory && (
-                        <h2 className={cx('experience-title')}>
-                            {categories.find(cat => cat.id === activeCategory)?.title.toUpperCase()}
-                        </h2>
-                    )}
+            ) : (
+                <div className={cx('experiences-section')}>
+                    <div className={cx('experiences-header')}>
+                        <h2 className={cx('experiences-title')}>Khu Vực Trải Nghiệm</h2>
+                    </div>
                     
-                    {/* Display experiences for the active category */}
-                    {activeCategory && groupedExperiences[activeCategory] && (
-                        <div className={cx('experience-items-grid')}>
-                            {groupedExperiences[activeCategory].map((item) => {
-                                const categoryData = categories.find(cat => cat.id === item.categoryId);
-                                
-                                return (
-                                    <div key={item.id} className={cx('experience-grid-item')}>
-                                        <Link to={`${routes.experiences}/${categoryData?.slug}/${item.id}`}>
-                                            <div className={cx('experience-item')}>
-                                                <div className={cx('experience-image-container')}>
-                                                    <img
-                                                        src={item.images}
-                                                        alt={item.title}
-                                                        className={cx('experience-image')}
-                                                        onError={handleImageError}
-                                                    />
-                                                </div>
-                                                <h3 className={cx('experience-item-title')}>{item.title}</h3>
-                                                <p className={cx('experience-summary')}>{item.summary}</p>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                );
-                            })}
+                    <div className={cx('experiences-grid')}>
+                        {currentExperiences.map((experience, index) => (
+                            <Link 
+                                key={index} 
+                                to={`${routes.experiences}/trai-nghiem/${experience.id}`}
+                                className={cx('experience-item')}
+                            >
+                                <CardExperience
+                                    title={experience.title}
+                                    summary={experience.summary}
+                                    image={experience.image}
+                                    createdAt={experience.createdAt}
+                                    views={experience.views}
+                                />
+                            </Link>
+                        ))}
+                    </div>
+                    
+                    {totalPages > 1 && (
+                        <div className={cx('pagination')}>
+                            <div 
+                                className={cx('pagination-button')} 
+                                onClick={() => handlePageChange(currentPage - 1)}
+                            >
+                                <FontAwesomeIcon icon={faChevronLeft} />
+                            </div>
+                            
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <div
+                                    key={index}
+                                    className={cx('pagination-button', { active: currentPage === index + 1 })}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </div>
+                            ))}
+                            
+                            <div 
+                                className={cx('pagination-button')} 
+                                onClick={() => handlePageChange(currentPage + 1)}
+                            >
+                                <FontAwesomeIcon icon={faChevronRight} />
+                            </div>
                         </div>
                     )}
                 </div>
-            </div>
+            )}
         </article>
     );
 };

@@ -13,6 +13,7 @@ const AddMember = () => {
     const navigate = useNavigate();
     const [notification, setNotification] = useState({ message: '', type: '' });
     const [files, setFiles] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const initialValues = {
         name: '',
@@ -28,7 +29,8 @@ const AddMember = () => {
         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     };
 
-    const handleSubmit = async (values, { resetForm }) => {
+    const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+        setIsSubmitting(true);
         const formData = new FormData();
 
         formData.append('name', values.name);
@@ -39,17 +41,26 @@ const AddMember = () => {
         }
 
         try {
-            await addMember(formData);
+            const response = await addMember(formData);
+            console.log('Member added successfully:', response);
+            
             resetForm();
             setFiles([]);
             setNotification({ message: 'Thêm thành viên thành công!', type: 'success' });
 
+            // Wait a moment before redirecting
             setTimeout(() => {
-                navigate(routes.memberList);
-            }, 1000);
+                // Navigate to the member list with a query parameter to indicate a refresh is needed
+                navigate(`${routes.memberList}?refresh=true&timestamp=${Date.now()}`);
+            }, 1500);
         } catch (error) {
-            setNotification({ message: 'Lỗi khi thêm thành viên.', type: 'error' });
             console.error('Lỗi khi tạo thành viên:', error);
+            setNotification({ 
+                message: `Lỗi khi thêm thành viên: ${error.response?.data?.message || error.message || 'Lỗi không xác định'}`, 
+                type: 'error' 
+            });
+            setSubmitting(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -67,7 +78,7 @@ const AddMember = () => {
             <Title text="Thêm thành viên" />
             {notification.message && <PushNotification message={notification.message} type={notification.type} />}
             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                {({ isSubmitting }) => (
+                {({ isSubmitting: formikSubmitting }) => (
                     <Form className={styles.form}>
                         <div className={styles.formGroup}>
                             <label htmlFor="name">Tên Thành viên</label>
@@ -105,8 +116,12 @@ const AddMember = () => {
                                 </div>
                             ))}
                         </div>
-                        <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                            Thêm Thành viên
+                        <button 
+                            type="submit" 
+                            disabled={formikSubmitting || isSubmitting} 
+                            className={styles.submitButton}
+                        >
+                            {isSubmitting ? 'Đang xử lý...' : 'Thêm Thành viên'}
                         </button>
                     </Form>
                 )}

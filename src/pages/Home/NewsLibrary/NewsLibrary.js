@@ -5,132 +5,186 @@ import styles from './NewsLibrary.module.scss';
 import Title from '~/components/Title/Title';
 import routes from '~/config/routes';
 import { format } from 'date-fns';
-
-// Import dummy data instead of making API calls
-import newsData from '../../../assets/dummy/news';
+import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
+import Library from './Library/Library';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/autoplay';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
 function NewsLibrary() {
     const [news, setNews] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState("newest");
 
-    useEffect(() => {
-        // Instead of API call, use the dummy data
-        setLoading(true);
-        try {
-            // Process news data based on active tab
-            let filteredNews = [...newsData];
-            
-            if (activeTab === "newest") {
-                filteredNews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            } else if (activeTab === "featured") {
-                filteredNews.sort((a, b) => b.views - a.views);
-            } else if (activeTab === "random") {
-                filteredNews.sort(() => Math.random() - 0.5);
+    // Function to correctly handle image paths
+    const getCorrectImagePath = (imagePath) => {
+        if (!imagePath) return "/images/default-news.jpg";
+        
+        // Handle array of images
+        if (Array.isArray(imagePath)) {
+            if (imagePath.length > 0) {
+                return getCorrectImagePath(imagePath[0]); // Lấy ảnh đầu tiên nếu là mảng
+            } else {
+                return "/images/default-news.jpg";
+            }
+        }
+        
+        // Handle URLs that already have http:// or https://
+        if (typeof imagePath === 'string') {
+            if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                return imagePath;
             }
             
-            setNews(filteredNews);
-            setLoading(false);
-        } catch (err) {
-            setError("Failed to load news");
-            setLoading(false);
-            console.error("Error loading news:", err);
+            // Handle relative paths from /images/uploads for admin uploads
+            if (imagePath.includes('/uploads/')) {
+                return `http://localhost:3001${imagePath}`; 
+            }
+            
+            // Handle relative paths
+            if (imagePath.startsWith('/')) {
+                return imagePath;
+            }
         }
-    }, [activeTab]); // Dependency on activeTab to reload when tab changes
+        
+        // Default fallback
+        return imagePath;
+    };
+
+    useEffect(() => {
+        const fetchNewsData = async () => {
+            setLoading(true);
+            try {
+                // Sử dụng API thay vì đọc trực tiếp database.json
+                const response = await fetch('http://localhost:3001/api/news');
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch news: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                if (result.data && result.data.length > 0) {
+                    console.log(`Found ${result.data.length} news items from API`);
+                    processNewsData(result.data);
+                } else {
+                    setError("No news found in API response");
+                    }
+            } catch (err) {
+                console.error("Error loading news from API:", err);
+                // Fallback to direct database.json fetching if API fails
+                try {
+                const response = await fetch('/phunongbuondon-api/database.json');
+                    
+                if (!response.ok) {
+                        throw new Error(`Failed to fetch database.json: ${response.status}`);
+                    }
+                    
+                    const database = await response.json();
+                    if (database.news && database.news.length > 0) {
+                        console.log(`Fallback: Found ${database.news.length} news items in database`);
+                        processNewsData(database.news);
+                    } else {
+                        setError("No news found in database fallback");
+                    }
+                } catch (fallbackErr) {
+                    console.error("Fallback also failed:", fallbackErr);
+                    setError("Failed to load news: " + err.message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        const processNewsData = (newsData) => {
+            console.log("Processing news data:", newsData);
+            let processedNews = newsData.map(item => {
+                // Chuẩn hóa trường images
+                let processedImages = item.images;
+                
+                // Đảm bảo images luôn là mảng hoặc chuỗi đúng định dạng
+                if (!processedImages && item.image) {
+                    // Nếu không có images nhưng có image
+                    processedImages = item.image;
+                } else if (!processedImages) {
+                    // Nếu không có cả hai, dùng hình mặc định
+                    processedImages = "/images/default-news.jpg";
+                }
+                
+                // Chuẩn hóa images nếu là chuỗi
+                if (typeof processedImages === 'string' && 
+                    (processedImages.startsWith('/images/uploads/') || 
+                     processedImages.includes('/uploads/'))) {
+                    // Đây là đường dẫn upload từ admin
+                    console.log("Found upload image:", processedImages);
+                }
+                
+                return {
+                    ...item,
+                    images: processedImages,
+                    views: item.views || 0,
+                    createdAt: item.createdAt || new Date().toISOString()
+                };
+            });
+
+            // Sort based on active tab
+            if (activeTab === "newest") {
+                processedNews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (activeTab === "featured") {
+                processedNews.sort((a, b) => b.views - a.views);
+            } else if (activeTab === "random") {
+                processedNews.sort(() => Math.random() - 0.5);
+            }
+            
+            console.log(`Setting ${processedNews.length} news items for display`);
+            setNews(processedNews);
+        };
+
+        fetchNewsData();
+    }, [activeTab]);
 
     // Function to format date
     const formatDate = (dateString) => {
         try {
             return format(new Date(dateString), "dd/MM/yyyy");
         } catch (error) {
-            console.error("Error formatting date:", error);
             return "Invalid date";
         }
     };
 
-    // Function to get the appropriate link for each news item
+    // Function to get news link
     const getNewsLink = (newsItem) => {
-        // External links for specific news items
-        if (newsItem.id === 6) {
-            return "https://baohatinh.vn/cac-khu-du-lich-sinh-thai-o-ha-tinh-chuan-bi-gi-khi-he-sang-post285932.html?zarsrc=30&utm_source=zalo&utm_medium=zalo&utm_campaign=zalo&fbclid=IwY2xjawJ3OftleHRuA2FlbQIxMQBicmlkETFNMElER1JRSVdtVXJKeEJUAR6crDa5eir5e89LX-5lgRFT5x1PNHUxYSqUPwJcPrRdO6mk9kFv2kcnrzgWMQ_aem_nD_cIJ7EdPRKMGXX6qo6Eg";
-        } else if (newsItem.id === 5) {
-            return "https://vtvgo.vn/ts/13331774?fbclid=IwY2xjawJ3Oi9leHRuA2FlbQIxMQBicmlkETFNMElER1JRSVdtVXJKeEJUAR5DVR52JSkKK1oJB-DEhzmjf-MhE7itNaVexAf4ISk0Yop28RMHnBotKWIqvw_aem_hauQvtqdVDEcmo4soLp0kw";
-        } else if (newsItem.id === 4) {
-            return "https://donghanhdulich.com/dia-danh/10-mon-an-ha-tinh-ngon-khong-can-chung-minh-an-mot-lan-la-nho-mai.html";
-        }
-        // Default internal route for other news items
-        return `${routes.news}/${newsItem.slug}`;
-    };
-
-    // Function to determine if link should open in new tab
-    const shouldOpenInNewTab = (newsItem) => {
-        return newsItem.id === 4 || newsItem.id === 5 || newsItem.id === 6;
+        return `${routes.news}/tin-tuc-id/${newsItem.id}`;
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LoadingScreen isLoading={loading} />;
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div className={cx('error-message')}>{error}</div>;
     }
+
+    // Calculate slidesPerView based on the default value from the breakpoints
+    const slidesPerView = Math.min(news.length, 3);
+    // Check if we have enough items for loop mode (at least double the slidesPerView)
+    const useLoopMode = news.length >= (slidesPerView * 2);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Title text="TIN TỨC" showSeeAll={true} slug={`${routes.news}`} />
-                <div className={cx('news-container')}>
-                    {news.map((newsItem) => {
-                        const newsLink = getNewsLink(newsItem);
-                        const openInNewTab = shouldOpenInNewTab(newsItem);
-                        
-                        return (
-                            <div key={newsItem.id} className={cx('news-item')}>
-                                {openInNewTab ? (
-                                    <a 
-                                        href={newsLink} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer" 
-                                        className={cx('news-link')}
-                                    >
-                                        <div className={cx('news-image-container')}>
-                                            <img src={newsItem.images} alt={newsItem.title} className={cx('news-image')} />
-                                        </div>
-                                        <div className={cx('news-content')}>
-                                            <h3 className={cx('news-title')}>{newsItem.title}</h3>
-                                            <p className={cx('news-summary')}>{newsItem.summary}</p>
-                                            <div className={cx('news-meta')}>
-                                                <span className={cx('news-views')}>
-                                                    👁️ {newsItem.views}
-                                                </span>
-                                                <span className={cx('news-date')}>{formatDate(newsItem.createdAt)}</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                ) : (
-                                    <Link to={newsLink} className={cx('news-link')}>
-                                        <div className={cx('news-image-container')}>
-                                            <img src={newsItem.images} alt={newsItem.title} className={cx('news-image')} />
-                                        </div>
-                                        <div className={cx('news-content')}>
-                                            <h3 className={cx('news-title')}>{newsItem.title}</h3>
-                                            <p className={cx('news-summary')}>{newsItem.summary}</p>
-                                            <div className={cx('news-meta')}>
-                                                <span className={cx('news-views')}>
-                                                    👁️ {newsItem.views}
-                                                </span>
-                                                <span className={cx('news-date')}>{formatDate(newsItem.createdAt)}</span>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+                
+                {news.length === 0 ? (
+                    <div className={cx('no-news')}>Không có tin tức nào được tìm thấy</div>
+                ) : (
+                    <div className={cx('news-section')}>
                 <div className={cx('news-tabs')}>
                     <button
                         className={classNames(cx('tab'), {
@@ -156,6 +210,72 @@ function NewsLibrary() {
                     >
                         NGẪU NHIÊN
                     </button>
+                </div>
+                        
+                        <div className={cx('news-slider-container')}>
+                            <Swiper
+                                spaceBetween={20}
+                                slidesPerView={3}
+                                breakpoints={{
+                                    1280: { slidesPerView: 3 },
+                                    1024: { slidesPerView: 2 },
+                                    768: { slidesPerView: 2 },
+                                    0: { slidesPerView: 1 },
+                                }}
+                                loop={useLoopMode}
+                                modules={[Autoplay, Navigation, Pagination]}
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false,
+                                }}
+                                navigation={{
+                                    nextEl: `.${cx('swiper-button-next')}`,
+                                    prevEl: `.${cx('swiper-button-prev')}`,
+                                }}
+                                className={cx('swiper')}
+                            >
+                                {news.map((newsItem) => (
+                                    <SwiperSlide key={newsItem.id} className={cx('slide')}>
+                                        <div className={cx('news-item')}>
+                                            <Link to={getNewsLink(newsItem)} className={cx('news-link')}>
+                                                <div className={cx('news-image-container')}>
+                                                    <img 
+                                                        src={getCorrectImagePath(newsItem.images)} 
+                                                        alt={newsItem.title} 
+                                                        className={cx('news-image')}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = "/images/default-news.jpg";
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className={cx('news-content')}>
+                                                    <h3 className={cx('news-title')}>{newsItem.title}</h3>
+                                                    <p className={cx('news-summary')}>{newsItem.summary}</p>
+                                                    <div className={cx('news-meta')}>
+                                                        <span className={cx('news-views')}>
+                                                            👁️ {newsItem.views}
+                                                        </span>
+                                                        <span className={cx('news-date')}>{formatDate(newsItem.createdAt)}</span>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                            <div className={cx('swiper-button-prev')}>
+                                <FontAwesomeIcon icon={faChevronLeft} className={cx('swiper-icon')} />
+                            </div>
+                            <div className={cx('swiper-button-next')}>
+                                <FontAwesomeIcon icon={faChevronRight} className={cx('swiper-icon')} />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                
+                <div className={cx('library-section')}>
+                    <Library />
                 </div>
             </div>
         </div>

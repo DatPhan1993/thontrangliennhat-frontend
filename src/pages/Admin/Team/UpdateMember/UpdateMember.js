@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getMemberById, updateMember } from '~/services/teamService';
+import { getImageUrl } from '~/utils/imageUtils';
 import PushNotification from '~/components/PushNotification/PushNotification';
 import styles from './UpdateMember.module.scss';
 import routes from '~/config/routes';
@@ -99,11 +100,15 @@ const UpdateMember = () => {
                                 <img
                                     src={
                                         typeof values.image === 'string'
-                                            ? values.image
+                                            ? getImageUrl(values.image)
                                             : URL.createObjectURL(values.image)
                                     }
                                     alt="Member"
                                     className={styles.memberImage}
+                                    onError={(e) => {
+                                        console.error('Image preview error:', values.image);
+                                        e.target.src = '/placeholder-image.svg';
+                                    }}
                                 />
                             </div>
                         )}

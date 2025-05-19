@@ -84,11 +84,11 @@ function News() {
                         const isNew = dayjs().diff(dayjs(news.created_at), 'day') <= 3;
 
                         return (
-                            <Link key={index} to={`${routes.news}/${getCategorySlug(news.child_nav_id)}/${news.id}`}>
+                            <Link key={index} to={`${routes.news}/tin-tuc-id/${news.id}`}>
                                 <CardContent
                                     title={news.title}
                                     summary={news.summary}
-                                    image={news.images[0]}
+                                    image={Array.isArray(news.images) && news.images.length > 0 ? news.images[0] : news.image || news.images}
                                     link={news.link}
                                     createdAt={news.created_at}
                                     views={news.views}

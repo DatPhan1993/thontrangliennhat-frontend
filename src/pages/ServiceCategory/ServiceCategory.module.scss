@@ -159,3 +159,12 @@
 .empty-element {
     margin: 40px 0;
 }
+
+.service-item {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-5px);
+    }
+}

@@ -1,45 +1,43 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Header.module.scss';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
+import routes from '~/config/routes';
 
 const Dropdown = ({ isVisible, notifications, isUserDropdown }) => {
-    if (!isVisible) return null;
-
     return (
-        <div className={styles.dropdown}>
+        <div className={`${styles.dropdown} ${isVisible ? styles.visible : ''}`}>
             {isUserDropdown ? (
-                <div className={styles.userDropdown}>
-                    {notifications.map((item, index) => (
-                        <div
-                            key={index}
-                            className={styles.dropdownItem}
-                            onClick={item.action}
-                        >
-                            <FontAwesomeIcon icon={item.icon} className={styles.icon} />
-                            <span>{item.text}</span>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <div className={styles.notificationDropdown}>
-                    {notifications.length === 0 ? (
-                        <div className={styles.noNotifications}>Không có thông báo mới</div>
-                    ) : (
-                        notifications.map((notification, index) => (
-                            <div key={index} className={styles.notificationItem}>
+                notifications.map((item, index) => (
+                    <div key={item.id || index} className={styles.dropdownItem} onClick={item.action}>
+                        <FontAwesomeIcon icon={item.icon} className={styles.icon} />
+                        {item.text}
+                    </div>
+                ))
+            ) : notifications.length > 0 ? (
+                <>
+                    {notifications.map((notification) => (
+                        <Link to={routes.messagesList} key={notification.id}>
+                            <div className={styles.dropdownItem}>
+                                <FontAwesomeIcon icon={faEnvelope} className={styles.icon} />
                                 <div className={styles.notificationContent}>
-                                    {notification.content}
-                                </div>
-                                <div className={styles.notificationTime}>
-                                    {new Date(notification.createdAt).toLocaleString()}
+                                    <div className={styles.notificationTitle}>Chủ đề: {notification.title}</div>
+                                    <div className={styles.notificationMessage}>Người gửi: {notification.name}</div>
+                                    <p className={styles.notificationMessage}>Nội dung: {notification.content}</p>
                                 </div>
                             </div>
-                        ))
-                    )}
-                </div>
+                        </Link>
+                    ))}
+                    <div className={styles.viewAll}>
+                        <Link to={routes.messagesList}>Xem tất cả</Link>
+                    </div>
+                </>
+            ) : (
+                <div className={styles.noNotifications}>No new messages</div>
             )}
         </div>
     );
 };
 
-export default Dropdown; 
+export default Dropdown;

@@ -29,6 +29,10 @@
 		background-color: #f44336;
 	}
 
+	&.warning {
+		background-color: #ff9800;
+	}
+
 	&.visible {
 		opacity: 1;
 		pointer-events: auto;

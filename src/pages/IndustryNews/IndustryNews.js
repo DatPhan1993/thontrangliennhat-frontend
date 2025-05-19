@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import Card from '~/components/CardContent/CardContent';
 import { getCategoriesBySlug } from '~/services/categoryService';
 import routes from '~/config/routes';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import dayjs from 'dayjs';
 import { DatePicker, Space, Button, Empty } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
@@ -170,18 +170,18 @@ function NewsCategory() {
 
     return (
         <div className={cx('container')}>
-            <Helmet>
-                <title>{categoryName} | HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật</title>
+            <HelmetProvider>
+                <title>{categoryName} | HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật</title>
                 <meta
                     name="description"
-                    content={`Xem các tin tức liên quan đến ${categoryName} trên HTX Nông Nghiệp - Du Lịch Phú Nông Liên Nhật.`}
+                    content={`Xem các tin tức liên quan đến ${categoryName} trên HTX Sản Xuất Nông Nghiệp - Dịch Vụ Tổng Hợp Liên Nhật.`}
                 />
                 <meta
                     name="keywords"
                     content={`${categoryName}, tin hợp tác xã, tin nông nghiệp - du lịch, tin tức, phunongbuondon`}
                 />
                 <meta name="author" content="HTX Nông Nghiệp - Du Lịch Phú Nông Buôn" />
-            </Helmet>
+            </HelmetProvider>
 
             <Title text={categoryName} />
 

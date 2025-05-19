@@ -1,28 +1,64 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link, NavLink } from 'react-router-dom';
-import { navigationData } from '~/data/navigation';
+import { getNavigationLinks } from '~/services/navigationService';
 import styles from './Navigation.module.scss';
-import Search from '../../Search/Seach';
+import Search from '~/layouts/components/Search/Seach';
+import PushNotification from '~/components/PushNotification/PushNotification';
+import LoadingScreen from '~/components/LoadingScreen/LoadingScreen';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBars,
     faTimes,
     faChevronRight,
     faChevronDown,
-    faSearch,
-    faExclamationTriangle
+    // faHome,
+    // faInfoCircle,
+    // faBox,
+    // faLayerGroup,
+    // faProjectDiagram,
+    // faNewspaper,
+    // faUsers,
+    // faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
+
+// const iconsData = [
+//     { position: 1, icon: faInfoCircle },
+//     { position: 2, icon: faBox },
+//     { position: 3, icon: faLayerGroup },
+//     { position: 4, icon: faProjectDiagram },
+//     { position: 5, icon: faNewspaper },
+//     { position: 6, icon: faUsers },
+//     { position: 7, icon: faEnvelope },
+// ];
 
 const cx = classNames.bind(styles);
 
 function Navigation({ isFixed }) {
-    const [navigationLinks] = useState(navigationData);
+    const [navigationLinks, setNavigationLinks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openSubMenus, setOpenSubMenus] = useState({});
     const [openSubSubMenus, setOpenSubSubMenus] = useState({});
-    const [showSearch, setShowSearch] = useState(false);
+
+    useEffect(() => {
+        const fetchNavigationLinks = async () => {
+            try {
+                const links = await getNavigationLinks();
+                const sortedLinks = links.sort((a, b) => a.position - b.position);
+                setNavigationLinks(sortedLinks);
+            } catch (error) {
+                setError(error);
+                console.error('Error fetching navigation links:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNavigationLinks();
+    }, []);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -86,9 +122,14 @@ function Navigation({ isFixed }) {
         }
     };
 
-    const toggleSearch = () => {
-        setShowSearch(!showSearch);
-    };
+    if (error) {
+        const errorMessage = error.response ? error.response.data.message : 'Network Error';
+        return <PushNotification message={errorMessage} />;
+    }
+
+    if (loading) {
+        return <LoadingScreen />;
+    }
 
     return (
         <div className={cx('wrapper', { fixed: isFixed })}>
@@ -104,28 +145,29 @@ function Navigation({ isFixed }) {
                         <Link to="/">THÔN TRANG LIÊN NHẬT</Link>
                     </div>
                 </div>
-                
-                <nav className={cx('main-nav')}>
+                <div className={cx('main-nav')}>
                     <ul className={cx('navigation-links', { open: isMenuOpen })}>
                         {navigationLinks.map((link) => {
-                            const sortedChilds = (link.children || []).sort((a, b) => a.position - b.position);
+                            // const iconData = iconsData.find((icon) => icon.position === link.position);
+                            const sortedChilds = link.children.sort((a, b) => a.position - b.position);
                             return (
                                 <li
                                     key={link.id}
-                                    className={cx({ 'has-children': sortedChilds.length > 0 })}
-                                    onMouseEnter={() => handleMouseEnter(link.id)}
-                                    onMouseLeave={() => handleMouseLeave(link.id)}
-                                    onClick={() => toggleSubMenu(link.id)}
+                                    className={cx({ 'has-children': link.children.length > 0 })}
+                                    onMouseEnter={() => handleMouseEnter(link.id)} // Hover event
+                                    onMouseLeave={() => handleMouseLeave(link.id)} // Leave event
+                                    onClick={() => toggleSubMenu(link.id)} // Click event for mobile
                                 >
                                     <div className={cx('menu-item')}>
                                         <NavLink
+                                            end
                                             to={`/${link.slug}`}
-                                            className={cx('nav-link')}
+                                            className={({ isActive }) => cx('nav-link', { 'active-link': isActive })}
                                             onClick={handleLinkClick}
                                         >
-                                            {link.title.toUpperCase()}
+                                            {link.title}
                                         </NavLink>
-                                        {sortedChilds.length > 0 && (
+                                        {link.children.length > 0 && (
                                             <FontAwesomeIcon
                                                 icon={openSubMenus[link.id] ? faChevronDown : faChevronRight}
                                                 className={cx('submenu-icon')}
@@ -154,7 +196,9 @@ function Navigation({ isFixed }) {
                                                         <div className={cx('sub-link-wrapper')}>
                                                             <NavLink
                                                                 to={`/${link.slug}/${childLink.slug}`}
-                                                                className={cx('sub-link')}
+                                                                className={({ isActive }) =>
+                                                                    cx({ 'active-link': isActive })
+                                                                }
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     handleLinkClick();
@@ -184,7 +228,9 @@ function Navigation({ isFixed }) {
                                                                         <li key={subChildLink.id}>
                                                                             <NavLink
                                                                                 to={`/${link.slug}/${childLink.slug}/${subChildLink.slug}`}
-                                                                                className={cx('sub-sub-link')}
+                                                                                className={({ isActive }) =>
+                                                                                    cx({ 'active-link': isActive })
+                                                                                }
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation(); 
                                                                                     handleLinkClick();
@@ -206,11 +252,8 @@ function Navigation({ isFixed }) {
                             );
                         })}
                     </ul>
-                </nav>
-                <div className={cx('search-icon')} onClick={toggleSearch}>
-                    <FontAwesomeIcon icon={faSearch} />
                 </div>
-                {showSearch && <Search onClose={toggleSearch} />}
+                <Search />
             </div>
         </div>
     );

@@ -7,7 +7,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: linear-gradient(to right, var(--gradient-start), var(--gradient-middle1), var(--gradient-middle2), var(--gradient-middle3), var(--gradient-end));
+	background: $header-gradient;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
