@@ -21,6 +21,17 @@ if [ ! -d "build" ]; then
   exit 1
 fi
 
+# Ensure images directory exists with default image
+echo "Setting up images directory..."
+mkdir -p build/images
+# Copy default news image if exists, or create placeholder
+if [ -f "public/images/default-news.jpg" ]; then
+  cp public/images/default-news.jpg build/images/
+else
+  cp public/logo512.png build/images/default-news.jpg
+  echo "Created default image placeholder for news"
+fi
+
 # Ensure manifest.json is valid
 echo "Validating manifest.json..."
 cat build/manifest.json | jq . > /dev/null
@@ -69,6 +80,15 @@ cat > .vercel/output/config.json << EOL
       "handle": "filesystem"
     },
     {
+      "src": "/images/default-news.jpg",
+      "dest": "/images/default-news.jpg"
+    },
+    {
+      "src": "/images/(.*)",
+      "status": 404,
+      "dest": "/images/default-news.jpg"
+    },
+    {
       "src": "/api/(.*)",
       "dest": "https://api.thontrangliennhat.com/api/$1"
     },
@@ -79,10 +99,6 @@ cat > .vercel/output/config.json << EOL
     {
       "src": "/uploads/(.*)",
       "dest": "https://api.thontrangliennhat.com/uploads/$1"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "https://api.thontrangliennhat.com/images/$1"
     },
     {
       "src": "/(.*)",
