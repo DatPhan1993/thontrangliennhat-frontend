@@ -175,7 +175,8 @@ export const getProductById = async (id) => {
             }
         });
         
-        const product = response.data.data;
+        // Replace const with let since we need to modify it
+        let product = response.data.data;
 
         // Chuẩn hóa trường images thành mảng
         if (!product) {
@@ -276,7 +277,8 @@ export const getProductBySlug = async (slug) => {
 
     try {
         const response = await httpRequest.get(`/products/slug/${slug}`);
-        const product = response.data.data;
+        // Replace const with let since we need to modify it
+        let product = response.data.data;
 
         // Chuẩn hóa trường images thành mảng
         if (!product) {
@@ -460,8 +462,8 @@ export const deleteProduct = async (id) => {
         sessionStorage.removeItem(`product_${id}`);
         sessionStorage.removeItem('allProducts');
 
-        const updateProduct = await getProducts();
-        saveToSessionStorage('allProducts', updateProduct);
+        const updatedProducts = await getProducts();
+        saveToSessionStorage('allProducts', updatedProducts);
 
         return response.data.data;
     } catch (error) {
