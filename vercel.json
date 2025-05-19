@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "chmod +x fix-build.sh && ./fix-build.sh",
   "outputDirectory": "build",
   "installCommand": "npm install --legacy-peer-deps",
   "rewrites": [
@@ -70,6 +70,9 @@
     "REACT_APP_BASE_URL": "https://api.thontrangliennhat.com/api",
     "REACT_APP_UPLOAD_URL": "https://api.thontrangliennhat.com/uploads",
     "REACT_APP_PUBLIC_URL": "https://thontrangliennhat.com",
-    "REACT_APP_API_URL": "https://api.thontrangliennhat.com/api"
+    "REACT_APP_API_URL": "https://api.thontrangliennhat.com/api",
+    "NODE_OPTIONS": "--openssl-legacy-provider",
+    "CI": "false",
+    "NODE_ENV": "production"
   }
 } 

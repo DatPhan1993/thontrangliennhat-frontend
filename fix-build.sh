@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script helps fix build issues on Vercel and other platforms
+# It handles EACCES permissions and NODE_OPTIONS for OpenSSL
+
 echo "Running post-build fixes..."
 
 # Ensure we're in the correct directory
@@ -30,4 +33,26 @@ if [ -d "node_modules/swiper/modules" ]; then
   cp -r node_modules/swiper/modules/*.css build/static/css/swiper/
 fi
 
-echo "Post-build fixes completed successfully!" 
+# Fix potential permissions issues
+chmod -R 755 node_modules/.bin
+
+# Ensure environment variables are set
+export NODE_ENV=production
+export CI=false
+
+# Add OpenSSL legacy provider for older Node.js versions
+export NODE_OPTIONS=--openssl-legacy-provider
+
+# Remove potentially problematic modules
+if [ -d "node_modules/@rollup/rollup-linux-x64-gnu" ]; then
+  rm -rf node_modules/@rollup/rollup-linux-x64-gnu
+fi
+
+# Run the actual build
+npx craco build
+
+# Run post-build tasks
+node copy-database.js
+
+echo "Post-build fixes completed successfully!"
+echo "Build completed successfully!" 

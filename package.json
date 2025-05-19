@@ -47,8 +47,8 @@
   },
   "scripts": {
     "start": "npx craco start",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider CI=false npx craco build && node copy-database.js",
-    "vercel-build": "NODE_OPTIONS=--openssl-legacy-provider CI=false npx craco build && node copy-database.js",
+    "build": "NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider CI=false npx craco build && node copy-database.js",
+    "vercel-build": "NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider CI=false npx craco build && node copy-database.js",
     "test": "npx craco test",
     "eject": "react-scripts eject"
   },
