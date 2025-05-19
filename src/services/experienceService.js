@@ -38,7 +38,7 @@ export const getExperiences = async (forceRefresh = true) => {
         try {
             console.log('Attempting to fetch from database.json');
             const timestamp = new Date().getTime(); // Add timestamp to prevent caching
-            const dbResponse = await fetch(`https://thontrangliennhat.com/phunongbuondon-api/database.json?_=${timestamp}`);
+            const dbResponse = await fetch(`https://api.thontrangliennhat.com/phunongbuondon-api/database.json?_=${timestamp}`);
             if (dbResponse.ok) {
                 const dbData = await dbResponse.json();
                 if (dbData && dbData.experiences && Array.isArray(dbData.experiences)) {
@@ -131,7 +131,7 @@ export const getFeaturedExperiences = async (limit = 6) => {
         try {
             console.log('Attempting to fetch from database.json for featured experiences');
             const timestamp = new Date().getTime(); // Add timestamp to prevent caching
-            const dbResponse = await fetch(`https://thontrangliennhat.com/phunongbuondon-api/database.json?_=${timestamp}`);
+            const dbResponse = await fetch(`https://api.thontrangliennhat.com/phunongbuondon-api/database.json?_=${timestamp}`);
             if (dbResponse.ok) {
                 const dbData = await dbResponse.json();
                 if (dbData && dbData.experiences && Array.isArray(dbData.experiences)) {
@@ -383,7 +383,7 @@ export const createExperience = async (experienceData) => {
                 // 4. Last attempt: Try to refresh browser's cache of database.json
                 try {
                     const cacheBuster = new Date().getTime();
-                    await fetch(`https://thontrangliennhat.com/phunongbuondon-api/database.json?_=${cacheBuster}`);
+                    await fetch(`https://api.thontrangliennhat.com/phunongbuondon-api/database.json?_=${cacheBuster}`);
                     
                     // Fetch root database.json as well
                     await fetch(`/database.json?_=${cacheBuster}`);

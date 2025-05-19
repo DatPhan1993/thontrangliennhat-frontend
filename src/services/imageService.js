@@ -15,7 +15,7 @@ else {
     } 
     // For other production environments
     else {
-        baseURL = 'https://thontrangliennhat.com/api';
+        baseURL = 'https://api.thontrangliennhat.com/api';
     }
 }
 

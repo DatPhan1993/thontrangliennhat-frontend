@@ -5,19 +5,19 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "destination": "https://api.thontrangliennhat.com/api/$1"
     },
     {
       "source": "/phunongbuondon-api/database.json",
-      "destination": "/phunongbuondon-api/database.json"
+      "destination": "https://api.thontrangliennhat.com/phunongbuondon-api/database.json"
     },
     {
       "source": "/uploads/(.*)",
-      "destination": "/uploads/$1"
+      "destination": "https://api.thontrangliennhat.com/uploads/$1"
     },
     {
       "source": "/images/(.*)",
-      "destination": "/images/$1"
+      "destination": "https://api.thontrangliennhat.com/images/$1"
     },
     {
       "source": "/(.*)",
@@ -57,9 +57,9 @@
     }
   ],
   "env": {
-    "REACT_APP_BASE_URL": "https://thontrangliennhat.com/api",
-    "REACT_APP_UPLOAD_URL": "https://thontrangliennhat.com/uploads",
+    "REACT_APP_BASE_URL": "https://api.thontrangliennhat.com/api",
+    "REACT_APP_UPLOAD_URL": "https://api.thontrangliennhat.com/uploads",
     "REACT_APP_PUBLIC_URL": "https://thontrangliennhat.com",
-    "REACT_APP_API_URL": "https://thontrangliennhat.com/api"
+    "REACT_APP_API_URL": "https://api.thontrangliennhat.com/api"
   }
 } 

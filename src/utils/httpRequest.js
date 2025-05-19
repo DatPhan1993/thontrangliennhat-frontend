@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Set base URL to thontrangliennhat.com for all environments
-const baseURL = 'https://thontrangliennhat.com/api';
+// Set base URL to api.thontrangliennhat.com
+const baseURL = 'https://api.thontrangliennhat.com/api';
 
 console.log('Using API baseURL:', baseURL);
 
