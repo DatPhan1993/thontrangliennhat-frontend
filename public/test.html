@@ -1,47 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Page</title>
+  <meta charset="utf-8">
+  <title>Thôn Trang Liên Nhật - Test Page</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    .container {
-      max-width: 800px;
-      margin: 50px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
+      padding: 40px;
+      background-color: #f7f7f7;
     }
     h1 {
-      color: #4caf50;
-      margin-bottom: 20px;
+      color: #333;
     }
-    .btn {
-      display: inline-block;
-      background: #4caf50;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
+    .test-info {
+      margin: 30px 0;
+      font-size: 18px;
+      color: #555;
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    pre {
+      background-color: #f1f1f1;
+      padding: 10px;
       border-radius: 4px;
-      margin-top: 20px;
+      overflow-x: auto;
+    }
+    .status-ok {
+      color: green;
+      font-weight: bold;
+    }
+    .status-error {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Trang test hoat dong</h1>
-    <p>May chu web dang hoat dong</p>
-    <p>Thon Trang Lien Nhat dang trong qua trinh nang cap. Vui long quay lai sau.</p>
-    <a href="/" class="btn">Quay ve trang chinh</a>
+  <h1>Thôn Trang Liên Nhật - Test Page</h1>
+  <div class="test-info">
+    <h2>Routing Test</h2>
+    <p>This page verifies that the website routing is working properly.</p>
+    
+    <h3>API Endpoints Check:</h3>
+    <div id="api-status">Checking API connection...</div>
+    
+    <h3>Manifest Test:</h3>
+    <div id="manifest-status">Checking manifest.json...</div>
+    
+    <script>
+      // Test API connection
+      fetch('/api/experiences')
+        .then(response => {
+          document.getElementById('api-status').innerHTML = 
+            `<span class="status-${response.ok ? 'ok' : 'error'}">
+              API Status: ${response.status} ${response.statusText}
+            </span>`;
+          return response.text();
+        })
+        .then(text => {
+          document.getElementById('api-status').innerHTML += 
+            `<pre>${text.substring(0, 100)}...</pre>`;
+        })
+        .catch(error => {
+          document.getElementById('api-status').innerHTML = 
+            `<span class="status-error">Error: ${error.message}</span>`;
+        });
+      
+      // Test manifest.json
+      fetch('/manifest.json')
+        .then(response => {
+          document.getElementById('manifest-status').innerHTML = 
+            `<span class="status-${response.ok ? 'ok' : 'error'}">
+              Manifest Status: ${response.status} ${response.statusText}
+            </span>`;
+          return response.json();
+        })
+        .then(json => {
+          document.getElementById('manifest-status').innerHTML += 
+            `<pre>${JSON.stringify(json, null, 2)}</pre>`;
+        })
+        .catch(error => {
+          document.getElementById('manifest-status').innerHTML = 
+            `<span class="status-error">Error: ${error.message}</span>`;
+        });
+    </script>
   </div>
 </body>
 </html> 
