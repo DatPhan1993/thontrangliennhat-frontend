@@ -1,32 +1,25 @@
 {
-  "short_name": "Thon Trang",
-  "name": "Thon Trang Lien Nhat",
+  "short_name": "Thôn Trang Liên Nhật",
+  "name": "Trang web Thôn Trang Liên Nhật",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64",
+      "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "favicon-16x16.png",
-      "type": "image/png",
-      "sizes": "16x16"
-    },
-    {
-      "src": "favicon-32x32.png",
-      "type": "image/png",
-      "sizes": "32x32"
-    },
-    {
-      "src": "apple-touch-icon.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",
-  "scope": ".",
   "display": "standalone",
-  "theme_color": "#4caf50",
-  "background_color": "#ffffff",
-  "description": "HTX Nong Nghiep va Dich vu tong hop"
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

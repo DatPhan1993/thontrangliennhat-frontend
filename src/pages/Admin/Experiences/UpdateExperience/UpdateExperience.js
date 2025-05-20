@@ -34,11 +34,11 @@ const UpdateExperience = () => {
         // If it's a relative path, make it absolute
         if (url.startsWith('/')) {
             // Use the API server URL for images
-            return `http://localhost:3001${url}`;
+            return `https://api.thontrangliennhat.com${url}`;
         }
         
         // Default case - add leading slash if needed
-        return `http://localhost:3001/${url}`;
+        return `https://api.thontrangliennhat.com/${url}`;
     };
 
     const validationSchema = Yup.object({

@@ -45,7 +45,7 @@ function NewsLibrary() {
             
             // Handle relative paths from /images/uploads for admin uploads
             if (imagePath.includes('/uploads/')) {
-                return `http://localhost:3001${imagePath}`; 
+                return `https://api.thontrangliennhat.com${imagePath}`; 
             }
             
             // Handle relative paths
@@ -63,7 +63,7 @@ function NewsLibrary() {
             setLoading(true);
             try {
                 // Sử dụng API thay vì đọc trực tiếp database.json
-                const response = await fetch('http://localhost:3001/api/news');
+                const response = await fetch('https://api.thontrangliennhat.com/api/news');
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch news: ${response.status}`);

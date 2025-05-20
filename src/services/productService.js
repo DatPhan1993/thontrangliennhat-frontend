@@ -324,7 +324,7 @@ export const createProduct = async (productData) => {
         }
         
         // Đường dẫn API đầy đủ
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://api.thontrangliennhat.com/api';
         console.log(`Using API URL: ${apiUrl}/products`);
         
         // Tạo request sử dụng XMLHttpRequest để hỗ trợ FormData tốt hơn
@@ -389,7 +389,7 @@ export const updateProduct = async (id, productData) => {
         }
         
         // Create a custom axios request for more control
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://api.thontrangliennhat.com/api';
         console.log(`Using API URL: ${apiUrl}/products/${id}`);
         
         const response = await axios({

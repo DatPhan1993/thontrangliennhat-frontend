@@ -16,7 +16,7 @@ const isDevelopment = () => {
 };
 
 // Server API base URL
-const LOCAL_API_URL = 'http://localhost:3001/api';
+const LOCAL_API_URL = 'https://api.thontrangliennhat.com/api';
 
 // Helper function to fetch from database.json in development
 const fetchFromDatabaseJson = async () => {
@@ -113,7 +113,7 @@ export const getImages = async () => {
         // Gọi API với cache busting
         const timestamp = Date.now();
         const apiUrl = isDevelopment() 
-            ? `http://localhost:3001/api/images?_=${timestamp}` 
+            ? `https://api.thontrangliennhat.com/api/images?_=${timestamp}` 
             : `/api/images?_=${timestamp}`;
         
         console.log('Calling API:', apiUrl);
@@ -215,7 +215,7 @@ export const createImage = async (imageData) => {
             
             // Determine the correct API endpoint based on environment
             const apiBaseUrl = isDevelopment() 
-                ? 'http://localhost:3001/api' 
+                ? 'https://api.thontrangliennhat.com/api' 
                 : '/api';  // In production this will be relative to the host
             
             console.log('Using API base URL:', apiBaseUrl);
@@ -241,7 +241,7 @@ export const createImage = async (imageData) => {
             
             // Nếu đang dùng URL tương đối, thêm domain
             if (imageUrl.startsWith('/') && isDevelopment()) {
-                imageUrl = `http://localhost:3001${imageUrl}`;
+                imageUrl = `https://api.thontrangliennhat.com${imageUrl}`;
                 console.log('Modified to absolute URL:', imageUrl);
             }
             

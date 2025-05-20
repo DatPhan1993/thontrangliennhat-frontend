@@ -5,7 +5,7 @@ let baseURL = '';
 
 // Development environment
 if (process.env.NODE_ENV === 'development') {
-    baseURL = 'http://localhost:3001/api';
+    baseURL = 'https://api.thontrangliennhat.com/api';
 } 
 // Production environment
 else {

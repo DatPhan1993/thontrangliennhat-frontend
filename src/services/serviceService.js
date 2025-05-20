@@ -159,7 +159,7 @@ export const createService = async (serviceData) => {
             }
             
             // Tạo request sử dụng XMLHttpRequest để hỗ trợ FormData tốt hơn
-            const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+            const apiUrl = process.env.REACT_APP_API_URL || 'https://api.thontrangliennhat.com/api';
             return new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', `${apiUrl}/services`, true);

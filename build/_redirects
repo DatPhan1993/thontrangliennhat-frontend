@@ -1,1 +1,3 @@
 /* /index.html 200
+/api/* https://api.thontrangliennhat.com/api/:splat 200
+/phunongbuondon-api/database.json https://api.thontrangliennhat.com/phunongbuondon-api/database.json 200

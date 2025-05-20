@@ -104,7 +104,7 @@ const AddNews = () => {
         const formData = new FormData();
                 formData.append('image', file);
                 
-                const response = await axios.post('http://localhost:3001/api/upload/image', formData, {
+                const response = await axios.post('https://api.thontrangliennhat.com/api/upload/image', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },

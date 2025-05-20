@@ -178,7 +178,7 @@ export const updateNews = async (id, newsData) => {
             if (hasFileUpload) {
                 console.log("Has file upload, using POST with FormData");
                 // Use the upload endpoint for file uploads
-                const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+                const apiUrl = process.env.REACT_APP_API_URL || 'https://api.thontrangliennhat.com/api';
                 const fileUploadEndpoint = `${apiUrl}/news/${id}/upload`;
                 
                 const response = await axios.post(fileUploadEndpoint, newsData, {
@@ -194,7 +194,7 @@ export const updateNews = async (id, newsData) => {
         }
         
         // Otherwise, use PATCH with JSON for regular updates
-        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://api.thontrangliennhat.com/api';
         const endpoint = `${apiUrl}/news/${id}`;
         console.log(`Using API URL: ${endpoint}`);
         
