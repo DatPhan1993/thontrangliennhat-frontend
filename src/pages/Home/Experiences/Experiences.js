@@ -43,21 +43,21 @@ function Experiences() {
             let featuredData = [];
             
             try {
-                // Try to fetch from database directly first
+                // Try to fetch from API experiences endpoint
                 const timestamp = new Date().getTime();
-                const response = await fetch(`/phunongbuondon-api/database.json?_=${timestamp}`);
+                const response = await fetch(`/api/experiences?_=${timestamp}`);
                 
                 if (response.ok) {
                     const data = await response.json();
-                    if (data && data.experiences && Array.isArray(data.experiences)) {
+                    if (data && data.data && Array.isArray(data.data)) {
                         // Get featured experiences
-                        featuredData = data.experiences
+                        featuredData = data.data
                             .filter(exp => exp.isFeatured)  // Get featured first
                             .slice(0, 6);  // Limit to 6
                         
                         if (featuredData.length === 0) {
                             // If no featured, just get the latest 6
-                            featuredData = data.experiences
+                            featuredData = data.data
                                 .sort((a, b) => {
                                     const dateA = new Date(a.createdAt || a.created_at || 0);
                                     const dateB = new Date(b.createdAt || b.created_at || 0);
@@ -66,12 +66,42 @@ function Experiences() {
                                 .slice(0, 6);
                         }
                     }
+                } else {
+                    console.warn('API response was not OK:', response.status);
+                    throw new Error(`API returned ${response.status}`);
                 }
-            } catch (directError) {
-                console.error('Error fetching database.json directly:', directError);
+            } catch (apiError) {
+                console.error('Error fetching from API experiences endpoint:', apiError);
+                
+                // Try content endpoint as fallback
+                try {
+                    const timestamp = new Date().getTime();
+                    const contentResponse = await fetch(`/api/content?_=${timestamp}`);
+                    
+                    if (contentResponse.ok) {
+                        const contentData = await contentResponse.json();
+                        if (contentData && contentData.data && Array.isArray(contentData.data)) {
+                            featuredData = contentData.data
+                                .filter(exp => exp.isFeatured)
+                                .slice(0, 6);
+                                
+                            if (featuredData.length === 0) {
+                                featuredData = contentData.data
+                                    .sort((a, b) => {
+                                        const dateA = new Date(a.createdAt || a.created_at || 0);
+                                        const dateB = new Date(b.createdAt || b.created_at || 0);
+                                        return dateB - dateA;
+                                    })
+                                    .slice(0, 6);
+                            }
+                        }
+                    }
+                } catch (contentError) {
+                    console.error('Error fetching from content API:', contentError);
+                }
             }
             
-            // If we didn't get data directly, try our service function
+            // If we didn't get data from either endpoint, try our service function
             if (featuredData.length === 0) {
                 featuredData = await getFeaturedExperiences(6);
             }

@@ -34,24 +34,49 @@ export const getExperiences = async (forceRefresh = true) => {
     }
     
     try {
-        // First try to fetch from database.json with cache buster
+        // First try to fetch from API endpoint
         try {
-            console.log('Attempting to fetch from database.json');
+            console.log('Attempting to fetch from /api/experiences');
             const timestamp = new Date().getTime(); // Add timestamp to prevent caching
-            const dbResponse = await fetch(`https://api.thontrangliennhat.com/phunongbuondon-api/database.json?_=${timestamp}`);
-            if (dbResponse.ok) {
-                const dbData = await dbResponse.json();
-                if (dbData && dbData.experiences && Array.isArray(dbData.experiences)) {
-                    console.log(`Successfully fetched ${dbData.experiences.length} experiences from database.json`);
+            const apiResponse = await fetch(`/api/experiences?_=${timestamp}`);
+            
+            if (apiResponse.ok) {
+                const apiData = await apiResponse.json();
+                if (apiData && apiData.data && Array.isArray(apiData.data)) {
+                    console.log(`Successfully fetched ${apiData.data.length} experiences from API`);
                     // Save to session storage for future use (only if not forcing refresh)
                     if (!forceRefresh) {
-                        saveToSessionStorage('allExperiences', dbData.experiences);
+                        saveToSessionStorage('allExperiences', apiData.data);
                     }
-                    return dbData.experiences;
+                    return apiData.data;
+                }
+            } else {
+                console.warn('API returned non-OK response:', apiResponse.status);
+                const text = await apiResponse.text();
+                console.warn('Response content:', text.substring(0, 200) + '...');
+            }
+        } catch (apiError) {
+            console.error('Error fetching from API endpoint:', apiError);
+        }
+        
+        // Fallback to content.js API
+        try {
+            console.log('Attempting to fetch from /api/content');
+            const timestamp = new Date().getTime();
+            const contentResponse = await fetch(`/api/content?_=${timestamp}`);
+            
+            if (contentResponse.ok) {
+                const contentData = await contentResponse.json();
+                if (contentData && contentData.data && Array.isArray(contentData.data)) {
+                    console.log(`Successfully fetched ${contentData.data.length} experiences from content API`);
+                    if (!forceRefresh) {
+                        saveToSessionStorage('allExperiences', contentData.data);
+                    }
+                    return contentData.data;
                 }
             }
-        } catch (dbError) {
-            console.error('Error fetching from database.json:', dbError);
+        } catch (contentError) {
+            console.error('Error fetching from content API:', contentError);
         }
         
         // Try to get from sessionStorage as a fallback (only if not forcing refresh)
@@ -127,22 +152,23 @@ export const getFeaturedExperiences = async (limit = 6) => {
     console.log('Fetching featured experiences for homepage');
     
     try {
-        // First try to fetch from database.json with cache buster
+        // First try API endpoint with cache buster
         try {
-            console.log('Attempting to fetch from database.json for featured experiences');
-            const timestamp = new Date().getTime(); // Add timestamp to prevent caching
-            const dbResponse = await fetch(`https://api.thontrangliennhat.com/phunongbuondon-api/database.json?_=${timestamp}`);
-            if (dbResponse.ok) {
-                const dbData = await dbResponse.json();
-                if (dbData && dbData.experiences && Array.isArray(dbData.experiences)) {
-                    console.log(`Successfully fetched experiences from database.json for featured selection`);
+            console.log('Attempting to fetch from /api/experiences for featured experiences');
+            const timestamp = new Date().getTime();
+            const apiResponse = await fetch(`/api/experiences?_=${timestamp}`);
+            
+            if (apiResponse.ok) {
+                const apiData = await apiResponse.json();
+                if (apiData && apiData.data && Array.isArray(apiData.data)) {
+                    console.log(`Successfully fetched experiences from API for featured selection`);
                     
                     // Get featured items (either by isFeatured flag or newest)
-                    let featuredItems = dbData.experiences.filter(item => item.isFeatured);
+                    let featuredItems = apiData.data.filter(item => item.isFeatured);
                     
                     // If no featured items, use newest
                     if (featuredItems.length === 0) {
-                        featuredItems = [...dbData.experiences].sort((a, b) => {
+                        featuredItems = [...apiData.data].sort((a, b) => {
                             const dateA = new Date(a.createdAt || a.created_at || 0);
                             const dateB = new Date(b.createdAt || b.created_at || 0);
                             return dateB - dateA;
@@ -153,8 +179,8 @@ export const getFeaturedExperiences = async (limit = 6) => {
                     return featuredItems.slice(0, limit);
                 }
             }
-        } catch (dbError) {
-            console.error('Error fetching from database.json for featured experiences:', dbError);
+        } catch (apiError) {
+            console.error('Error fetching from API for featured experiences:', apiError);
         }
         
         // Fallback: Use regular getExperiences and filter/limit

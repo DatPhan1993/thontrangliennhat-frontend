@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// Set base URL to api.thontrangliennhat.com
-const baseURL = 'https://api.thontrangliennhat.com/api';
+// Use relative paths for production environment
+// This allows proxying through the vercel.json rewrite rules
+const baseURL = '/api';
 
 console.log('Using API baseURL:', baseURL);
 
